@@ -1,4 +1,7 @@
 from flask import Flask, render_template
+
+from .views.auth import bp as auth_bp
+
 app = Flask(__name__)
 
 
@@ -16,3 +19,6 @@ def hello():
 def show_user_profile(username):
     # show the user profile for that user
     return 'User %s' % str(username)
+
+
+app.register_blueprint(auth_bp)
