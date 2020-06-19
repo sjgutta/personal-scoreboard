@@ -5,13 +5,17 @@
     <title>Login</title>
 </head>
 <body>
+{% from "macros.html" import render_field %}
 {% include "navbar.html" %}
 This is the Login Page for the Analytics Project.
 
-<form method="POST" action="/login">
-    <div>{{ form.username.label }}: {{ form.username(class="css_class") }}</div>
-    <div>{{ form.password.label }}: {{ form.password() }}</div>
-    <div><input type="submit" class="btn btn-success" value="Login"></div>
+<form method=post>
+  <dl>
+    {{ render_field(form.username) }}
+    {{ render_field(form.password) }}
+  </dl>
+    {{ form.hidden_tag() }}
+  <p><input type=submit value=Login class="btn btn-success">
 </form>
 </body>
 </html>

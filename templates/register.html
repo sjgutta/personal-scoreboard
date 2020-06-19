@@ -5,7 +5,18 @@
     <title>Register</title>
 </head>
 <body>
+{% from "macros.html" import render_field %}
 {% include "navbar.html" %}
 This is the Register Page for the Analytics Project.
+<form method=post>
+  <dl>
+    {{ render_field(form.username) }}
+    {{ render_field(form.email) }}
+    {{ render_field(form.password) }}
+    {{ render_field(form.confirm) }}
+  </dl>
+  <p><input type=submit value=Register class="btn btn-success">
+    {{ form.hidden_tag() }}
+</form>
 </body>
 </html>
