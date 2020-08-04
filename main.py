@@ -1,6 +1,6 @@
-from .app import app, db
-from .views import auth, index
-from .models.user import load_user
-from .models import *
-from .templates import *
-app.run()
+from app import create_app
+
+app = create_app()
+
+if __name__ == "__main__":
+    app.run()
