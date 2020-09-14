@@ -1,0 +1,1 @@
+ESPN_API_PREFIX = "https://site.web.api.espn.com/apis/site/v2/sports"

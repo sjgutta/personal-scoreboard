@@ -13,7 +13,10 @@ def create_app():
 
     login_manager.init_app(app)
 
-    from app.auth import bp as views_bp
+    from app.auth import bp as auth_bp
+    app.register_blueprint(auth_bp)
+
+    from app.views import bp as views_bp
     app.register_blueprint(views_bp)
 
     @app.before_request
