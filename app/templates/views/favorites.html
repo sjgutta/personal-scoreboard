@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Favorites</title>
+    <style>
+      .team-item img {
+          height: 40px;
+          margin: 0 8px;
+          background-position: center;
+          background-size: cover;
+      }
+    </style>
+</head>
+<body>
+{% include "navbar.html" %}
+<h2>This page shows the favorites for {{ user.username }}</h2>
+
+{% macro team_item(team) %}
+  {% if team.logo_url %}
+    <img src="{{ team.logo_url }}">
+  {% else %}
+    <span class="label label-danger">X</span>
+  {% endif %}
+  {{ team.full_name }}
+{% endmacro %}
+<div class="row">
+    <div class="col-sm-8">
+
+      <form method="post" id="favorites-form">
+        <input type="hidden" id="current_favorites" name="current_favorites" value=""/>
+        <input type="hidden" id="current_non_favorites" name="current_non_favorites" value=""/>
+
+        <table class="table table-bordered">
+
+          <thead>
+          <tr>
+            <th>Favorites</th>
+            <th>
+                Other Teams
+                <select id="sport-selector">
+                    {% for sport in other_teams %}
+                        {% if sport == default_sport.value %}
+                        <option value="{{ sport }}" selected>{{ sport }}</option>
+                        {% else %}
+                        <option value="{{ sport }}">{{ sport }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr>
+            <td>
+              <div class="list-group" id="favoriteList">
+                {% for team in favorites %}
+                  <li class="list-group-item team-item {{ team.sport.value }}-team" id="{{team.sport.value}}-{{ team.id }}">
+                    <input type="hidden" value="{{ team.id }}" name="current_favorite">
+                    {{ team_item(team) }}
+                  </li>
+                {% endfor %}
+              </div>
+
+              <button type="submit" class="btn btn-lg btn-block btn-primary">Save</button>
+
+            </td>
+            <td>
+              <div class="list-group" id="otherList">
+                  {% for sport in other_teams %}
+                    {% for team in other_teams[sport] %}
+                        {% if sport == default_sport.value %}
+                        <li class="list-group-item team-item {{sport}}-team" id="{{team.sport.value}}-{{ team.id }}">
+                            {% else %}
+                        <li class="list-group-item team-item {{sport}}-team" id="{{team.sport.value}}-{{ team.id }}" style="display:none">
+                            {% endif %}
+                            <input type="hidden" value="{{ team.id }}" name="non_favorite">
+                            {{ team_item(team) }}
+                        </li>
+                    {% endfor %}
+                  {% endfor %}
+              </div>
+            </td>
+          </tr>
+
+          </tbody>
+
+        </table>
+
+        <br>
+        <br>
+
+      </form>
+
+    </div>
+  </div>
+</body>
+<script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
+<script>
+
+      let sportSelector = document.getElementById('sport-selector');
+
+      sportSelector.addEventListener('change', function (e) {
+         new_sport = document.getElementById("sport-selector").value;
+         let otherList = document.getElementById('otherList');
+         var teamItems = otherList.getElementsByClassName('team-item');
+         let newSportClass = new_sport + "-team";
+         for (var i = 0; i < teamItems.length; i++){
+            var this_list = teamItems[i];
+            this_list.style.display = 'none';
+         }
+         console.log(newSportClass)
+         var newSportTeamItems = otherList.getElementsByClassName(newSportClass);
+         for (var i = 0; i < newSportTeamItems.length; i++){
+            var this_list = newSportTeamItems[i];
+            this_list.style.display = 'block';
+         }
+      });
+
+      let favoriteList = document.getElementById('favoriteList');
+      let otherList = document.getElementById('otherList');
+
+      let favorite_list = Sortable.create(favoriteList, {
+          animation: 150,
+          group: 'shared',
+          ghostClass: 'sortable-ghost',
+      });
+
+      let other_list = Sortable.create(otherList, {
+          animation: 150,
+          group: 'shared',
+          ghostClass: 'sortable-ghost',
+          sort: false
+      });
+
+      let favoritesForm = document.getElementById("favorites-form");
+
+  </script>
+</html>

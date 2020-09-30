@@ -5,10 +5,11 @@ from app.models.team import Team
 from app.models.events import MLBEvent, NormalEvent
 
 
-def get_team_list(sport_type):
+def get_team_list(sport_type, exclude=[]):
     """
     Takes in SportType Enum and gets a list of teams associated with it.
     :param sport_type: Should be of type SportType Enum, found within the Sport class in service/espn/sports.py
+    :param exclude: list of teams objects to exclude from list
     :return: list of Team objects associated with the sport_type
     """
     url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + "/teams"
@@ -20,9 +21,19 @@ def get_team_list(sport_type):
     data = r.json()
     team_list = [team["team"] for team in data["sports"][0]["leagues"][0]["teams"]]
     team_objects_list = []
+    excluded_teams = [team.id for team in exclude if team.sport == sport_type]
     for team in team_list:
-        team_objects_list.append(Team(team["id"], team["displayName"], team["abbreviation"], sport_type))
+        if team["id"] not in excluded_teams:
+            team_objects_list.append(Team(team["id"], team["displayName"], team["abbreviation"],
+                                          sport_type, team["logos"][0]["href"]))
     return team_objects_list
+
+
+def get_all_sports_teams(exclude=[]):
+    team_data = {}
+    for sport_type in Sport.SportType:
+        team_data[sport_type.value] = get_team_list(sport_type, exclude)
+    return team_data
 
 
 def get_score_for_team(sport_type, team_id):
@@ -58,9 +69,4 @@ def get_score_for_team(sport_type, team_id):
 
 
 if __name__ == "__main__":
-    # teams = get_team_list(Sport.SportType.NFL)
-    # for team in teams:
-    #     print(team)
-    event = get_score_for_team(Sport.SportType.MLB, 8)
-    # team = Team.get_team(Sport.SportType.NFL, 8)
-    print(event)
+    team = Team.get_team(Sport.SportType.NFL, 8)
