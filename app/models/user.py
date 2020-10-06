@@ -46,6 +46,33 @@ class User(Model, UserMixin):
 
         return results
 
+    def update_favorites(self, new_favorites):
+        """
+        Takes a list of Team objects and sets the new set of favorites for the user to the list.
+        This also removes any favorites that aren't in the new list.
+        :param new_favorites: a list of Team objects to be the new favorites
+        :return: None
+        """
+        current_favorites = self.get_favorites()
+        current_favorites_tuples = [(team.id, team.sport) for team in current_favorites]
+        new_favorites_tuples = [(team.id, team.sport) for team in new_favorites]
+        remove_list = []
+        add_list = []
+
+        # finding favorites that must be removed
+        for team in current_favorites:
+            if (team.id, team.sport) not in new_favorites_tuples:
+                remove_list.append(team)
+
+        # finding favorites that must be added
+        for team in new_favorites:
+            if (team.id, team.sport) not in current_favorites_tuples:
+                add_list.append(team)
+
+        # removing old favorites and adding new ones
+        self.add_favorite(add_list)
+        self.remove_favorite(remove_list)
+
     def add_favorite(self, teams):
         """
         This function adds a team or list of teams as favorites for the user.

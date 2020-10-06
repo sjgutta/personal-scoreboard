@@ -20,3 +20,10 @@ class Sport:
             return "/hockey/nhl"
         else:
             return ""
+
+    @classmethod
+    def get_sport_type_by_value(cls, check_value):
+        for enum in cls.SportType:
+            if enum.value == check_value:
+                return enum
+        return None

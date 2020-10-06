@@ -29,7 +29,6 @@
 
       <form method="post" id="favorites-form">
         <input type="hidden" id="current_favorites" name="current_favorites" value=""/>
-        <input type="hidden" id="current_non_favorites" name="current_non_favorites" value=""/>
 
         <table class="table table-bordered">
 
@@ -135,6 +134,18 @@
       });
 
       let favoritesForm = document.getElementById("favorites-form");
+
+      favoritesForm.addEventListener('submit', function (e) {
+          console.log("submitted");
+          let favorite_ids = document.querySelectorAll('#favoriteList li[id]');
+          let favorite_ids_list = [];
+          for (let i = 0; i < favorite_ids.length; i++) {
+              favorite_ids_list.push(favorite_ids[i].id);
+          }
+          console.log(favorite_ids_list);
+          let favorites_input = document.getElementById("current_favorites");
+          favorites_input.value = favorite_ids_list.join(",");
+      });
 
   </script>
 </html>
