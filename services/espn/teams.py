@@ -60,13 +60,27 @@ def get_score_for_team(sport_type, team_id):
     else:
         home_data = team2_data
         away_data = team1_data
+    status_data = event_data["header"]["competitions"][0]["status"]
+    status = status_data["type"]["name"]
     away_team = Team.get_team(sport_type, away_data["id"], score=away_data["score"])
     home_team = Team.get_team(sport_type, home_data["id"], score=home_data["score"])
     if sport_type == Sport.SportType.MLB:
-        return MLBEvent(away_team, home_team, 9, 2, "final")
+        if status == "STATUS_IN_PROGRESS":
+            inning_string = status_data["type"]["detail"]
+        else:
+            inning_string = "FINAL"
+        return MLBEvent(away_team, home_team, inning_string, status)
     else:
-        return NormalEvent(away_team, home_team, 4, "5:00", "final")
+
+        period = status_data["period"] if status != "STATUS_FINAL" else None
+        clock = status_data["displayClock"] if status != "STATUS_FINAL" else None
+        return NormalEvent(away_team, home_team, period, clock, status)
 
 
 if __name__ == "__main__":
-    team = Team.get_team(Sport.SportType.NFL, 8)
+    # team = Team.get_team(Sport.SportType.NBA, 19)
+    # teams = get_team_list(Sport.SportType.NBA)
+    # for team in teams:
+    #     print(team)
+    score = get_score_for_team(Sport.SportType.MLB, 19)
+    print(score)
