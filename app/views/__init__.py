@@ -3,3 +3,4 @@ from flask import Blueprint
 bp = Blueprint('views', __name__)
 
 from app.views import favorites
+from app.views import scoreboard
