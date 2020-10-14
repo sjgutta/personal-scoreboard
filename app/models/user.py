@@ -1,8 +1,11 @@
+from collections import defaultdict
+
 from flask_login import UserMixin
 from peewee import CharField, Model, IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login_manager
 from app.models.team import Team
+from services.espn.sports import Sport
 
 
 @login_manager.user_loader
@@ -117,3 +120,17 @@ class User(Model, UserMixin):
             except Exception:
                 return False
         return True
+
+    def get_current_scores(self):
+        """
+        This function is used for creating a list of sporting event objects that relate to the user's favorite teams.
+        :return: A dict of Sport names to lists. Each list is a list of sporting event objects.
+        """
+        favorites = self.get_favorites()
+        current_scores = defaultdict(list)
+        for team in favorites:
+            team_sport = team.sport
+            team_current_score = team.get_current_score()
+            if team_current_score:
+                current_scores[team_sport].append(team_current_score)
+        return dict(current_scores)

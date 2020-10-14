@@ -3,15 +3,18 @@ from enum import Enum
 
 class Status(Enum):
     STATUS_FINAL = "FINAL"
-    STATUS_CANCELED = "STATUS CANCELLED"
+    STATUS_CANCELED = "CANCELED"
+    STATUS_SCHEDULED = "SCHEDULED"
     STATUS_IN_PROGRESS = "IN PROGRESS"
 
     @classmethod
     def status_from_espn_string(cls, espn_string):
         if espn_string == "STATUS_FINAL":
             return cls.STATUS_FINAL
-        elif espn_string == "STATUS_CANCELLED":
+        elif espn_string == "STATUS_CANCELED":
             return cls.STATUS_CANCELED
+        elif espn_string == "STATUS_SCHEDULED":
+            return cls.STATUS_SCHEDULED
         else:
             return cls.STATUS_IN_PROGRESS
 
@@ -25,11 +28,14 @@ class NormalEvent:
         self.quarter = quarter
         self.time = time
 
+    @property
     def status_string(self):
         if self.status == Status.STATUS_FINAL:
             return "FINAL"
         elif self.status == Status.STATUS_CANCELED:
             return "CANCELED"
+        elif self.status == Status.STATUS_SCHEDULED:
+            return "UPCOMING"
         else:
             return f"{self.time} | Quarter: {self.quarter}"
 
@@ -53,11 +59,14 @@ class MLBEvent:
         self.home_team = home_team
         self.inning_string = inning_string
 
+    @property
     def status_string(self):
         if self.status == Status.STATUS_FINAL:
             return "FINAL"
         elif self.status == Status.STATUS_CANCELED:
             return "CANCELED"
+        elif self.status == Status.STATUS_SCHEDULED:
+            return "UPCOMING"
         else:
             return f"Inning: {self.inning_string}"
 

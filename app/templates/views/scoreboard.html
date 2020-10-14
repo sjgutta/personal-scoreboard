@@ -2,9 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Scoreboard</title>
+    <style>
+       #scoreboard-header {
+          padding-left: 2vw;
+       }
+       .events-container {
+          padding-left: 3vw;
+          margin-right: 3vw;
+       }
+       .score-header {
+          float: right;
+          padding-right: 5px;
+       }
+       .event-item img {
+          height: 5vh;
+          background-position: center;
+          background-size: cover;
+       }
+       .event-item {
+          margin-top: 1vh;
+       }
+       .event-item-inner-div {
+          margin-right: 1vw;
+          margin-top: 2vh;
+          border: 1px solid black;
+          border-radius: 5px;
+          padding-left: 0.5vw;
+          padding-right: 0.5vw;
+       }
+       .nopadding {
+           padding: 0 !important;
+           margin: 0 !important;
+        }
+    </style>
 </head>
 <body>
+{% include "navbar.html" %}
+{% macro event_item(event) %}
+  <span>{{ event.status_string }}</span><br>
+  {% if event.away_team.logo_url %}
+    <img src="{{ event.away_team.logo_url }}">
+  {% else %}
+    <span class="label label-danger">X</span>
+  {% endif %}
+  {{ event.away_team.full_name }} <strong class="score-header">{{event.away_team.score}}</strong><br>
+  {% if event.home_team.logo_url %}
+    <img src="{{ event.home_team.logo_url }}">
+  {% else %}
+    <span class="label label-danger">X</span>
+  {% endif %}
+{{ event.home_team.full_name }} <strong class="score-header">{{event.home_team.score}}</strong>
+{% endmacro %}
+<h2 id="scoreboard-header">Scoreboard for {{ user.username }}</h2>
 
+<div class="container-xl events-container">
+    {% for sport in scores %}
+    <div class="row">
+        <h4>{{ sport.value }}</h4>
+        {% for event in scores[sport] %}
+        <div class="col-lg-3 nopadding event-item">
+            <div class="event-item-inner-div">
+            {{ event_item(event) }}
+                </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
 </body>
 </html>
