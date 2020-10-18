@@ -26,7 +26,8 @@ class Team:
         r = requests.get(url=url, params=params)
         data = r.json()
         event = data["team"]["nextEvent"][0]
-        params["event"] = event["id"]
+        event_id = event["id"]
+        params["event"] = event_id
 
         # now using the event_id to find the current score related info
         # scoreboard_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/scoreboard"
@@ -50,12 +51,11 @@ class Team:
                 inning_string = status_data["type"]["detail"]
             else:
                 inning_string = "FINAL"
-            return MLBEvent(away_team, home_team, inning_string, status)
+            return MLBEvent(event_id, away_team, home_team, inning_string, status)
         elif self.sport == Sport.SportType.NFL:
             if status == "STATUS_IN_PROGRESS":
                 period = status_data["period"]
                 clock = status_data["displayClock"]
-                print(json.dumps(event_data["drives"]["current"]["plays"][-1], indent=2))
                 play = event_data["drives"]["current"]["plays"][-1]["end"]
                 down = play.get("shortDownDistanceText")
                 yardline = play.get("possessionText")
@@ -66,7 +66,7 @@ class Team:
                 down = None
                 yardline = None
                 possession = None
-            return NFLEvent(away_team, home_team, period, clock, status, down, yardline, possession)
+            return NFLEvent(event_id, away_team, home_team, period, clock, status, down, yardline, possession)
         else:
             if status == "STATUS_IN_PROGRESS":
                 period = status_data["period"]
@@ -74,7 +74,7 @@ class Team:
             else:
                 period = None
                 clock = None
-            return NormalEvent(away_team, home_team, period, clock, status)
+            return NormalEvent(event_id, away_team, home_team, period, clock, status)
 
     @classmethod
     def get_team(cls, league, team_id, score=None):

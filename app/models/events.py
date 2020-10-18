@@ -24,7 +24,8 @@ class Status(Enum):
 
 class NormalEvent:
 
-    def __init__(self, away_team, home_team, quarter, time, status):
+    def __init__(self, event_id, away_team, home_team, quarter, time, status):
+        self.id = event_id
         self.status = Status.status_from_espn_string(status)
         self.away_team = away_team
         self.home_team = home_team
@@ -61,7 +62,7 @@ class NormalEvent:
 
 
 class NFLEvent(NormalEvent):
-    def __init__(self, away_team, home_team, quarter, time, status, down, yardline, possession):
+    def __init__(self, event_id, away_team, home_team, quarter, time, status, down, yardline, possession):
         self.down = down
         self.yardline = yardline
         if possession and int(possession) == away_team.id:
@@ -69,7 +70,7 @@ class NFLEvent(NormalEvent):
         elif possession and int(possession) == home_team.id:
             home_team.possession = True
         self.possession = possession
-        super().__init__(away_team, home_team, quarter, time, status)
+        super().__init__(event_id, away_team, home_team, quarter, time, status)
 
     @property
     def team_with_ball(self):
@@ -91,7 +92,8 @@ class NFLEvent(NormalEvent):
 
 class MLBEvent:
 
-    def __init__(self, away_team, home_team, inning_string, status):
+    def __init__(self, event_id, away_team, home_team, inning_string, status):
+        self.id = event_id
         self.status = Status.status_from_espn_string(status)
         self.away_team = away_team
         self.home_team = home_team

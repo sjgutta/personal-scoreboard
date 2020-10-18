@@ -128,9 +128,11 @@ class User(Model, UserMixin):
         """
         favorites = self.get_favorites()
         current_scores = defaultdict(list)
+        event_ids = set()
         for team in favorites:
             team_sport = team.sport
             team_current_score = team.get_current_score()
-            if team_current_score:
+            if team_current_score and team_current_score.id not in event_ids:
                 current_scores[team_sport].append(team_current_score)
+                event_ids.add(team_current_score.id)
         return dict(current_scores)
