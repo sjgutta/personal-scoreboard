@@ -6,6 +6,7 @@ class Status(Enum):
     STATUS_CANCELED = "CANCELED"
     STATUS_SCHEDULED = "SCHEDULED"
     STATUS_IN_PROGRESS = "IN PROGRESS"
+    STATUS_HALFTIME = "HALFTIME"
 
     @classmethod
     def status_from_espn_string(cls, espn_string):
@@ -15,6 +16,8 @@ class Status(Enum):
             return cls.STATUS_CANCELED
         elif espn_string == "STATUS_SCHEDULED":
             return cls.STATUS_SCHEDULED
+        elif espn_string == "STATUS_HALFTIME":
+            return cls.STATUS_HALFTIME
         else:
             return cls.STATUS_IN_PROGRESS
 
@@ -29,6 +32,10 @@ class NormalEvent:
         self.time = time
 
     @property
+    def in_progess(self):
+        return self.status == Status.STATUS_IN_PROGRESS
+
+    @property
     def status_string(self):
         if self.status == Status.STATUS_FINAL:
             return "FINAL"
@@ -36,6 +43,8 @@ class NormalEvent:
             return "CANCELED"
         elif self.status == Status.STATUS_SCHEDULED:
             return "UPCOMING"
+        elif self.status == Status.STATUS_HALFTIME:
+            return "HALFTIME"
         else:
             return f"{self.time} | Quarter: {self.quarter}"
 
@@ -49,6 +58,35 @@ class NormalEvent:
         else:
             return f"{self.time}\nQuarter: {self.quarter}\n{self.away_team.full_name}: {self.away_team.score}\n" \
                    f"{self.home_team.full_name}: {self.home_team.score}"
+
+
+class NFLEvent(NormalEvent):
+    def __init__(self, away_team, home_team, quarter, time, status, down, yardline, possession):
+        self.down = down
+        self.yardline = yardline
+        if possession and int(possession) == away_team.id:
+            away_team.possession = True
+        elif possession and int(possession) == home_team.id:
+            home_team.possession = True
+        self.possession = possession
+        super().__init__(away_team, home_team, quarter, time, status)
+
+    @property
+    def team_with_ball(self):
+        if self.status != Status.STATUS_IN_PROGRESS:
+            return None
+        if self.away_team.possession:
+            return self.away_team
+        elif self.home_team.possession:
+            return self.home_team
+        return None
+
+    @property
+    def yardage_string(self):
+        return f"{self.down} at {self.yardline}"
+
+    def current_play_status_string(self):
+        return f"{self.home_team}: {self.down} at {self.yardline}"
 
 
 class MLBEvent:
@@ -67,6 +105,8 @@ class MLBEvent:
             return "CANCELED"
         elif self.status == Status.STATUS_SCHEDULED:
             return "UPCOMING"
+        elif self.status == Status.STATUS_HALFTIME:
+            return "HALFTIME"
         else:
             return f"Inning: {self.inning_string}"
 

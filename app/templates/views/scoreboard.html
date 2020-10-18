@@ -20,6 +20,9 @@
           background-position: center;
           background-size: cover;
        }
+       .yardage-string {
+          float: right;
+       }
        .event-item {
           margin-top: 1vh;
        }
@@ -39,8 +42,11 @@
 </head>
 <body>
 {% include "navbar.html" %}
-{% macro event_item(event) %}
-  <span>{{ event.status_string }}</span><br>
+{% macro event_item(event, sport) %}
+  <span>{{ event.status_string }}</span>
+  {% if sport == "NFL" and event.in_progess %}
+      <span class="yardage-string">{{ event.yardage_string }}</span>
+  {% endif %}<br>
   {% if event.away_team.logo_url %}
     <img src="{{ event.away_team.logo_url }}">
   {% else %}
@@ -63,7 +69,7 @@
         {% for event in scores[sport] %}
         <div class="col-lg-3 nopadding event-item">
             <div class="event-item-inner-div">
-            {{ event_item(event) }}
+            {{ event_item(event, sport.value) }}
                 </div>
         </div>
         {% endfor %}

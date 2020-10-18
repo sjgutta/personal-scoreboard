@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from app.models.events import MLBEvent, NormalEvent
+from app.models.events import MLBEvent, NormalEvent, NFLEvent
 from services.espn.sports import Sport
 from services import ESPN_API_PREFIX
 
@@ -51,6 +51,22 @@ class Team:
             else:
                 inning_string = "FINAL"
             return MLBEvent(away_team, home_team, inning_string, status)
+        elif self.sport == Sport.SportType.NFL:
+            if status == "STATUS_IN_PROGRESS":
+                period = status_data["period"]
+                clock = status_data["displayClock"]
+                print(json.dumps(event_data["drives"]["current"]["plays"][-1], indent=2))
+                play = event_data["drives"]["current"]["plays"][-1]["end"]
+                down = play.get("shortDownDistanceText")
+                yardline = play.get("possessionText")
+                possession = play["team"]["id"]
+            else:
+                period = None
+                clock = None
+                down = None
+                yardline = None
+                possession = None
+            return NFLEvent(away_team, home_team, period, clock, status, down, yardline, possession)
         else:
             if status == "STATUS_IN_PROGRESS":
                 period = status_data["period"]
@@ -78,3 +94,10 @@ class Team:
 
     def __str__(self):
         return f"{self.full_name} [{self.id}]"
+
+
+if __name__ == "__main__":
+    team = Team.get_team(Sport.SportType.NFL, 8)
+    print(team)
+    game = team.get_current_score()
+    print(game.current_play_status_string())
