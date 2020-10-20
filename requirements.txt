@@ -1,0 +1,9 @@
+flask
+flask-login
+peewee
+python-dotenv
+requests
+wtforms
+flask_wtf
+email_validator
+pymysql
