@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from app.models.events import MLBEvent, NormalEvent, NFLEvent
+from app.models.events import MLBEvent, NBAEvent, NHLEvent, NFLEvent
 from services.espn.sports import Sport
 from services import ESPN_API_PREFIX
 
@@ -67,14 +67,22 @@ class Team:
                 yardline = None
                 possession = None
             return NFLEvent(event_id, away_team, home_team, period, clock, status, down, yardline, possession)
-        else:
+        elif self.sport == Sport.SportType.NBA:
             if status == "STATUS_IN_PROGRESS":
                 period = status_data["period"]
                 clock = status_data["displayClock"]
             else:
                 period = None
                 clock = None
-            return NormalEvent(event_id, away_team, home_team, period, clock, status)
+            return NBAEvent(event_id, away_team, home_team, period, clock, status)
+        elif self.sport == Sport.SportType.NHL:
+            if status == "STATUS_IN_PROGRESS":
+                period = status_data["period"]
+                clock = status_data["displayClock"]
+            else:
+                period = None
+                clock = None
+            return NHLEvent(event_id, away_team, home_team, period, clock, status)
 
     @classmethod
     def get_team(cls, league, team_id, score=None):

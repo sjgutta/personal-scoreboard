@@ -2,7 +2,6 @@ import requests
 from services import ESPN_API_PREFIX
 from services.espn.sports import Sport
 from app.models.team import Team
-from app.models.events import MLBEvent, NormalEvent
 
 
 def get_team_list(sport_type, exclude=[]):
@@ -56,25 +55,10 @@ def get_score_for_team(sport_type, team_id):
     team2_data = event_data["header"]["competitions"][0]["competitors"][1]
     if team1_data["homeAway"] == "home":
         home_data = team1_data
-        away_data = team2_data
     else:
         home_data = team2_data
-        away_data = team1_data
-    status_data = event_data["header"]["competitions"][0]["status"]
-    status = status_data["type"]["name"]
-    away_team = Team.get_team(sport_type, away_data["id"], score=away_data["score"])
     home_team = Team.get_team(sport_type, home_data["id"], score=home_data["score"])
-    if sport_type == Sport.SportType.MLB:
-        if status == "STATUS_IN_PROGRESS":
-            inning_string = status_data["type"]["detail"]
-        else:
-            inning_string = "FINAL"
-        return MLBEvent(away_team, home_team, inning_string, status)
-    else:
-
-        period = status_data["period"] if status != "STATUS_FINAL" else None
-        clock = status_data["displayClock"] if status != "STATUS_FINAL" else None
-        return NormalEvent(away_team, home_team, period, clock, status)
+    return home_team.get_current_score()
 
 
 if __name__ == "__main__":

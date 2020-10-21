@@ -22,7 +22,7 @@ class Status(Enum):
             return cls.STATUS_IN_PROGRESS
 
 
-class NormalEvent:
+class BaseEvent:
 
     def __init__(self, event_id, away_team, home_team, quarter, time, status):
         self.id = event_id
@@ -35,6 +35,10 @@ class NormalEvent:
     @property
     def in_progess(self):
         return self.status == Status.STATUS_IN_PROGRESS
+
+    @property
+    def espn_url(self):
+        return "www.espn.com"
 
     @property
     def status_string(self):
@@ -61,7 +65,7 @@ class NormalEvent:
                    f"{self.home_team.full_name}: {self.home_team.score}"
 
 
-class NFLEvent(NormalEvent):
+class NFLEvent(BaseEvent):
     def __init__(self, event_id, away_team, home_team, quarter, time, status, down, yardline, possession):
         self.down = down
         self.yardline = yardline
@@ -83,11 +87,33 @@ class NFLEvent(NormalEvent):
         return None
 
     @property
+    def espn_url(self):
+        return f"https://www.espn.com/nfl/game/_/gameId/{self.id}"
+
+    @property
     def yardage_string(self):
         return f"{self.down} at {self.yardline}"
 
     def current_play_status_string(self):
         return f"{self.home_team}: {self.down} at {self.yardline}"
+
+
+class NBAEvent(BaseEvent):
+    def __init__(self, event_id, away_team, home_team, quarter, time, status):
+        super().__init__(event_id, away_team, home_team, quarter, time, status)
+
+    @property
+    def espn_url(self):
+        return f"https://www.espn.com/nba/game?gameId={self.id}"
+
+
+class NHLEvent(BaseEvent):
+    def __init__(self, event_id, away_team, home_team, quarter, time, status):
+        super().__init__(event_id, away_team, home_team, quarter, time, status)
+
+    @property
+    def espn_url(self):
+        return f"https://www.espn.com/nhl/boxscore/_/gameId/{self.id}"
 
 
 class MLBEvent:
@@ -111,6 +137,10 @@ class MLBEvent:
             return "HALFTIME"
         else:
             return f"Inning: {self.inning_string}"
+
+    @property
+    def espn_url(self):
+        return f"https://www.espn.com/mlb/game?gameId={self.id}"
 
     def __str__(self):
         if self.status == Status.STATUS_FINAL:

@@ -43,6 +43,7 @@
 <body>
 {% include "navbar.html" %}
 {% macro event_item(event, sport) %}
+  <a href="{{ event.espn_url }}" target="_blank"><i class="fas fa-external-link-alt"></i></a>
   <span>{{ event.status_string }}</span>
   {% if sport == "NFL" and event.in_progess %}
       <span class="yardage-string">{{ event.yardage_string }}</span>
