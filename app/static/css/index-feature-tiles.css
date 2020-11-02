@@ -1,0 +1,73 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'proxima-nova', sans-serif;
+}
+.ct-featureBox h4 {
+  padding: 10px 0 5px;
+  color: #252525;
+  font-size: 2.2rem;
+  font-weight: 600;
+}
+.ct-featureBox p {
+  margin-bottom: 0;
+}
+.main-content {
+  padding: 40px 0;
+  background-color: transparent;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  overflow: hidden;
+  min-height: 600px;
+}
+.main-content h2,
+.main-content h3 {
+  color: #fff;
+  font-size: 5.5rem;
+  text-align: center;
+}
+.main-content h2 {
+  font-family: 'Bebas Neue';
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+.main-content h3 {
+  font-weight: 300;
+  padding-bottom: 40px;
+  margin-top: 0;
+}
+.main-content h3,
+.fa {
+  font-size: 3rem;
+}
+.ct-featureBox {
+  width: 100%;
+  background: #fff;
+  padding: 40px 55px;
+  margin: 15px 0;
+  min-height: 250px;
+  display: table;
+  text-align: center;
+  color: inherit;
+  -webkit-transition: background-color, 0.25s, ease-in-out;
+  transition: background-color, 0.25s, ease-in-out;
+}
+.ct-featureBox .inner {
+  display: table-cell;
+  width: 100%;
+  vertical-align: middle;
+}
+.ct-featureBox .image {
+  text-align: center;
+}
+.ct-featureBox .image img {
+  display: inline-block;
+}
+img,
+figure {
+  max-width: 100%;
+}

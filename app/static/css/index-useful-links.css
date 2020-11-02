@@ -1,0 +1,39 @@
+.useful-links {
+  padding: 40px 0;
+  background-color: transparent;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  overflow: hidden;
+  min-height: 600px;
+}
+h3 {
+  font-family: 'proxima-nova', sans-serif;
+}
+.useful-links h3 {
+  color: #fff;
+  text-align: center;
+  font-weight: 300;
+  padding-bottom: 40px;
+  margin-top: 0;
+  font-size: 3rem;
+}
+.link-tile {
+  height: 250px;
+  background-size: cover;
+  padding: 80px 55px;
+}
+.link-tile img{
+  display: block;
+  margin: auto;
+}
+#nfl-tile {
+  padding: 20px 55px;
+}
+#nfl-tile img {
+  height: 100%;
+  width: auto;
+}
+#fox-sports-tile {
+  padding: 40px 55px;
+}

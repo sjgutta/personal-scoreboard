@@ -2,9 +2,81 @@
 <head>
     <meta charset="UTF-8">
     <title>Analytics Project Index</title>
+    <link href="{{ url_for('static', filename='css/index-feature-tiles.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/index-useful-links.css') }}" rel="stylesheet">
 </head>
-<body>
+<body style="background-color: black;">
 {% include "navbar.html" %}
-This is the Index Page for the Analytics Project.
+<section class="main-content">
+  <div class="container">
+    <h2 style="font-family: 'proxima-nova', sans-serif;">Welcome to Your Personal Scoreboard</h2>
+    <h3>These are the features that make this tool so great!</h3>
+    <div class="row">
+      <div class="col-md-4 col-sm-6">
+        <div class="ct-featureBox">
+          <div class="inner">
+            <div class="image">
+              <i class="fa fa-star" aria-hidden="true"></i>
+            </div>
+            <h4>Select Your Favorites</h4>
+            <p>Manage a list of your favorite sports teams.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <div class="ct-featureBox">
+          <div class="inner">
+            <div class="image">
+              <i class="fa fa-list-ol" aria-hidden="true"></i>
+            </div>
+            <h4>Personalized Live Scoreboard</h4>
+            <p>View a personalized live scoreboard with your favorite teams in one view.</p>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix visible-sm"></div>
+      <div class="col-md-4 col-sm-6">
+        <div class="ct-featureBox">
+          <div class="inner">
+            <div class="image">
+              <i class="fa fa-external-link-square-alt" aria-hidden="true"></i>
+            </div>
+            <h4>Mac Extension</h4>
+            <p>An Extension for Mac is coming soon. You will be able to access this scoreboard from your computer's toolbar.</p>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix visible-md"></div>
+    </div>
+  </div>
+</section>
+<section class="useful-links">
+    <div class="container">
+        <h3>Useful Links</h3>
+        <div class="row">
+            <div class="col-md-4" style="height: 250px;">
+                <div class="link-tile" style="background-color: #D61E26;">
+                    <a href="https://www.espn.com/" target="_blank">
+                    <img src="{{ url_for('static', filename='images/espn-logo.png') }}">
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4" style="height: 250px;">
+                <div id="nfl-tile" class="link-tile" style="background-color: #013369;">
+                    <a href="https://www.nfl.com/" target="_blank">
+                    <img src="{{ url_for('static', filename='images/nfl-logo.png') }}">
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4" style="height: 250px;">
+                <div id="fox-sports-tile" class="link-tile" style="background-color: #002E56;">
+                    <a href="https://www.foxsports.com/" target="_blank">
+                    <img src="{{ url_for('static', filename='images/fox-sports-logo.png') }}">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>
