@@ -18,6 +18,9 @@ h3 {
   margin-top: 0;
   font-size: 3rem;
 }
+.useful-links .row {
+  margin-bottom: 40px;
+}
 .link-tile {
   height: 250px;
   background-size: cover;
@@ -36,4 +39,30 @@ h3 {
 }
 #fox-sports-tile {
   padding: 40px 55px;
+}
+#cbs-sports-tile {
+  padding: 50px 55px;
+}
+#nbc-sports-tile {
+  padding: 100px 55px;
+}
+#sports-illustrated-tile {
+  padding: 110px 55px;
+}
+#bleacher-report-tile {
+  padding: 70px 55px;
+}
+#bleacher-report-tile img {
+  height: 100%;
+  width: auto;
+}
+#yahoo-sports-tile {
+  padding: 50px 55px;
+}
+#yahoo-sports-tile img {
+  height: 100%;
+  width: auto;
+}
+#nba-tile {
+  padding: 45px 55px;
 }
