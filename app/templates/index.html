@@ -50,77 +50,32 @@
     </div>
   </div>
 </section>
+{% macro link_tile(tile_id, link, background_color, logo_file) %}
+    <div class="col-md-4" style="height: 250px;">
+        <div id="{{ tile_id }}" class="link-tile" style="background-color: {{ background_color }};">
+            <a href="{{ link }}" target="_blank">
+            <img src="{{ url_for('static', filename=logo_file) }}">
+            </a>
+        </div>
+    </div>
+{% endmacro %}
 <section class="useful-links">
     <div class="container">
         <h3>Useful Links</h3>
         <div class="row">
-            <div class="col-md-4" style="height: 250px;">
-                <div class="link-tile" style="background-color: #D61E26;">
-                    <a href="https://www.espn.com/" target="_blank">
-                    <img src="{{ url_for('static', filename='images/espn-logo.png') }}">
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-4" style="height: 250px;">
-                <div id="nfl-tile" class="link-tile" style="background-color: #013369;">
-                    <a href="https://www.nfl.com/" target="_blank">
-                    <img src="{{ url_for('static', filename='images/nfl-logo.png') }}">
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-4" style="height: 250px;">
-                <div id="fox-sports-tile" class="link-tile" style="background-color: #002E56;">
-                    <a href="https://www.foxsports.com/" target="_blank">
-                    <img src="{{ url_for('static', filename='images/fox-sports-logo.png') }}">
-                    </a>
-                </div>
-            </div>
+            {{ link_tile("espn-tile", "https://www.espn.com/", "#D61E26", "images/espn-logo.png") }}
+            {{ link_tile("nfl-tile", "https://www.nfl.com/", "#013369", "images/nfl-logo.png") }}
+            {{ link_tile("fox-sports-tile", "https://www.foxsports.com/", "#002E56", "images/fox-sports-logo.png") }}
         </div>
         <div class="row">
-            <div class="col-md-4" style="height: 250px;">
-                <div id="cbs-sports-tile" class="link-tile" style="background-color: #033963;">
-                    <a href="https://www.cbssports.com" target="_blank">
-                    <img src="{{ url_for('static', filename='images/cbs-sports-logo.png') }}">
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-4" style="height: 250px;">
-                <div id="nbc-sports-tile" class="link-tile" style="background-color: black;">
-                    <a href="https://www.nbcsports.com" target="_blank">
-                    <img src="{{ url_for('static', filename='images/nbc-sports-logo.png') }}">
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-4" style="height: 250px;">
-                <div id="sports-illustrated-tile" class="link-tile" style="background-color: #D61E26;">
-                    <a href="https://www.si.com" target="_blank">
-                    <img src="{{ url_for('static', filename='images/sports-illustrated-logo.svg') }}">
-                    </a>
-                </div>
-            </div>
+            {{ link_tile("cbs-sports-tile", "https://www.cbssports.com", "#033963", "images/cbs-sports-logo.png") }}
+            {{ link_tile("nbc-sports-tile", "https://www.nbcsports.com", "black", "images/nbc-sports-logo.png") }}
+            {{ link_tile("sports-illustrated-tile", "https://www.si.com", "#D61E26", "images/sports-illustrated-logo.svg") }}
         </div>
         <div class="row">
-            <div class="col-md-4" style="height: 250px;">
-                <div id="bleacher-report-tile" class="link-tile" style="background-color: black;">
-                    <a href="https://www.bleacherreport.com" target="_blank">
-                    <img src="{{ url_for('static', filename='images/bleacher-report-logo.png') }}">
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-4" style="height: 250px;">
-                <div id="yahoo-sports-tile" class="link-tile" style="background-color: #720e9e;">
-                    <a href="https://sports.yahoo.com" target="_blank">
-                    <img src="{{ url_for('static', filename='images/yahoo-logo.png') }}">
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-4" style="height: 250px;">
-                <div id="nba-tile" class="link-tile" style="background-color: #17408B;">
-                    <a href="https://www.nba.com" target="_blank">
-                    <img src="{{ url_for('static', filename='images/nba-logo.png') }}">
-                    </a>
-                </div>
-            </div>
+            {{ link_tile("bleacher-report-tile", "https://www.bleacherreport.com", "black", "images/bleacher-report-logo.png") }}
+            {{ link_tile("yahoo-sports-tile", "https://sports.yahoo.com", "#720e9e", "images/yahoo-logo.png") }}
+            {{ link_tile("nba-tile", "https://www.nba.com", "#17408B", "images/nba-logo.png") }}
         </div>
     </div>
 </section>
