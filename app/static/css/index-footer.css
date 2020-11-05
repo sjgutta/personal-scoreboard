@@ -1,0 +1,9 @@
+.footer {
+  background-color: #fff;
+  color: #000;
+  border-radius: 4px;
+}
+.footer .container {
+  padding-top: 4px;
+  padding-bottom: 10px;
+}

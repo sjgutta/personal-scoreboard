@@ -4,6 +4,7 @@
     <title>Analytics Project Index</title>
     <link href="{{ url_for('static', filename='css/index-feature-tiles.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/index-useful-links.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/index-footer.css') }}" rel="stylesheet">
 </head>
 <body style="background-color: #303030;">
 {% include "navbar.html" %}
@@ -76,6 +77,24 @@
             {{ link_tile("bleacher-report-tile", "https://www.bleacherreport.com", "black", "images/bleacher-report-logo.png") }}
             {{ link_tile("yahoo-sports-tile", "https://sports.yahoo.com", "#720e9e", "images/yahoo-logo.png") }}
             {{ link_tile("nba-tile", "https://www.nba.com", "#17408B", "images/nba-logo.png") }}
+        </div>
+    </div>
+</section>
+<section class="footer">
+    <div class="container">
+        <div class="col-md-4">
+            <h4>Links</h4>
+            <a href="/">Home</a><br>
+            <a href="{{ url_for('views.scoreboard') }}">Scoreboard</a><br>
+            <a href="{{ url_for('views.favorites') }}">Favorites</a>
+        </div>
+        <div class="col-md-4">
+            <h4>Contact</h4>
+            <a href="mailto:sjgutta@gmail.com">Email</a>
+        </div>
+        <div class="col-md-4">
+            <h4>New Features</h4>
+            I'm always open to adding new features! Email the address in the contact column with your ideas or to report an issue.
         </div>
     </div>
 </section>
