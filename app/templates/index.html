@@ -8,7 +8,12 @@
 </head>
 <body style="background-color: #303030;">
 {% include "navbar.html" %}
-<section class="main-content">
+<style>
+    .navbar {
+      margin-bottom: 0px;
+    }
+</style>
+<section class="main-content" style="background-image: url('{{ url_for('static', filename='images/football-background.jpg') }}')">
   <div class="container">
     <h2 style="font-family: 'proxima-nova', sans-serif;">Welcome to Your Personal Scoreboard</h2>
     <h3>These are the features that make this tool so great!</h3>
