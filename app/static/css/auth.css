@@ -1,0 +1,25 @@
+.auth-section {
+  height: 100vh;
+  background-size: cover;
+}
+.form-container {
+  margin: 0;
+  position: absolute;
+  padding: 5vh;
+  top: 50%;
+  left: 50%;
+  border-radius: 5px;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  overflow: auto;
+  background-color: white;
+  color: black;
+  align: center;
+}
+.form-container h3{
+  margin-top: 0;
+  margin-bottom: 1.5vh;
+}
+.form-container dt{
+  margin-top: 1vh;
+}

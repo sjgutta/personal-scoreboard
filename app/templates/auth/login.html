@@ -3,19 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link href="{{ url_for('static', filename='css/auth.css') }}" rel="stylesheet">
 </head>
 <body>
 {% from "macros.html" import render_field %}
 {% include "navbar.html" %}
-This is the Login Page for the Analytics Project.
-
-<form method=post>
-  <dl>
-    {{ render_field(form.username) }}
-    {{ render_field(form.password) }}
-  </dl>
-    {{ form.hidden_tag() }}
-  <p><input type=submit value=Login class="btn btn-success">
-</form>
+<style>
+    .navbar {
+      margin-bottom: 0px;
+    }
+</style>
+<section class="auth-section" style="background-image: url('{{ url_for('static', filename='images/football-background.jpg') }}')">
+    <div class="form-container">
+        <h3>Login</h3>
+        <form method=post>
+          <dl>
+            {{ render_field(form.username) }}
+            {{ render_field(form.password) }}
+          </dl>
+            {{ form.hidden_tag() }}
+          <p><input type=submit value=Login class="btn btn-success">
+        </form>
+    </div>
+</section>
 </body>
 </html>

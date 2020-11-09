@@ -3,20 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
+    <link href="{{ url_for('static', filename='css/auth.css') }}" rel="stylesheet">
 </head>
 <body>
 {% from "macros.html" import render_field %}
 {% include "navbar.html" %}
-This is the Register Page for the Analytics Project.
-<form method=post>
-  <dl>
-    {{ render_field(form.username) }}
-    {{ render_field(form.email) }}
-    {{ render_field(form.password) }}
-    {{ render_field(form.confirm) }}
-  </dl>
-  <p><input type=submit value=Register class="btn btn-success">
-    {{ form.hidden_tag() }}
-</form>
+<style>
+    .navbar {
+      margin-bottom: 0px;
+    }
+</style>
+<section class="auth-section" style="background-image: url('{{ url_for('static', filename='images/football-background.jpg') }}')">
+    <div class="form-container">
+        <h3>Login</h3>
+        <form method=post>
+          <dl>
+            {{ render_field(form.username) }}
+            {{ render_field(form.email) }}
+            {{ render_field(form.password) }}
+            {{ render_field(form.confirm) }}
+          </dl>
+          <p><input type=submit value=Register class="btn btn-success">
+            {{ form.hidden_tag() }}
+        </form>
+    </div>
+</section>
 </body>
 </html>
