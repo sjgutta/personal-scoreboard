@@ -69,10 +69,12 @@ class NFLEvent(BaseEvent):
     def __init__(self, event_id, away_team, home_team, quarter, time, status, down, yardline, possession):
         self.down = down
         self.yardline = yardline
-        if possession and int(possession) == away_team.id:
-            away_team.possession = True
-        elif possession and int(possession) == home_team.id:
-            home_team.possession = True
+        if possession and possession == away_team.id:
+            self.possession_team = away_team
+        elif possession and possession == home_team.id:
+            self.possession_team = home_team
+        else:
+            self.possession_team = None
         self.possession = possession
         super().__init__(event_id, away_team, home_team, quarter, time, status)
 
@@ -80,11 +82,15 @@ class NFLEvent(BaseEvent):
     def team_with_ball(self):
         if self.status != Status.STATUS_IN_PROGRESS:
             return None
-        if self.away_team.possession:
-            return self.away_team
-        elif self.home_team.possession:
-            return self.home_team
-        return None
+        return self.possession_team
+
+    @property
+    def away_team_ball(self):
+        return self.team_with_ball == self.away_team
+
+    @property
+    def home_team_ball(self):
+        return self.team_with_ball == self.home_team
 
     @property
     def espn_url(self):
