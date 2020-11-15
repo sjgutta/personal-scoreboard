@@ -3,45 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Scoreboard</title>
-    <style>
-       #scoreboard-header {
-          padding-left: 2vw;
-       }
-       .events-container {
-          padding-left: 3vw;
-          margin-right: 3vw;
-       }
-       .score-header {
-          float: right;
-          padding-right: 5px;
-       }
-       .event-item img {
-          height: 5vh;
-          background-position: center;
-          background-size: cover;
-       }
-       .yardage-string {
-          float: right;
-       }
-       .event-item {
-          margin-top: 1vh;
-       }
-       .event-item-inner-div {
-          margin-right: 1vw;
-          margin-top: 2vh;
-          border: 1px solid black;
-          border-radius: 5px;
-          padding-left: 0.5vw;
-          padding-right: 0.5vw;
-       }
-       .nopadding {
-           padding: 0 !important;
-           margin: 0 !important;
-        }
-    </style>
+    <link href="{{ url_for('static', filename='css/scoreboard.css') }}" rel="stylesheet">
 </head>
-<body>
+<body style="background-color: #303030;">
 {% include "navbar.html" %}
+<style>
+    .navbar {
+      margin-bottom: 0px;
+    }
+</style>
 {% macro event_item(event, sport) %}
   <a href="{{ event.espn_url }}" target="_blank"><i class="fas fa-external-link-alt"></i></a>
   <span>{{ event.status_string }}</span>
@@ -61,21 +31,25 @@
   {% endif %}
 {{ event.home_team.full_name }} <strong class="score-header">{{event.home_team.score}}</strong>
 {% endmacro %}
-<h2 id="scoreboard-header">Scoreboard for {{ user.username }}</h2>
+<section class="scoreboard-section" style="background-image: url('{{ url_for('static', filename='images/football-background.jpg') }}')">
+    <div class="container scoreboard-container">
+        <h2 id="scoreboard-header">Scoreboard for {{ user.username }}</h2>
 
-<div class="container-xl events-container">
-    {% for sport in scores %}
-    <div class="row">
-        <h4>{{ sport.value }}</h4>
-        {% for event in scores[sport] %}
-        <div class="col-lg-3 nopadding event-item">
-            <div class="event-item-inner-div">
-            {{ event_item(event, sport.value) }}
+        <div class="container-xl events-container">
+            {% for sport in scores %}
+            <div class="row">
+                <h4>{{ sport.value }}</h4>
+                {% for event in scores[sport] %}
+                <div class="col-lg-3 nopadding event-item">
+                    <div class="event-item-inner-div">
+                    {{ event_item(event, sport.value) }}
+                        </div>
                 </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
-    {% endfor %}
-</div>
+</section>
 </body>
 </html>

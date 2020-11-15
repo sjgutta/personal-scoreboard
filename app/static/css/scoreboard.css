@@ -1,0 +1,47 @@
+.scoreboard-section {
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+}
+.scoreboard-container {
+  border-radius: 5px;
+  background-color: rgba(255,255,255,0.9);
+  padding-bottom: 4vh;
+}
+#scoreboard-header {
+  padding-left: 2vw;
+}
+.events-container {
+  padding-left: 3vw;
+  margin-right: 3vw;
+}
+.score-header {
+  float: right;
+  padding-right: 5px;
+}
+.event-item img {
+  height: 5vh;
+  background-position: center;
+  background-size: cover;
+}
+.yardage-string {
+  float: right;
+}
+.event-item {
+  margin-top: 1vh;
+}
+.event-item-inner-div {
+  margin-right: 1vw;
+  margin-top: 2vh;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding-left: 0.5vw;
+  padding-right: 0.5vw;
+}
+.nopadding {
+  padding: 0 !important;
+  margin: 0 !important;
+}

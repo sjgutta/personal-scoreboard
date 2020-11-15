@@ -5,7 +5,7 @@
     <title>Favorites</title>
     <link href="{{ url_for('static', filename='css/favorites.css') }}" rel="stylesheet">
 </head>
-<body  style="background-color: #303030;">
+<body style="background-color: #303030;">
 {% macro team_item(team) %}
   {% if team.logo_url %}
     <img src="{{ team.logo_url }}">
