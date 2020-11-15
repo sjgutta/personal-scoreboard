@@ -51,7 +51,7 @@ class BaseEvent:
         elif self.status == Status.STATUS_HALFTIME:
             return "HALFTIME"
         else:
-            return f"{self.time} | Quarter: {self.quarter}"
+            return f"{self.time} | Q{self.quarter}"
 
     def __str__(self):
         if self.status == Status.STATUS_FINAL:
@@ -61,7 +61,7 @@ class BaseEvent:
             return f"CANCELED\n{self.away_team.full_name}: {self.away_team.score}\n" \
                    f"{self.home_team.full_name}: {self.home_team.score}"
         else:
-            return f"{self.time}\nQuarter: {self.quarter}\n{self.away_team.full_name}: {self.away_team.score}\n" \
+            return f"{self.time}\nQ{self.quarter}\n{self.away_team.full_name}: {self.away_team.score}\n" \
                    f"{self.home_team.full_name}: {self.home_team.score}"
 
 
