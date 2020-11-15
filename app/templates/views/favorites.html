@@ -3,42 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Favorites</title>
-    <style>
-      .team-item img {
-          height: 5vh;
-          margin: 0 8px;
-          background-position: center;
-          background-size: cover;
-      }
-      #favoriteList {
-          height: 60vh;
-      }
-      #favorites-form td {
-          width: 50%;
-      }
-      #favorites-form {
-          padding-left: 30px;
-          width: 90vw;
-      }
-      #favorites-header {
-          padding-left: 30px;
-      }
-      .list-group {
-        -webkit-column-count: 2;  /* Chrome/Opera, Safari */
-        -moz-column-count: 2; /* Mozilla Firefox */
-        column-count: 2;
-      }
-      .list-group li {
-        -webkit-column-break-inside: avoid;
-        page-break-inside: avoid;
-        break-inside: avoid;
-      }
-    </style>
+    <link href="{{ url_for('static', filename='css/favorites.css') }}" rel="stylesheet">
 </head>
-<body>
-{% include "navbar.html" %}
-<h2 id="favorites-header">Favorites for {{ user.username }}</h2>
-
+<body  style="background-color: #303030;">
 {% macro team_item(team) %}
   {% if team.logo_url %}
     <img src="{{ team.logo_url }}">
@@ -47,75 +14,84 @@
   {% endif %}
   {{ team.full_name }}
 {% endmacro %}
-<div class="row">
-    <div class="col-sm-8">
+{% include "navbar.html" %}
+<style>
+    .navbar {
+      margin-bottom: 0px;
+    }
+</style>
+<section class="favorites-section" style="background-image: url('{{ url_for('static', filename='images/football-background.jpg') }}')">
+    <div class="container favorites-container">
+        <h2 id="favorites-header">Favorites for {{ user.username }}</h2>
+        <div class="row">
+            <div class="col-sm-8">
+              <form method="post" id="favorites-form">
+                <input type="hidden" id="current_favorites" name="current_favorites" value=""/>
 
-      <form method="post" id="favorites-form">
-        <input type="hidden" id="current_favorites" name="current_favorites" value=""/>
+                <table class="table table-bordered">
 
-        <table class="table table-bordered">
+                  <thead>
+                  <tr>
+                    <th>Favorites</th>
+                    <th>
+                        Other Teams
+                        <select id="sport-selector">
+                            {% for sport in other_teams %}
+                                {% if sport == default_sport.value %}
+                                <option value="{{ sport }}" selected>{{ sport }}</option>
+                                {% else %}
+                                <option value="{{ sport }}">{{ sport }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </th>
+                  </tr>
+                  </thead>
 
-          <thead>
-          <tr>
-            <th>Favorites</th>
-            <th>
-                Other Teams
-                <select id="sport-selector">
-                    {% for sport in other_teams %}
-                        {% if sport == default_sport.value %}
-                        <option value="{{ sport }}" selected>{{ sport }}</option>
-                        {% else %}
-                        <option value="{{ sport }}">{{ sport }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-            </th>
-          </tr>
-          </thead>
-
-          <tbody>
-          <tr>
-            <td>
-              <div class="list-group" id="favoriteList">
-                {% for team in favorites %}
-                  <li class="list-group-item team-item {{ team.sport.value }}-team" id="{{team.sport.value}}-{{ team.id }}">
-                    <input type="hidden" value="{{ team.id }}" name="current_favorite">
-                    {{ team_item(team) }}
-                  </li>
-                {% endfor %}
-              </div>
-
-              <button type="submit" class="btn btn-lg btn-block btn-primary">Save</button>
-
-            </td>
-            <td>
-              <div class="list-group" id="otherList">
-                  {% for sport in other_teams %}
-                    {% for team in other_teams[sport] %}
-                        {% if sport == default_sport.value %}
-                        <li class="list-group-item team-item {{sport}}-team" id="{{team.sport.value}}-{{ team.id }}">
-                            {% else %}
-                        <li class="list-group-item team-item {{sport}}-team" id="{{team.sport.value}}-{{ team.id }}" style="display:none">
-                            {% endif %}
+                  <tbody>
+                  <tr>
+                    <td>
+                      <div class="list-group" id="favoriteList">
+                        {% for team in favorites %}
+                          <li class="list-group-item team-item {{ team.sport.value }}-team" id="{{team.sport.value}}-{{ team.id }}">
+                            <input type="hidden" value="{{ team.id }}" name="current_favorite">
                             {{ team_item(team) }}
-                        </li>
-                    {% endfor %}
-                  {% endfor %}
-              </div>
-            </td>
-          </tr>
+                          </li>
+                        {% endfor %}
+                      </div>
 
-          </tbody>
+                      <button type="submit" class="btn btn-lg btn-block btn-primary">Save</button>
 
-        </table>
+                    </td>
+                    <td>
+                      <div class="list-group" id="otherList">
+                          {% for sport in other_teams %}
+                            {% for team in other_teams[sport] %}
+                                {% if sport == default_sport.value %}
+                                <li class="list-group-item team-item {{sport}}-team" id="{{team.sport.value}}-{{ team.id }}">
+                                    {% else %}
+                                <li class="list-group-item team-item {{sport}}-team" id="{{team.sport.value}}-{{ team.id }}" style="display:none">
+                                    {% endif %}
+                                    {{ team_item(team) }}
+                                </li>
+                            {% endfor %}
+                          {% endfor %}
+                      </div>
+                    </td>
+                  </tr>
 
-        <br>
-        <br>
+                  </tbody>
 
-      </form>
+                </table>
 
+                <br>
+                <br>
+
+              </form>
+            </div>
+        </div>
     </div>
-  </div>
+</section>
 </body>
 <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
 <script>
