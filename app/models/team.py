@@ -93,7 +93,7 @@ class Team(Model):
 
     @classmethod
     def get_team(cls, league, team_id):
-        return Team.select().where(Team.sport_type == league & Team.id == team_id).get()
+        return Team.select().where(Team.sport_type == league, Team.espn_id == team_id).get()
 
     def __str__(self):
         return f"{self.full_name} [{self.espn_id}]"

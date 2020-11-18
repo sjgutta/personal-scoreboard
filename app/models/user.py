@@ -5,7 +5,6 @@ from peewee import CharField, Model, IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login_manager
 from app.models.team import Team
-from services.espn.sports import Sport
 
 
 @login_manager.user_loader
@@ -39,15 +38,11 @@ class User(Model, UserMixin):
         """
         from app.models.favorite import Favorite
 
-        favorites = Favorite.select().where(Favorite.user == self)
-        results = []
+        join_predicate = ((Team.espn_id == Favorite.team) & (Team.sport_type == Favorite.sport_type))
 
-        for favorite in favorites:
-            team = Team.get_team(favorite.sport_type, favorite.team)
-            if team:
-                results.append(team)
+        favorites = Team.select().join(Favorite, on=join_predicate).where(Favorite.user_id == self.id)
 
-        return results
+        return favorites
 
     def update_favorites(self, new_favorites):
         """
@@ -136,3 +131,10 @@ class User(Model, UserMixin):
                 current_scores[team_sport].append(team_current_score)
                 event_ids.add(team_current_score.id)
         return dict(current_scores)
+
+
+if __name__ == "__main__":
+    user = User.select().where(User.username == "test").get()
+    favorites = user.get_favorites()
+    for team in favorites:
+        print(team)
