@@ -52,19 +52,19 @@ class User(Model, UserMixin):
         :return: None
         """
         current_favorites = self.get_favorites()
-        current_favorites_tuples = [(team.id, team.sport) for team in current_favorites]
-        new_favorites_tuples = [(team.id, team.sport) for team in new_favorites]
+        current_favorites_tuples = [(team.espn_id, team.sport_type) for team in current_favorites]
+        new_favorites_tuples = [(team.espn_id, team.sport_type) for team in new_favorites]
         remove_list = []
         add_list = []
 
         # finding favorites that must be removed
         for team in current_favorites:
-            if (team.id, team.sport) not in new_favorites_tuples:
+            if (team.espn_id, team.sport_type) not in new_favorites_tuples:
                 remove_list.append(team)
 
         # finding favorites that must be added
         for team in new_favorites:
-            if (team.id, team.sport) not in current_favorites_tuples:
+            if (team.espn_id, team.sport_type) not in current_favorites_tuples:
                 add_list.append(team)
 
         # removing old favorites and adding new ones
@@ -82,14 +82,14 @@ class User(Model, UserMixin):
             for team in teams:
                 if isinstance(team, Team):
                     try:
-                        Favorite.create(user=self, team=team.id, sport_type=team.sport)
+                        Favorite.create(user=self, team=team.espn_id, sport_type=team.sport_type)
                     except IntegrityError:
                         continue
                     except Exception:
                         return False
         elif isinstance(teams, Team):
             try:
-                Favorite.create(user=self, team=teams.id, sport_type=teams.sport)
+                Favorite.create(user=self, team=teams.espn_id, sport_type=teams.sport_type)
             except IntegrityError:
                 return True
             except Exception:
@@ -103,15 +103,15 @@ class User(Model, UserMixin):
             for team in teams:
                 if isinstance(team, Team):
                     try:
-                        Favorite.delete().where(Favorite.user == self,
-                                                Favorite.team == team.id, Favorite.sport_type == team.sport).execute()
+                        Favorite.delete().where(Favorite.user == self, Favorite.team == team.espn_id,
+                                                Favorite.sport_type == team.sport_type).execute()
                     except Exception:
                         return False
         elif isinstance(teams, Team):
             team = teams
             try:
-                Favorite.delete().where(Favorite.user == self,
-                                        Favorite.team == team.id, Favorite.sport_type == team.sport).execute()
+                Favorite.delete().where(Favorite.user == self, Favorite.team == team.espn_id,
+                                        Favorite.sport_type == team.sport_type).execute()
             except Exception:
                 return False
         return True

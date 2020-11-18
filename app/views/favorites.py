@@ -3,10 +3,19 @@ from flask_login import current_user
 from werkzeug.utils import redirect
 
 from services.espn.sports import Sport
-from services.espn.teams import get_all_sports_teams
 from app.models.team import Team
 
 from app.views import bp
+
+
+def get_all_sports_teams(exclude=set()):
+    other_teams = Team.select().where(~(Team.id << exclude))
+    team_data = {}
+    for sport_type in Sport.SportType:
+        team_data[sport_type.value] = []
+    for team in other_teams:
+        team_data[team.sport_type.value].append(team)
+    return team_data
 
 
 @bp.route('/favorites', methods=['GET', 'POST'])
@@ -26,6 +35,7 @@ def favorites():
                     favorite_team_objects.append(team)
         current_user.update_favorites(favorite_team_objects)
     user_favorites = current_user.get_favorites()
-    other_teams = get_all_sports_teams(exclude=user_favorites)
+    user_favorite_team_ids = set([team.id for team in user_favorites])
+    other_teams = get_all_sports_teams(user_favorite_team_ids)
     return render_template('views/favorites.html', user=current_user, favorites=user_favorites,
                            other_teams=other_teams, default_sport=Sport.SportType.NFL)

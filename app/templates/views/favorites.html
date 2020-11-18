@@ -53,8 +53,8 @@
                     <td>
                       <div class="list-group" id="favoriteList">
                         {% for team in favorites %}
-                          <li class="list-group-item team-item {{ team.sport.value }}-team" id="{{team.sport.value}}-{{ team.id }}">
-                            <input type="hidden" value="{{ team.id }}" name="current_favorite">
+                          <li class="list-group-item team-item {{ team.sport_type.value }}-team" id="{{team.sport_type.value}}-{{ team.espn_id }}">
+                            <input type="hidden" value="{{ team.espn_id }}" name="current_favorite">
                             {{ team_item(team) }}
                           </li>
                         {% endfor %}
@@ -68,9 +68,9 @@
                           {% for sport in other_teams %}
                             {% for team in other_teams[sport] %}
                                 {% if sport == default_sport.value %}
-                                <li class="list-group-item team-item {{sport}}-team" id="{{team.sport.value}}-{{ team.id }}">
+                                <li class="list-group-item team-item {{sport}}-team" id="{{team.sport_type.value}}-{{ team.espn_id }}">
                                     {% else %}
-                                <li class="list-group-item team-item {{sport}}-team" id="{{team.sport.value}}-{{ team.id }}" style="display:none">
+                                <li class="list-group-item team-item {{sport}}-team" id="{{team.sport_type.value}}-{{ team.espn_id }}" style="display:none">
                                     {% endif %}
                                     {{ team_item(team) }}
                                 </li>
