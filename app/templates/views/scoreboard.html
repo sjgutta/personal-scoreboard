@@ -27,7 +27,9 @@
   {% if sport == "NFL" and event.away_team_ball %}
     <i class="fas fa-football-ball"></i>
   {% endif %}
-  <strong class="score-header">{{event.away_team.score}}</strong><br>
+  {% if event.away_score %}
+  <strong class="score-header">{{event.away_score}}</strong>
+  {% endif %}<br>
   {% if event.home_team.logo_url %}
     <img src="{{ event.home_team.logo_url }}">
   {% else %}
@@ -37,7 +39,9 @@
   {% if sport == "NFL" and event.home_team_ball %}
     <i class="fas fa-football-ball"></i>
   {% endif %}
-  <strong class="score-header">{{event.home_team.score}}</strong>
+  {% if event.home_score %}
+  <strong class="score-header">{{event.home_score}}</strong>
+  {% endif %}
 {% endmacro %}
 <section class="scoreboard-section" style="background-image: url('{{ url_for('static', filename='images/football-background.jpg') }}')">
     <div class="container scoreboard-container">
