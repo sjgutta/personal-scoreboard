@@ -24,10 +24,12 @@ class Status(Enum):
 
 class BaseEvent:
 
-    def __init__(self, event_id, away_team, home_team, quarter, time, status):
+    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status):
         self.id = event_id
         self.status = Status.status_from_espn_string(status)
         self.away_team = away_team
+        self.away_score = away_score
+        self.home_score = home_score
         self.home_team = home_team
         self.quarter = quarter
         self.time = time
@@ -55,28 +57,28 @@ class BaseEvent:
 
     def __str__(self):
         if self.status == Status.STATUS_FINAL:
-            return f"FINAL\n{self.away_team.full_name}: {self.away_team.score}\n" \
-                   f"{self.home_team.full_name}: {self.home_team.score}"
+            return f"FINAL\n{self.away_team.full_name}: {self.away_score}\n" \
+                   f"{self.home_team.full_name}: {self.home_score}"
         elif self.status == Status.STATUS_CANCELED:
-            return f"CANCELED\n{self.away_team.full_name}: {self.away_team.score}\n" \
-                   f"{self.home_team.full_name}: {self.home_team.score}"
+            return f"CANCELED\n{self.away_team.full_name}: {self.away_score}\n" \
+                   f"{self.home_team.full_name}: {self.home_score}"
         else:
-            return f"{self.time}\nQ{self.quarter}\n{self.away_team.full_name}: {self.away_team.score}\n" \
-                   f"{self.home_team.full_name}: {self.home_team.score}"
+            return f"{self.time}\nQ{self.quarter}\n{self.away_team.full_name}: {self.away_score}\n" \
+                   f"{self.home_team.full_name}: {self.home_score}"
 
 
 class NFLEvent(BaseEvent):
-    def __init__(self, event_id, away_team, home_team, quarter, time, status, down, yardline, possession):
+    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status, down, yardline, possession):
         self.down = down
         self.yardline = yardline
-        if possession and possession == away_team.id:
+        if possession and int(possession) == away_team.espn_id:
             self.possession_team = away_team
-        elif possession and possession == home_team.id:
+        elif possession and int(possession) == home_team.espn_id:
             self.possession_team = home_team
         else:
             self.possession_team = None
         self.possession = possession
-        super().__init__(event_id, away_team, home_team, quarter, time, status)
+        super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status)
 
     @property
     def team_with_ball(self):
@@ -105,8 +107,8 @@ class NFLEvent(BaseEvent):
 
 
 class NBAEvent(BaseEvent):
-    def __init__(self, event_id, away_team, home_team, quarter, time, status):
-        super().__init__(event_id, away_team, home_team, quarter, time, status)
+    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status):
+        super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status)
 
     @property
     def espn_url(self):
@@ -114,8 +116,8 @@ class NBAEvent(BaseEvent):
 
 
 class NHLEvent(BaseEvent):
-    def __init__(self, event_id, away_team, home_team, quarter, time, status):
-        super().__init__(event_id, away_team, home_team, quarter, time, status)
+    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status):
+        super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status)
 
     @property
     def espn_url(self):
@@ -124,11 +126,13 @@ class NHLEvent(BaseEvent):
 
 class MLBEvent:
 
-    def __init__(self, event_id, away_team, home_team, inning_string, status):
+    def __init__(self, event_id, away_team, away_score, home_team, home_score, inning_string, status):
         self.id = event_id
         self.status = Status.status_from_espn_string(status)
         self.away_team = away_team
+        self.away_score = away_score
         self.home_team = home_team
+        self.home_score = home_score
         self.inning_string = inning_string
 
     @property
@@ -150,11 +154,11 @@ class MLBEvent:
 
     def __str__(self):
         if self.status == Status.STATUS_FINAL:
-            return f"FINAL\n{self.away_team.full_name}: {self.away_team.score}\n" \
-                   f"{self.home_team.full_name}: {self.home_team.score}"
+            return f"FINAL\n{self.away_team.full_name}: {self.away_score}\n" \
+                   f"{self.home_team.full_name}: {self.home_score}"
         elif self.status == Status.STATUS_CANCELED:
-            return f"CANCELED\n{self.away_team.full_name}: {self.away_team.score}\n" \
-                   f"{self.home_team.full_name}: {self.home_team.score}"
+            return f"CANCELED\n{self.away_team.full_name}: {self.away_score}\n" \
+                   f"{self.home_team.full_name}: {self.home_score}"
         else:
             return f"Inning: {self.inning_string}\n{self.away_team.full_name}: " \
-                   f"{self.away_team.score}\n{self.home_team.full_name}: {self.home_team.score}"
+                   f"{self.away_score}\n{self.home_team.full_name}: {self.home_score}"
