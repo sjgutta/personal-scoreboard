@@ -4,8 +4,7 @@ from flask_login import LoginManager
 import os
 
 
-db = MySQLDatabase(os.environ.get("DB_NAME"), user=os.environ.get("DB_USER"), password=os.environ.get("DB_PASSWORD"),
-                   host=os.environ.get("DB_HOST"), port=os.environ.get("DB_PORT"))
+db = MySQLDatabase(os.environ.get("DB_NAME"), user=os.environ.get("DB_USER"), password=os.environ.get("DB_PASSWORD"))
 login_manager = LoginManager()
 
 
