@@ -1,9 +1,11 @@
 from flask import Flask, render_template
 from peewee import MySQLDatabase
 from flask_login import LoginManager
+import os
 
 
-db = MySQLDatabase('sports_analytics_proj', user='root', password='***REMOVED***', host='localhost', port=3306)
+db = MySQLDatabase(os.environ.get("DB_NAME"), user=os.environ.get("DB_USER"), password=os.environ.get("DB_PASSWORD"),
+                   host=os.environ.get("DB_HOST"), port=os.environ.get("DB_PORT"))
 login_manager = LoginManager()
 
 
