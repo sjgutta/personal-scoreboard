@@ -125,8 +125,8 @@ class NFLEvent(BaseEvent):
             "id": self.id,
             "status": self.status_string,
             "sport": "NFL",
-            "away_team": self.away_team,
-            "home_team": self.home_team,
+            "away_team": self.away_team.to_dict(),
+            "home_team": self.home_team.to_dict(),
             "current_play": self.current_play_status_string(),
             "away_score": self.away_score,
             "home_score": self.home_score
@@ -152,8 +152,8 @@ class NBAEvent(BaseEvent):
             "id": self.id,
             "status": self.status_string,
             "sport": "NBA",
-            "away_team": self.away_team,
-            "home_team": self.home_team,
+            "away_team": self.away_team.to_dict(),
+            "home_team": self.home_team.to_dict(),
             "away_score": self.away_score,
             "home_score": self.home_score
         }
@@ -173,8 +173,8 @@ class NHLEvent(BaseEvent):
             "id": self.id,
             "status": self.status_string,
             "sport": "NHL",
-            "away_team": self.away_team,
-            "home_team": self.home_team,
+            "away_team": self.away_team.to_dict(),
+            "home_team": self.home_team.to_dict(),
             "away_score": self.away_score,
             "home_score": self.home_score
         }
@@ -214,8 +214,8 @@ class MLBEvent:
             "id": self.id,
             "status": self.status_string,
             "sport": "MLB",
-            "away_team": self.away_team,
-            "home_team": self.home_team,
+            "away_team": self.away_team.to_dict(),
+            "home_team": self.home_team.to_dict(),
             "away_score": self.away_score,
             "home_score": self.home_score
         }

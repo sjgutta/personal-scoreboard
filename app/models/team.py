@@ -94,6 +94,16 @@ class Team(Model):
         event_id = event["id"]
         return event_id
 
+    def to_dict(self):
+        data = {
+            "id": self.espn_id,
+            "sport": self.sport_type,
+            "name": self.full_name,
+            "abbreviation": self.abbreviation,
+            "logo_url": self.logo_url
+        }
+        return data
+
     def __str__(self):
         return f"{self.full_name} [{self.espn_id}]"
 
