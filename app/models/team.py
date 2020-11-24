@@ -1,7 +1,7 @@
 from peewee import Model, IntegerField, CharField
 from app.models.fields import EnumField
 import requests
-from app import db
+from app import db, cache
 from app.models.events import MLBEvent, NBAEvent, NHLEvent, NFLEvent
 from services.espn.sports import Sport
 from services import ESPN_API_PREFIX
@@ -23,17 +23,12 @@ class Team(Model):
     logo_url = CharField(max_length=255)
 
     def get_current_score(self):
-        url = ESPN_API_PREFIX + Sport.get_resource_url(self.sport_type) + f"/teams/{self.espn_id}"
         params = {"region": "us",
                   "lang": "en",
                   "contentorigin": "espn",
                   "limit": "99"}
-        r = requests.get(url=url, params=params)
-        data = r.json()
-        event = data["team"]["nextEvent"][0]
-        event_id = event["id"]
+        event_id = self.current_event_id()
         params["event"] = event_id
-
         # now using the event_id to find the current score related info
         # scoreboard_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/scoreboard"
         event_url = ESPN_API_PREFIX + Sport.get_resource_url(self.sport_type) + f"/summary"
@@ -94,6 +89,19 @@ class Team(Model):
     @classmethod
     def get_team(cls, league, team_id):
         return Team.select().where(Team.sport_type == league, Team.espn_id == team_id).get()
+
+    @cache.memoize(timeout=60 * 60 * 12)
+    def current_event_id(self):
+        url = ESPN_API_PREFIX + Sport.get_resource_url(self.sport_type) + f"/teams/{self.espn_id}"
+        params = {"region": "us",
+                  "lang": "en",
+                  "contentorigin": "espn",
+                  "limit": "99"}
+        r = requests.get(url=url, params=params)
+        data = r.json()
+        event = data["team"]["nextEvent"][0]
+        event_id = event["id"]
+        return event_id
 
     def __str__(self):
         return f"{self.full_name} [{self.espn_id}]"

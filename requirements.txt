@@ -7,3 +7,4 @@ wtforms
 flask_wtf
 email_validator
 pymysql
+Flask-Caching

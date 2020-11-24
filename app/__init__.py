@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from flask_caching import Cache
 from peewee import MySQLDatabase
 from flask_login import LoginManager
 import os
@@ -6,6 +7,7 @@ import os
 
 db = MySQLDatabase(os.environ.get("DB_NAME"), user=os.environ.get("DB_USER"), password=os.environ.get("DB_PASSWORD"))
 login_manager = LoginManager()
+cache = Cache(config={'CACHE_TYPE': 'simple'})
 
 
 def create_app():
@@ -19,6 +21,8 @@ def create_app():
 
     from app.views import bp as views_bp
     app.register_blueprint(views_bp)
+
+    cache.init_app(app)
 
     @app.before_request
     def before_request():
