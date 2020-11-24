@@ -97,7 +97,7 @@ class Team(Model):
     def to_dict(self):
         data = {
             "id": self.espn_id,
-            "sport": self.sport_type,
+            "sport": self.sport_type.value,
             "name": self.full_name,
             "abbreviation": self.abbreviation,
             "logo_url": self.logo_url

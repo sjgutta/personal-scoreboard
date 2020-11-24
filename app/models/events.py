@@ -118,7 +118,10 @@ class NFLEvent(BaseEvent):
 
     @property
     def yardage_string(self):
-        return f"{self.down} at {self.yardline}"
+        if self.down and self.yardline:
+            return f"{self.down} at {self.yardline}"
+        else:
+            return None
 
     def to_dict(self):
         data = {
@@ -127,7 +130,7 @@ class NFLEvent(BaseEvent):
             "sport": "NFL",
             "away_team": self.away_team.to_dict(),
             "home_team": self.home_team.to_dict(),
-            "current_play": self.current_play_status_string(),
+            "yardage_string": self.yardage_string,
             "away_score": self.away_score,
             "home_score": self.home_score
         }

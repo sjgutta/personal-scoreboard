@@ -22,6 +22,9 @@ def create_app():
     from app.views import bp as views_bp
     app.register_blueprint(views_bp)
 
+    from app.api import bp as api_bp
+    app.register_blueprint(api_bp)
+
     cache.init_app(app)
 
     @app.before_request
