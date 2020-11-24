@@ -120,6 +120,25 @@ class NFLEvent(BaseEvent):
     def yardage_string(self):
         return f"{self.down} at {self.yardline}"
 
+    def to_dict(self):
+        data = {
+            "id": self.id,
+            "status": self.status_string,
+            "sport": "NFL",
+            "away_team": self.away_team,
+            "home_team": self.home_team,
+            "current_play": self.current_play_status_string(),
+            "away_score": self.away_score,
+            "home_score": self.home_score
+        }
+        if self.home_team_ball:
+            data["possession"] = "HOME"
+        elif self.away_team_ball:
+            data["possession"] = "AWAY"
+        else:
+            data["possession"] = None
+        return data
+
     def current_play_status_string(self):
         return f"{self.home_team}: {self.down} at {self.yardline}"
 
@@ -127,6 +146,18 @@ class NFLEvent(BaseEvent):
 class NBAEvent(BaseEvent):
     def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status):
         super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status)
+
+    def to_dict(self):
+        data = {
+            "id": self.id,
+            "status": self.status_string,
+            "sport": "NBA",
+            "away_team": self.away_team,
+            "home_team": self.home_team,
+            "away_score": self.away_score,
+            "home_score": self.home_score
+        }
+        return data
 
     @property
     def espn_url(self):
@@ -136,6 +167,18 @@ class NBAEvent(BaseEvent):
 class NHLEvent(BaseEvent):
     def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status):
         super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status)
+
+    def to_dict(self):
+        data = {
+            "id": self.id,
+            "status": self.status_string,
+            "sport": "NHL",
+            "away_team": self.away_team,
+            "home_team": self.home_team,
+            "away_score": self.away_score,
+            "home_score": self.home_score
+        }
+        return data
 
     @property
     def espn_url(self):
@@ -165,6 +208,18 @@ class MLBEvent:
             return "HALFTIME"
         else:
             return f"Inning: {self.inning_string}"
+
+    def to_dict(self):
+        data = {
+            "id": self.id,
+            "status": self.status_string,
+            "sport": "MLB",
+            "away_team": self.away_team,
+            "home_team": self.home_team,
+            "away_score": self.away_score,
+            "home_score": self.home_score
+        }
+        return data
 
     @property
     def espn_url(self):
