@@ -1,4 +1,22 @@
 from enum import Enum
+from services import ESPN_API_PREFIX
+from services.espn.sports import Sport
+import requests
+
+
+def get_espn_event_data(espn_event_id, sport_type):
+    params = {"region": "us",
+              "lang": "en",
+              "contentorigin": "espn",
+              "limit": "99"}
+    event_id = espn_event_id
+    params["event"] = event_id
+    # now using the event_id to find the current score related info
+    # scoreboard_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/scoreboard"
+    event_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/summary"
+    event_r = requests.get(url=event_url, params=params)
+    event_data = event_r.json()
+    return event_data
 
 
 class Status(Enum):

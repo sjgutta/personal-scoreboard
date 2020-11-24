@@ -2,7 +2,7 @@ from peewee import Model, IntegerField, CharField
 from app.models.fields import EnumField
 import requests
 from app import db, cache
-from app.models.events import MLBEvent, NBAEvent, NHLEvent, NFLEvent
+from app.models.events import MLBEvent, NBAEvent, NHLEvent, NFLEvent, get_espn_event_data
 from services.espn.sports import Sport
 from services import ESPN_API_PREFIX
 
@@ -23,17 +23,8 @@ class Team(Model):
     logo_url = CharField(max_length=255)
 
     def get_current_score(self):
-        params = {"region": "us",
-                  "lang": "en",
-                  "contentorigin": "espn",
-                  "limit": "99"}
         event_id = self.current_event_id()
-        params["event"] = event_id
-        # now using the event_id to find the current score related info
-        # scoreboard_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/scoreboard"
-        event_url = ESPN_API_PREFIX + Sport.get_resource_url(self.sport_type) + f"/summary"
-        event_r = requests.get(url=event_url, params=params)
-        event_data = event_r.json()
+        event_data = get_espn_event_data(event_id, self.sport_type)
         team1_data = event_data["header"]["competitions"][0]["competitors"][0]
         team2_data = event_data["header"]["competitions"][0]["competitors"][1]
         if team1_data["homeAway"] == "home":
