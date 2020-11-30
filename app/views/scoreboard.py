@@ -9,11 +9,7 @@ from app.views import bp
 def scoreboard():
     if not current_user.is_authenticated:
         return redirect(url_for('auth.login'))
-    current_scores = current_user.get_current_scores()
-    events_in_progress = []
-    for sport in current_scores:
-        for event in current_scores[sport]:
-            if event.status == Status.STATUS_IN_PROGRESS:
-                events_in_progress.append(event)
+    current_scores, all_scores = current_user.get_current_scores()
+    events_in_progress = [event for event in all_scores if event.status == Status.STATUS_IN_PROGRESS]
     return render_template('views/scoreboard.html', user=current_user,
-                           scores=current_scores, events_in_progress=events_in_progress)
+                           scores=current_scores, all_score=all_scores, events_in_progress=events_in_progress)
