@@ -64,4 +64,11 @@
     </div>
 </section>
 </body>
+<script>
+    {% for event in events_in_progress %}
+        $.get("{{ event.relative_events_endpoint }}", function(data, status){
+            console.log(data);
+        });
+    {% endfor %}
+</script>
 </html>
