@@ -14,9 +14,9 @@
 </style>
 {% macro event_item(event, sport) %}
   <a href="{{ event.espn_url }}" target="_blank"><i class="fas fa-external-link-alt"></i></a>
-  <span>{{ event.status_string }}</span>
+  <span id="event-{{ sport }}-{{ event.id }}-status-string">{{ event.status_string }}</span>
   {% if sport == "NFL" and event.in_progess %}
-      <span class="yardage-string">{{ event.yardage_string }}</span>
+      <span class="yardage-string" id="event-{{ sport }}-{{ event.id }}-yardage-string">{{ event.yardage_string }}</span>
   {% endif %}<br>
   {% if event.away_team.logo_url %}
     <img src="{{ event.away_team.logo_url }}">
@@ -28,7 +28,7 @@
     <i class="fas fa-football-ball"></i>
   {% endif %}
   {% if event.away_score %}
-  <strong class="score-header">{{event.away_score}}</strong>
+  <strong class="score-header" id="event-{{ sport }}-{{ event.id }}-away-score">{{event.away_score}}</strong>
   {% endif %}<br>
   {% if event.home_team.logo_url %}
     <img src="{{ event.home_team.logo_url }}">
@@ -40,7 +40,7 @@
     <i class="fas fa-football-ball"></i>
   {% endif %}
   {% if event.home_score %}
-  <strong class="score-header">{{event.home_score}}</strong>
+  <strong class="score-header" id="event-{{ sport }}-{{ event.id }}-home-score">{{event.home_score}}</strong>
   {% endif %}
 {% endmacro %}
 <section class="scoreboard-section" style="background-image: url('{{ url_for('static', filename='images/football-background.jpg') }}')">
@@ -52,7 +52,7 @@
             <div class="row">
                 <h4>{{ sport.value }}</h4>
                 {% for event in scores[sport] %}
-                <div class="col-lg-3 nopadding event-item">
+                <div class="col-lg-3 nopadding event-item" id="event-{{ sport.value }}-{{ event.id }}">
                     <div class="event-item-inner-div">
                     {{ event_item(event, sport.value) }}
                         </div>
@@ -65,9 +65,24 @@
 </section>
 </body>
 <script>
+    function updateEvent(new_data) {
+        var event_tile_id = "event-" + new_data.sport + "-" + new_data.id;
+        var away_score = document.getElementById(event_tile_id + "-away-score");
+        var home_score = document.getElementById(event_tile_id + "-home-score");
+        var status_string = document.getElementById(event_tile_id + "-status-string");
+        away_score.innerHTML = new_data.away_score;
+        home_score.innerHTML = new_data.home_score;
+        status_string.innerHTML = new_data.status_string;
+        if(new_data.sport == "NFL" && new_data.status == "IN PROGRESS"){
+            var yardage_string = document.getElementById(event_tile_id + "-yardage-string");
+            yardage_string.innerHTML = new_data.yardage_string;
+        }
+    }
+
     {% for event in events_in_progress %}
         $.get("{{ event.relative_events_endpoint }}", function(data, status){
             console.log(data);
+            updateEvent(data);
         });
     {% endfor %}
 </script>
