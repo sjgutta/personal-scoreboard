@@ -130,7 +130,8 @@ class NFLEvent(BaseEvent):
     def to_dict(self):
         data = {
             "id": self.id,
-            "status": self.status_string,
+            "status": self.status.value,
+            "status_string": self.status_string,
             "sport": "NFL",
             "away_team": self.away_team.to_dict(),
             "home_team": self.home_team.to_dict(),
@@ -157,7 +158,8 @@ class NBAEvent(BaseEvent):
     def to_dict(self):
         data = {
             "id": self.id,
-            "status": self.status_string,
+            "status": self.status.value,
+            "status_string": self.status_string,
             "sport": "NBA",
             "away_team": self.away_team.to_dict(),
             "home_team": self.home_team.to_dict(),
@@ -182,7 +184,8 @@ class NHLEvent(BaseEvent):
     def to_dict(self):
         data = {
             "id": self.id,
-            "status": self.status_string,
+            "status": self.status.value,
+            "status_string": self.status_string,
             "sport": "NHL",
             "away_team": self.away_team.to_dict(),
             "home_team": self.home_team.to_dict(),
@@ -227,7 +230,8 @@ class MLBEvent:
     def to_dict(self):
         data = {
             "id": self.id,
-            "status": self.status_string,
+            "status": self.status.value,
+            "status_string": self.status_string,
             "sport": "MLB",
             "away_team": self.away_team.to_dict(),
             "home_team": self.home_team.to_dict(),
