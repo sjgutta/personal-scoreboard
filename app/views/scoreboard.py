@@ -9,4 +9,5 @@ def scoreboard():
     if not current_user.is_authenticated:
         return redirect(url_for('auth.login'))
     current_scores = current_user.get_current_scores()
-    return render_template('views/scoreboard.html', user=current_user, scores=current_scores)
+    last_sport = list(current_scores.keys())[-1]
+    return render_template('views/scoreboard.html', user=current_user, scores=current_scores, last_sport=last_sport)

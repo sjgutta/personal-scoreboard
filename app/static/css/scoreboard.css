@@ -14,6 +14,10 @@
 #scoreboard-header {
   padding-left: 2vw;
 }
+#loading-span {
+  padding-left: 2vw;
+  font-size: 25px;
+}
 .events-container {
   padding-left: 3vw;
   margin-right: 3vw;

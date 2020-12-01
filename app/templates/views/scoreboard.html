@@ -47,6 +47,8 @@
     <div class="container scoreboard-container">
         <h2 id="scoreboard-header">Scoreboard for {{ user.username }}</h2>
 
+        <span style="color: red;" id="loading-span">Loading...</span>
+
         <div class="container-xl events-container">
             {% for sport in scores %}
             <div class="row" id="{{sport.value}}-events-container">
@@ -98,7 +100,7 @@
         }
         result_html += ` ${data.home_team.name}`;
         if (data.sport == "NFL" && data.possession == "HOME") {
-            result_html += "<i class='fas fa-football-ball'></i>";
+            result_html += " <i class='fas fa-football-ball'></i>";
         }
         if (data.home_score) {
             result_html += `<strong class='score-header' id='event-${data.sport}-${event.id}-home-score'>${data.home_score}</strong>`;
@@ -135,6 +137,9 @@
                 {% if scores[sport][-1] == event %}
                     var events_container = document.getElementById("{{ sport.value }}" + "-events-container");
                     events_container.innerHTML += {{sport.value}}_html;
+                    {% if sport == last_sport %}
+                        document.getElementById("loading-span").hidden = true;
+                    {% endif %}
                 {% endif %}
             });
         {% endfor %}
