@@ -49,15 +49,8 @@
 
         <div class="container-xl events-container">
             {% for sport in scores %}
-            <div class="row">
+            <div class="row" id="{{sport.value}}-events-container">
                 <h4>{{ sport.value }}</h4>
-                {% for event in scores[sport] %}
-                <div class="col-lg-3 nopadding event-item" id="event-{{ sport.value }}-{{ event.id }}">
-                    <div class="event-item-inner-div">
-                    {{ event_item(event, sport.value) }}
-                        </div>
-                </div>
-                {% endfor %}
             </div>
             {% endfor %}
         </div>
@@ -65,6 +58,88 @@
 </section>
 </body>
 <script>
+    function getEventTileTopLine(data) {
+        // adding espn link and status string
+        var result_html = `<a href='${data.espn_url}' target='_blank'><i class='fas fa-external-link-alt'></i></a>`;
+        result_html += ` <span id='event-${data.sport}-${event.id}-status-string'>${data.status_string}</span>`;
+
+        // add yardage string if NFL event and in progress
+        if(data.sport == "NFL" && data.status == "IN PROGRESS" && data.yardage_string){
+            result_html += `<span class='yardage-string' id='event-${data.sport}-${data.id}-yardage-string'>${data.yardage_string}</span>`;
+        }
+        result_html += "<br>";
+        return result_html;
+    }
+
+    function getAwayTeamSection(data) {
+        result_html = "";
+        if (data.away_team.logo_url){
+            result_html += `<img src='${data.away_team.logo_url}'>`;
+        }else{
+            result_html += "<span class='label label-danger'>X</span>";
+        }
+        result_html += ` ${data.away_team.name}`;
+        if (data.sport == "NFL" && data.possession == "AWAY") {
+            result_html += " <i class='fas fa-football-ball'></i>";
+        }
+        if (data.away_score) {
+            result_html += `<strong class='score-header' id='event-${data.sport}-${event.id}-away-score'>${data.away_score}</strong>`;
+        }
+        result_html += "<br>";
+        return result_html;
+    }
+
+    function getHomeTeamSection(data) {
+        result_html = "";
+        if (data.home_team.logo_url){
+            result_html += `<img src='${data.home_team.logo_url}'>`;
+        }else{
+            result_html += "<span class='label label-danger'>X</span>";
+        }
+        result_html += ` ${data.home_team.name}`;
+        if (data.sport == "NFL" && data.possession == "HOME") {
+            result_html += "<i class='fas fa-football-ball'></i>";
+        }
+        if (data.home_score) {
+            result_html += `<strong class='score-header' id='event-${data.sport}-${event.id}-home-score'>${data.home_score}</strong>`;
+        }
+        result_html += "<br>";
+        return result_html;
+    }
+
+    function getEventTile(data) {
+        var result_html = `<div class='col-lg-3 nopadding event-item' id='event-${data.sport}-${data.id}'>`;
+        result_html += "<div class='event-item-inner-div'>";
+
+        // now creating event item
+        // first add top line
+        result_html += getEventTileTopLine(data);
+
+        //now add away team data
+        result_html += getAwayTeamSection(data);
+
+        //now add home team data
+        result_html += getHomeTeamSection(data);
+
+        //close open divs
+        result_html += "</div></div>";
+        return result_html;
+    }
+
+    {% for sport in scores %}
+        {{sport.value}}_html = "";
+        {% for event in scores[sport] %}
+            $.get("{{ event.relative_events_endpoint }}", function(data, status){
+                event_tile = getEventTile(data);
+                {{sport.value}}_html += event_tile;
+                {% if scores[sport][-1] == event %}
+                    var events_container = document.getElementById("{{ sport.value }}" + "-events-container");
+                    events_container.innerHTML += {{sport.value}}_html;
+                {% endif %}
+            });
+        {% endfor %}
+    {% endfor %}
+
     function updateEvent(new_data) {
         var event_tile_id = "event-" + new_data.sport + "-" + new_data.id;
         var away_score = document.getElementById(event_tile_id + "-away-score");
@@ -73,7 +148,7 @@
         away_score.innerHTML = new_data.away_score;
         home_score.innerHTML = new_data.home_score;
         status_string.innerHTML = new_data.status_string;
-        if(new_data.sport == "NFL" && new_data.status == "IN PROGRESS"){
+        if(new_data.sport == "NFL" && new_data.status == "IN PROGRESS" && new_data.yardage_string){
             var yardage_string = document.getElementById(event_tile_id + "-yardage-string");
             yardage_string.innerHTML = new_data.yardage_string;
         }
@@ -81,8 +156,7 @@
 
     {% for event in events_in_progress %}
         $.get("{{ event.relative_events_endpoint }}", function(data, status){
-            console.log(data);
-            updateEvent(data);
+            // updateEvent(data);
         });
     {% endfor %}
 </script>

@@ -40,6 +40,16 @@ class Status(Enum):
             return cls.STATUS_IN_PROGRESS
 
 
+class BareEvent:
+    def __init__(self, event_id, sport):
+        self.id = event_id
+        self.sport = sport
+
+    @property
+    def relative_events_endpoint(self):
+        return f"/api/events/{self.sport.value}/{self.id}"
+
+
 class BaseEvent:
 
     def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status):
@@ -123,16 +133,13 @@ class NFLEvent(BaseEvent):
         else:
             return None
 
-    @property
-    def relative_events_endpoint(self):
-        return f"/api/events/NFL/{self.id}"
-
     def to_dict(self):
         data = {
             "id": self.id,
             "status": self.status.value,
             "status_string": self.status_string,
             "sport": "NFL",
+            "espn_url": self.espn_url,
             "away_team": self.away_team.to_dict(),
             "home_team": self.home_team.to_dict(),
             "yardage_string": self.yardage_string,
@@ -161,6 +168,7 @@ class NBAEvent(BaseEvent):
             "status": self.status.value,
             "status_string": self.status_string,
             "sport": "NBA",
+            "espn_url": self.espn_url,
             "away_team": self.away_team.to_dict(),
             "home_team": self.home_team.to_dict(),
             "away_score": self.away_score,
@@ -171,10 +179,6 @@ class NBAEvent(BaseEvent):
     @property
     def espn_url(self):
         return f"https://www.espn.com/nba/game?gameId={self.id}"
-
-    @property
-    def relative_events_endpoint(self):
-        return f"/api/events/NBA/{self.id}"
 
 
 class NHLEvent(BaseEvent):
@@ -187,6 +191,7 @@ class NHLEvent(BaseEvent):
             "status": self.status.value,
             "status_string": self.status_string,
             "sport": "NHL",
+            "espn_url": self.espn_url,
             "away_team": self.away_team.to_dict(),
             "home_team": self.home_team.to_dict(),
             "away_score": self.away_score,
@@ -197,10 +202,6 @@ class NHLEvent(BaseEvent):
     @property
     def espn_url(self):
         return f"https://www.espn.com/nhl/boxscore/_/gameId/{self.id}"
-
-    @property
-    def relative_events_endpoint(self):
-        return f"/api/events/NHL/{self.id}"
 
 
 class MLBEvent:
@@ -233,6 +234,7 @@ class MLBEvent:
             "status": self.status.value,
             "status_string": self.status_string,
             "sport": "MLB",
+            "espn_url": self.espn_url,
             "away_team": self.away_team.to_dict(),
             "home_team": self.home_team.to_dict(),
             "away_score": self.away_score,
@@ -243,10 +245,6 @@ class MLBEvent:
     @property
     def espn_url(self):
         return f"https://www.espn.com/mlb/game?gameId={self.id}"
-
-    @property
-    def relative_events_endpoint(self):
-        return f"/api/events/MLB/{self.id}"
 
     def __str__(self):
         if self.status == Status.STATUS_FINAL:

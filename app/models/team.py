@@ -2,7 +2,7 @@ from peewee import Model, IntegerField, CharField
 from app.models.fields import EnumField
 import requests
 from app import db, cache
-from app.models.events import MLBEvent, NBAEvent, NHLEvent, NFLEvent, get_espn_event_data
+from app.models.events import BareEvent
 from services.espn.sports import Sport
 from services import ESPN_API_PREFIX
 
@@ -23,59 +23,7 @@ class Team(Model):
     logo_url = CharField(max_length=255)
 
     def get_current_score(self):
-        event_id = self.current_event_id()
-        event_data = get_espn_event_data(event_id, self.sport_type)
-        team1_data = event_data["header"]["competitions"][0]["competitors"][0]
-        team2_data = event_data["header"]["competitions"][0]["competitors"][1]
-        if team1_data["homeAway"] == "home":
-            home_data = team1_data
-            away_data = team2_data
-        else:
-            home_data = team2_data
-            away_data = team1_data
-        status_data = event_data["header"]["competitions"][0]["status"]
-        status = status_data["type"]["name"]
-        away_team = Team.get_team(self.sport_type, away_data["id"])
-        home_team = Team.get_team(self.sport_type, home_data["id"])
-        away_score = away_data.get("score")
-        home_score = home_data.get("score")
-        if self.sport_type == Sport.SportType.MLB:
-            if status == "STATUS_IN_PROGRESS":
-                inning_string = status_data["type"]["detail"]
-            else:
-                inning_string = "FINAL"
-            return MLBEvent(event_id, away_team, away_score, home_team, home_score, inning_string, status)
-        elif self.sport_type == Sport.SportType.NFL:
-            if status == "STATUS_IN_PROGRESS":
-                period = status_data["period"]
-                clock = status_data["displayClock"]
-                play = event_data["drives"]["current"]["plays"][-1]["end"]
-                down = play.get("shortDownDistanceText")
-                yardline = play.get("possessionText")
-                possession = play["team"]["id"]
-            else:
-                period = None
-                clock = None
-                down = None
-                yardline = None
-                possession = None
-            return NFLEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status, down, yardline, possession)
-        elif self.sport_type == Sport.SportType.NBA:
-            if status == "STATUS_IN_PROGRESS":
-                period = status_data["period"]
-                clock = status_data["displayClock"]
-            else:
-                period = None
-                clock = None
-            return NBAEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status)
-        elif self.sport_type == Sport.SportType.NHL:
-            if status == "STATUS_IN_PROGRESS":
-                period = status_data["period"]
-                clock = status_data["displayClock"]
-            else:
-                period = None
-                clock = None
-            return NHLEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status)
+        return BareEvent(self.current_event_id(), self.sport_type)
 
     @classmethod
     def get_team(cls, league, team_id):
