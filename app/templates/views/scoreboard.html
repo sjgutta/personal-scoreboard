@@ -64,7 +64,7 @@
         result_html += ` <span id='event-${data.sport}-${event.id}-status-string'>${data.status_string}</span>`;
 
         // add yardage string if NFL event and in progress
-        if(data.sport == "NFL" && data.status == "IN PROGRESS"){
+        if(data.sport == "NFL" && data.status == "IN PROGRESS" && data.yardage_string){
             result_html += `<span class='yardage-string' id='event-${data.sport}-${data.id}-yardage-string'>${data.yardage_string}</span>`;
         }
         result_html += "<br>";
@@ -78,9 +78,9 @@
         }else{
             result_html += "<span class='label label-danger'>X</span>";
         }
-        result_html += data.away_team.name;
+        result_html += ` ${data.away_team.name}`;
         if (data.sport == "NFL" && data.possession == "AWAY") {
-            result_html += "<i class='fas fa-football-ball'></i>";
+            result_html += " <i class='fas fa-football-ball'></i>";
         }
         if (data.away_score) {
             result_html += `<strong class='score-header' id='event-${data.sport}-${event.id}-away-score'>${data.away_score}</strong>`;
@@ -96,7 +96,7 @@
         }else{
             result_html += "<span class='label label-danger'>X</span>";
         }
-        result_html += data.home_team.name;
+        result_html += ` ${data.home_team.name}`;
         if (data.sport == "NFL" && data.possession == "HOME") {
             result_html += "<i class='fas fa-football-ball'></i>";
         }
@@ -127,13 +127,15 @@
     }
 
     {% for sport in scores %}
+        {{sport.value}}_html = "";
         {% for event in scores[sport] %}
-            console.log("{{ event.relative_events_endpoint }}");
             $.get("{{ event.relative_events_endpoint }}", function(data, status){
-                console.log(data);
                 event_tile = getEventTile(data);
-                var events_container = document.getElementById(data.sport + "-events-container");
-                events_container.innerHTML += event_tile;
+                {{sport.value}}_html += event_tile;
+                {% if scores[sport][-1] == event %}
+                    var events_container = document.getElementById("{{ sport.value }}" + "-events-container");
+                    events_container.innerHTML += {{sport.value}}_html;
+                {% endif %}
             });
         {% endfor %}
     {% endfor %}
@@ -146,7 +148,7 @@
         away_score.innerHTML = new_data.away_score;
         home_score.innerHTML = new_data.home_score;
         status_string.innerHTML = new_data.status_string;
-        if(new_data.sport == "NFL" && new_data.status == "IN PROGRESS"){
+        if(new_data.sport == "NFL" && new_data.status == "IN PROGRESS" && new_data.yardage_string){
             var yardage_string = document.getElementById(event_tile_id + "-yardage-string");
             yardage_string.innerHTML = new_data.yardage_string;
         }
