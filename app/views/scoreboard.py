@@ -12,4 +12,4 @@ def scoreboard():
     current_scores, all_scores = current_user.get_current_scores()
     events_in_progress = [event for event in all_scores if event.status == Status.STATUS_IN_PROGRESS]
     return render_template('views/scoreboard.html', user=current_user,
-                           scores=current_scores, all_score=all_scores, events_in_progress=events_in_progress)
+                           scores=current_scores, events_in_progress=events_in_progress)
