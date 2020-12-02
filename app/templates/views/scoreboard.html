@@ -63,7 +63,7 @@
     function getEventTileTopLine(data) {
         // adding espn link and status string
         var result_html = `<a href='${data.espn_url}' target='_blank'><i class='fas fa-external-link-alt'></i></a>`;
-        result_html += ` <span id='event-${data.sport}-${event.id}-status-string'>${data.status_string}</span>`;
+        result_html += ` <span id='event-${data.sport}-${data.id}-status-string'>${data.status_string}</span>`;
 
         // add yardage string if NFL event and in progress
         if(data.sport == "NFL" && data.status == "IN PROGRESS" && data.yardage_string){
@@ -85,7 +85,7 @@
             result_html += " <i class='fas fa-football-ball'></i>";
         }
         if (data.away_score) {
-            result_html += `<strong class='score-header' id='event-${data.sport}-${event.id}-away-score'>${data.away_score}</strong>`;
+            result_html += `<strong class='score-header' id='event-${data.sport}-${data.id}-away-score'>${data.away_score}</strong>`;
         }
         result_html += "<br>";
         return result_html;
@@ -103,7 +103,7 @@
             result_html += " <i class='fas fa-football-ball'></i>";
         }
         if (data.home_score) {
-            result_html += `<strong class='score-header' id='event-${data.sport}-${event.id}-home-score'>${data.home_score}</strong>`;
+            result_html += `<strong class='score-header' id='event-${data.sport}-${data.id}-home-score'>${data.home_score}</strong>`;
         }
         result_html += "<br>";
         return result_html;
@@ -128,30 +128,34 @@
         return result_html;
     }
 
-    {% for sport in scores %}
-        {{sport.value}}_html = "";
-        {% for event in scores[sport] %}
-            $.get("{{ event.relative_events_endpoint }}", function(data, status){
-                event_tile = getEventTile(data);
-                {{sport.value}}_html += event_tile;
-                {% if scores[sport][-1] == event %}
-                    var events_container = document.getElementById("{{ sport.value }}" + "-events-container");
-                    events_container.innerHTML += {{sport.value}}_html;
-                    {% if sport == last_sport %}
-                        document.getElementById("loading-span").hidden = true;
+    function renderAllEvents() {
+        {% for sport in scores %}
+            {{sport.value}}_html = "";
+            {% for event in scores[sport] %}
+                $.get("{{ event.relative_events_endpoint }}", function(data, status){
+                    event_tile = getEventTile(data);
+                    {{sport.value}}_html += event_tile;
+                    {% if scores[sport][-1] == event %}
+                        var events_container = document.getElementById("{{ sport.value }}" + "-events-container");
+                        events_container.innerHTML += {{sport.value}}_html;
+                        {% if sport == last_sport %}
+                            document.getElementById("loading-span").hidden = true;
+                        {% endif %}
                     {% endif %}
-                {% endif %}
-            });
+                });
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
+    }
 
     function updateEvent(new_data) {
         var event_tile_id = "event-" + new_data.sport + "-" + new_data.id;
         var away_score = document.getElementById(event_tile_id + "-away-score");
         var home_score = document.getElementById(event_tile_id + "-home-score");
         var status_string = document.getElementById(event_tile_id + "-status-string");
-        away_score.innerHTML = new_data.away_score;
-        home_score.innerHTML = new_data.home_score;
+        if (away_score && home_score) {
+            away_score.innerHTML = new_data.away_score;
+            home_score.innerHTML = new_data.home_score;
+        }
         status_string.innerHTML = new_data.status_string;
         if(new_data.sport == "NFL" && new_data.status == "IN PROGRESS" && new_data.yardage_string){
             var yardage_string = document.getElementById(event_tile_id + "-yardage-string");
@@ -159,10 +163,18 @@
         }
     }
 
-    {% for event in events_in_progress %}
-        $.get("{{ event.relative_events_endpoint }}", function(data, status){
-            // updateEvent(data);
-        });
-    {% endfor %}
+    function updateAllEvents() {
+        {% for sport in scores %}
+            {% for event in scores[sport] %}
+                $.get("{{ event.relative_events_endpoint }}", function(data, status){
+                    updateEvent(data);
+                });
+            {% endfor %}
+        {% endfor %}
+    }
+
+    // This is the main execution section, where the functions above are called
+    renderAllEvents();
+    setInterval(updateAllEvents, 20000);
 </script>
 </html>
