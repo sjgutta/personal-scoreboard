@@ -81,8 +81,12 @@
             result_html += "<span class='label label-danger'>X</span>";
         }
         result_html += ` ${data.away_team.name}`;
-        if (data.sport == "NFL" && data.possession == "AWAY") {
-            result_html += " <i class='fas fa-football-ball'></i>";
+        if (data.sport == "NFL") {
+            if (data.possession == "AWAY") {
+                result_html += ` <i class='fas fa-football-ball' id='event-${data.sport}-${data.id}-away-ball'></i>`;
+            } else {
+                result_html += ` <i class='fas fa-football-ball' id='event-${data.sport}-${data.id}-away-ball' style='visibility: hidden'></i>`;
+            }
         }
         if (data.away_score) {
             result_html += `<strong class='score-header' id='event-${data.sport}-${data.id}-away-score'>${data.away_score}</strong>`;
@@ -99,8 +103,12 @@
             result_html += "<span class='label label-danger'>X</span>";
         }
         result_html += ` ${data.home_team.name}`;
-        if (data.sport == "NFL" && data.possession == "HOME") {
-            result_html += " <i class='fas fa-football-ball'></i>";
+        if (data.sport == "NFL") {
+            if (data.possession == "HOME") {
+                result_html += ` <i class='fas fa-football-ball' id='event-${data.sport}-${data.id}-home-ball'></i>`;
+            } else {
+                result_html += ` <i class='fas fa-football-ball' id='event-${data.sport}-${data.id}-home-ball' style='visibility: hidden'></i>`;
+            }
         }
         if (data.home_score) {
             result_html += `<strong class='score-header' id='event-${data.sport}-${data.id}-home-score'>${data.home_score}</strong>`;
@@ -156,10 +164,24 @@
             away_score.innerHTML = new_data.away_score;
             home_score.innerHTML = new_data.home_score;
         }
-        status_string.innerHTML = new_data.status_string;
+        if (status_string) {
+            status_string.innerHTML = new_data.status_string;
+        }
         if(new_data.sport == "NFL" && new_data.status == "IN PROGRESS" && new_data.yardage_string){
             var yardage_string = document.getElementById(event_tile_id + "-yardage-string");
             yardage_string.innerHTML = new_data.yardage_string;
+            var home_ball = document.getElementById(event_tile_id + "-home-ball");
+            var away_ball = document.getElementById(event_tile_id + "-away-ball");
+            if (new_data.possession == "HOME") {
+                home_ball.style.visibility = "visible";
+                away_ball.style.visibility = "hidden";
+            } else if (new_data.possession == "AWAY") {
+                home_ball.style.visibility = "hidden";
+                away_ball.style.visibility = "visible";
+            } else {
+                home_ball.style.visibility = "hidden";
+                away_ball.style.visibility = "hidden";
+            }
         }
     }
 
