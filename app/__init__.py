@@ -5,7 +5,8 @@ from flask_login import LoginManager
 import os
 
 
-db = MySQLDatabase(os.environ.get("DB_NAME"), user=os.environ.get("DB_USER"), password=os.environ.get("DB_PASSWORD"))
+db = MySQLDatabase(os.environ.get("DB_NAME"), user=os.environ.get("DB_USER"), password=os.environ.get("DB_PASSWORD"),
+                   host=os.environ.get("DB_HOST"))
 login_manager = LoginManager()
 cache = Cache(config={'CACHE_TYPE': 'simple'})
 
