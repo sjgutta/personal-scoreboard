@@ -9,3 +9,5 @@ flask_wtf
 email_validator
 pymysql
 Flask-Caching
+flask-mail
+pyjwt
