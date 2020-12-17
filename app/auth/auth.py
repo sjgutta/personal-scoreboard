@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import current_user, login_user, logout_user
 from app.models.user import User
-from wtforms import StringField, validators, PasswordField
+from wtforms import StringField, validators, PasswordField, SubmitField
 from flask_wtf import FlaskForm
 from app.auth import bp
 
@@ -17,6 +17,11 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[validators.DataRequired(),
                                                      validators.EqualTo('confirm', message='Passwords must match')])
     confirm = PasswordField('Confirm Password')
+
+
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField('Email', validators=[validators.DataRequired(), validators.email()])
+    submit = SubmitField('Request Password Reset')
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -53,3 +58,18 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@bp.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = ResetPasswordRequestForm()
+    if form.validate_on_submit():
+        user = User.get(email=form.email.data)
+        # if user:
+        #     send_password_reset_email(user)
+        flash('Check your email for the instructions to reset your password')
+        return redirect(url_for('login'))
+    return render_template('auth/reset_password_request.html',
+                           title='Reset Password', form=form)
