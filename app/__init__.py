@@ -20,11 +20,11 @@ class Config(object):
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = [os.environ.get('MAIL_USERNAME')]
+    SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'this-is-a-placeholder'
     app.config.from_object(Config)
 
     login_manager.init_app(app)
@@ -55,3 +55,6 @@ def create_app():
         return render_template('index.html')
 
     return app
+
+
+app = create_app()
