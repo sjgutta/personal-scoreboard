@@ -1,11 +1,12 @@
 # Personal Scoreboard
 This repository contains an application that serves as a personal scoreboard for sports fans. Users can create an account, add their favorite teams and have all of their scores in a single view. This is currently being implemented as a web application but will eventually be turned into a browser extension and/or application that can be accessed from the Linux toolbar.
 
-# Installation and Usage Instructions
-THESE ARE COMING SOON.
+# Usage Instructions
+1. Visit the website for the personal scoreboard at [www.mypersonalscoreboard.com](http://www.mypersonalscoreboard.com/).
+2. You can currently use the website for creating an account, setting your favorite teams, and viewing live scores. The app/extension for your computer is coming soon.
 
 # Features
-* Users can create an account with their email in order to log in and log out of the application.
+* Users can create an account with their email in order to log in and log out of the application. A reset password feature is included if users forget their password.
 * Users can select their favorite sports teams in each of the 4 major US professional sports leagues (more sports coming soon). The application provides an intuitive interface for doing this.
 * Users have a personalized scoreboard view with the current or most recent scores for each of their favorited teams.
 * Each score provided on the scoreboard provides a link to the ESPN event for that game.
