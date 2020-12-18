@@ -26,6 +26,7 @@ class Team(Model):
         return BareEvent(self.current_event_id(), self.sport_type)
 
     @classmethod
+    @cache.memoize(timeout=60*60*12)
     def get_team(cls, league, team_id):
         return Team.select().where(Team.sport_type == league, Team.espn_id == team_id).get()
 
