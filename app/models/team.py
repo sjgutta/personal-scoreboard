@@ -7,9 +7,15 @@ from services.espn.sports import Sport
 from services import ESPN_API_PREFIX
 
 
-@cache.memoize(timeout=60*60*12)
+@cache.cached(timeout=60 * 60 * 12, key_prefix='team-cache')
+def get_team_cache():
+    return {f"{team.sport_type}-{team.espn_id}": team for team in Team.select()}
+
+
 def get_team(league, team_id):
-    return Team.select().where(Team.sport_type == league, Team.espn_id == team_id).get()
+    teams = get_team_cache()
+    team_key = f"{league}-{team_id}"
+    return teams[team_key]
 
 
 class Team(Model):
