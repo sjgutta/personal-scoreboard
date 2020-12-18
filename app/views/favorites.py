@@ -3,7 +3,7 @@ from flask_login import current_user
 from werkzeug.utils import redirect
 
 from services.espn.sports import Sport
-from app.models.team import Team
+from app.models.team import Team, get_team
 
 from app.views import bp
 
@@ -30,7 +30,7 @@ def favorites():
             split_favorite_string = favorite.split("-")
             league = Sport.get_sport_type_by_value(split_favorite_string[0])
             if league:
-                team = Team.get_team(league, split_favorite_string[1])
+                team = get_team(league, split_favorite_string[1])
                 if team:
                     favorite_team_objects.append(team)
         current_user.update_favorites(favorite_team_objects)

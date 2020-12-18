@@ -7,6 +7,11 @@ from services.espn.sports import Sport
 from services import ESPN_API_PREFIX
 
 
+@cache.memoize(timeout=60*60*12)
+def get_team(league, team_id):
+    return Team.select().where(Team.sport_type == league, Team.espn_id == team_id).get()
+
+
 class Team(Model):
     """
     This is an object in the database with the information for a team.
@@ -24,11 +29,6 @@ class Team(Model):
 
     def get_current_score(self):
         return BareEvent(self.current_event_id(), self.sport_type)
-
-    @classmethod
-    @cache.memoize(timeout=60*60*12)
-    def get_team(cls, league, team_id):
-        return Team.select().where(Team.sport_type == league, Team.espn_id == team_id).get()
 
     @cache.memoize(timeout=60 * 60 * 12)
     def current_event_id(self):
@@ -58,7 +58,7 @@ class Team(Model):
 
 
 if __name__ == "__main__":
-    team = Team.get_team(Sport.SportType.NFL, 8)
+    team = get_team(Sport.SportType.NFL, 8)
     print(team)
     game = team.get_current_score()
     print(game.current_play_status_string())

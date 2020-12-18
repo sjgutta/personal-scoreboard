@@ -1,7 +1,7 @@
 from app.api import bp
 from services.espn.sports import Sport
 from app.models.events import get_espn_event_data, NHLEvent, MLBEvent, NFLEvent, NBAEvent
-from app.models.team import Team
+from app.models.team import get_team
 
 
 def parse_event_data(sport_type, event_id, event_data):
@@ -15,8 +15,8 @@ def parse_event_data(sport_type, event_id, event_data):
         away_data = team1_data
     status_data = event_data["header"]["competitions"][0]["status"]
     status = status_data["type"]["name"]
-    away_team = Team.get_team(sport_type, away_data["id"])
-    home_team = Team.get_team(sport_type, home_data["id"])
+    away_team = get_team(sport_type, away_data["id"])
+    home_team = get_team(sport_type, home_data["id"])
     away_score = away_data.get("score")
     home_score = home_data.get("score")
     if sport_type == Sport.SportType.MLB:
