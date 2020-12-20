@@ -1,0 +1,605 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		64BAB61D258FA79F00236E4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB61C258FA79F00236E4E /* AppDelegate.swift */; };
+		64BAB61F258FA79F00236E4E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB61E258FA79F00236E4E /* ContentView.swift */; };
+		64BAB621258FA7A300236E4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64BAB620258FA7A300236E4E /* Assets.xcassets */; };
+		64BAB624258FA7A300236E4E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64BAB623258FA7A300236E4E /* Preview Assets.xcassets */; };
+		64BAB627258FA7A300236E4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 64BAB625258FA7A300236E4E /* Main.storyboard */; };
+		64BAB633258FA7A300236E4E /* personal_scoreboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB632258FA7A300236E4E /* personal_scoreboardTests.swift */; };
+		64BAB63E258FA7A300236E4E /* personal_scoreboardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB63D258FA7A300236E4E /* personal_scoreboardUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		64BAB62F258FA7A300236E4E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 64BAB611258FA79F00236E4E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 64BAB618258FA79F00236E4E;
+			remoteInfo = "personal-scoreboard";
+		};
+		64BAB63A258FA7A300236E4E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 64BAB611258FA79F00236E4E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 64BAB618258FA79F00236E4E;
+			remoteInfo = "personal-scoreboard";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		64BAB619258FA79F00236E4E /* personal-scoreboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "personal-scoreboard.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		64BAB61C258FA79F00236E4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		64BAB61E258FA79F00236E4E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		64BAB620258FA7A300236E4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		64BAB623258FA7A300236E4E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		64BAB626258FA7A300236E4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		64BAB628258FA7A300236E4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		64BAB629258FA7A300236E4E /* personal_scoreboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = personal_scoreboard.entitlements; sourceTree = "<group>"; };
+		64BAB62E258FA7A300236E4E /* personal-scoreboardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "personal-scoreboardTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		64BAB632258FA7A300236E4E /* personal_scoreboardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = personal_scoreboardTests.swift; sourceTree = "<group>"; };
+		64BAB634258FA7A300236E4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		64BAB639258FA7A300236E4E /* personal-scoreboardUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "personal-scoreboardUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		64BAB63D258FA7A300236E4E /* personal_scoreboardUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = personal_scoreboardUITests.swift; sourceTree = "<group>"; };
+		64BAB63F258FA7A300236E4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		64BAB616258FA79F00236E4E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64BAB62B258FA7A300236E4E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64BAB636258FA7A300236E4E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		64BAB610258FA79F00236E4E = {
+			isa = PBXGroup;
+			children = (
+				64BAB61B258FA79F00236E4E /* personal-scoreboard */,
+				64BAB631258FA7A300236E4E /* personal-scoreboardTests */,
+				64BAB63C258FA7A300236E4E /* personal-scoreboardUITests */,
+				64BAB61A258FA79F00236E4E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		64BAB61A258FA79F00236E4E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				64BAB619258FA79F00236E4E /* personal-scoreboard.app */,
+				64BAB62E258FA7A300236E4E /* personal-scoreboardTests.xctest */,
+				64BAB639258FA7A300236E4E /* personal-scoreboardUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		64BAB61B258FA79F00236E4E /* personal-scoreboard */ = {
+			isa = PBXGroup;
+			children = (
+				64BAB61C258FA79F00236E4E /* AppDelegate.swift */,
+				64BAB61E258FA79F00236E4E /* ContentView.swift */,
+				64BAB620258FA7A300236E4E /* Assets.xcassets */,
+				64BAB625258FA7A300236E4E /* Main.storyboard */,
+				64BAB628258FA7A300236E4E /* Info.plist */,
+				64BAB629258FA7A300236E4E /* personal_scoreboard.entitlements */,
+				64BAB622258FA7A300236E4E /* Preview Content */,
+			);
+			path = "personal-scoreboard";
+			sourceTree = "<group>";
+		};
+		64BAB622258FA7A300236E4E /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				64BAB623258FA7A300236E4E /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		64BAB631258FA7A300236E4E /* personal-scoreboardTests */ = {
+			isa = PBXGroup;
+			children = (
+				64BAB632258FA7A300236E4E /* personal_scoreboardTests.swift */,
+				64BAB634258FA7A300236E4E /* Info.plist */,
+			);
+			path = "personal-scoreboardTests";
+			sourceTree = "<group>";
+		};
+		64BAB63C258FA7A300236E4E /* personal-scoreboardUITests */ = {
+			isa = PBXGroup;
+			children = (
+				64BAB63D258FA7A300236E4E /* personal_scoreboardUITests.swift */,
+				64BAB63F258FA7A300236E4E /* Info.plist */,
+			);
+			path = "personal-scoreboardUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		64BAB618258FA79F00236E4E /* personal-scoreboard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 64BAB642258FA7A300236E4E /* Build configuration list for PBXNativeTarget "personal-scoreboard" */;
+			buildPhases = (
+				64BAB615258FA79F00236E4E /* Sources */,
+				64BAB616258FA79F00236E4E /* Frameworks */,
+				64BAB617258FA79F00236E4E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "personal-scoreboard";
+			productName = "personal-scoreboard";
+			productReference = 64BAB619258FA79F00236E4E /* personal-scoreboard.app */;
+			productType = "com.apple.product-type.application";
+		};
+		64BAB62D258FA7A300236E4E /* personal-scoreboardTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 64BAB645258FA7A300236E4E /* Build configuration list for PBXNativeTarget "personal-scoreboardTests" */;
+			buildPhases = (
+				64BAB62A258FA7A300236E4E /* Sources */,
+				64BAB62B258FA7A300236E4E /* Frameworks */,
+				64BAB62C258FA7A300236E4E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				64BAB630258FA7A300236E4E /* PBXTargetDependency */,
+			);
+			name = "personal-scoreboardTests";
+			productName = "personal-scoreboardTests";
+			productReference = 64BAB62E258FA7A300236E4E /* personal-scoreboardTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		64BAB638258FA7A300236E4E /* personal-scoreboardUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 64BAB648258FA7A300236E4E /* Build configuration list for PBXNativeTarget "personal-scoreboardUITests" */;
+			buildPhases = (
+				64BAB635258FA7A300236E4E /* Sources */,
+				64BAB636258FA7A300236E4E /* Frameworks */,
+				64BAB637258FA7A300236E4E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				64BAB63B258FA7A300236E4E /* PBXTargetDependency */,
+			);
+			name = "personal-scoreboardUITests";
+			productName = "personal-scoreboardUITests";
+			productReference = 64BAB639258FA7A300236E4E /* personal-scoreboardUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		64BAB611258FA79F00236E4E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1220;
+				LastUpgradeCheck = 1220;
+				TargetAttributes = {
+					64BAB618258FA79F00236E4E = {
+						CreatedOnToolsVersion = 12.2;
+					};
+					64BAB62D258FA7A300236E4E = {
+						CreatedOnToolsVersion = 12.2;
+						TestTargetID = 64BAB618258FA79F00236E4E;
+					};
+					64BAB638258FA7A300236E4E = {
+						CreatedOnToolsVersion = 12.2;
+						TestTargetID = 64BAB618258FA79F00236E4E;
+					};
+				};
+			};
+			buildConfigurationList = 64BAB614258FA79F00236E4E /* Build configuration list for PBXProject "personal-scoreboard" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 64BAB610258FA79F00236E4E;
+			productRefGroup = 64BAB61A258FA79F00236E4E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				64BAB618258FA79F00236E4E /* personal-scoreboard */,
+				64BAB62D258FA7A300236E4E /* personal-scoreboardTests */,
+				64BAB638258FA7A300236E4E /* personal-scoreboardUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		64BAB617258FA79F00236E4E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				64BAB627258FA7A300236E4E /* Main.storyboard in Resources */,
+				64BAB624258FA7A300236E4E /* Preview Assets.xcassets in Resources */,
+				64BAB621258FA7A300236E4E /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64BAB62C258FA7A300236E4E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64BAB637258FA7A300236E4E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		64BAB615258FA79F00236E4E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				64BAB61F258FA79F00236E4E /* ContentView.swift in Sources */,
+				64BAB61D258FA79F00236E4E /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64BAB62A258FA7A300236E4E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				64BAB633258FA7A300236E4E /* personal_scoreboardTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64BAB635258FA7A300236E4E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				64BAB63E258FA7A300236E4E /* personal_scoreboardUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		64BAB630258FA7A300236E4E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 64BAB618258FA79F00236E4E /* personal-scoreboard */;
+			targetProxy = 64BAB62F258FA7A300236E4E /* PBXContainerItemProxy */;
+		};
+		64BAB63B258FA7A300236E4E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 64BAB618258FA79F00236E4E /* personal-scoreboard */;
+			targetProxy = 64BAB63A258FA7A300236E4E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		64BAB625258FA7A300236E4E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				64BAB626258FA7A300236E4E /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		64BAB640258FA7A300236E4E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		64BAB641258FA7A300236E4E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		64BAB643258FA7A300236E4E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "personal-scoreboard/personal_scoreboard.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"personal-scoreboard/Preview Content\"";
+				DEVELOPMENT_TEAM = 3YQ3T345H7;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "personal-scoreboard/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = "sjgutta.personal-scoreboard";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		64BAB644258FA7A300236E4E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "personal-scoreboard/personal_scoreboard.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"personal-scoreboard/Preview Content\"";
+				DEVELOPMENT_TEAM = 3YQ3T345H7;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "personal-scoreboard/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = "sjgutta.personal-scoreboard";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		64BAB646258FA7A300236E4E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3YQ3T345H7;
+				INFOPLIST_FILE = "personal-scoreboardTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = "sjgutta.personal-scoreboardTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/personal-scoreboard.app/Contents/MacOS/personal-scoreboard";
+			};
+			name = Debug;
+		};
+		64BAB647258FA7A300236E4E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3YQ3T345H7;
+				INFOPLIST_FILE = "personal-scoreboardTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = "sjgutta.personal-scoreboardTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/personal-scoreboard.app/Contents/MacOS/personal-scoreboard";
+			};
+			name = Release;
+		};
+		64BAB649258FA7A300236E4E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3YQ3T345H7;
+				INFOPLIST_FILE = "personal-scoreboardUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "sjgutta.personal-scoreboardUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "personal-scoreboard";
+			};
+			name = Debug;
+		};
+		64BAB64A258FA7A300236E4E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3YQ3T345H7;
+				INFOPLIST_FILE = "personal-scoreboardUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "sjgutta.personal-scoreboardUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "personal-scoreboard";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		64BAB614258FA79F00236E4E /* Build configuration list for PBXProject "personal-scoreboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				64BAB640258FA7A300236E4E /* Debug */,
+				64BAB641258FA7A300236E4E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		64BAB642258FA7A300236E4E /* Build configuration list for PBXNativeTarget "personal-scoreboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				64BAB643258FA7A300236E4E /* Debug */,
+				64BAB644258FA7A300236E4E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		64BAB645258FA7A300236E4E /* Build configuration list for PBXNativeTarget "personal-scoreboardTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				64BAB646258FA7A300236E4E /* Debug */,
+				64BAB647258FA7A300236E4E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		64BAB648258FA7A300236E4E /* Build configuration list for PBXNativeTarget "personal-scoreboardUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				64BAB649258FA7A300236E4E /* Debug */,
+				64BAB64A258FA7A300236E4E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 64BAB611258FA79F00236E4E /* Project object */;
+}
