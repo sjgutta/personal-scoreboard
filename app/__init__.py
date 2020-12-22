@@ -74,13 +74,13 @@ def create_app():
 
     @app.before_request
     def before_request():
-        if "/api/events/" in request.path or request.path == "/":
+        if "/api/events/" in request.path:
             return
         db.connect()
 
     @app.after_request
     def after_request(response):
-        if "/api/events/" in request.path or request.path == "/":
+        if "/api/events/" in request.path:
             return response
         db.close()
         return response
