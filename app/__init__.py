@@ -12,8 +12,6 @@ login_manager = LoginManager()
 cache = Cache(config={'CACHE_TYPE': 'simple'})
 mail = Mail()
 
-TEAM_CACHE_KEY = 'all_teams'
-
 
 class Config(object):
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
@@ -88,10 +86,6 @@ def create_app():
     @app.route('/')
     def index():
         return render_template('index.html')
-
-    from app.models.team import Team
-    all_teams = {f"{team.sport_type}-{team.espn_id}": team for team in Team.select()}
-    cache.set(TEAM_CACHE_KEY, all_teams)
 
     return app
 
