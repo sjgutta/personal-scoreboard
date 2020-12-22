@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_caching import Cache
 from peewee import MySQLDatabase
 from flask_login import LoginManager
@@ -71,6 +71,19 @@ def create_app():
             }
         }
         cache.init_app(app, config=cache_config)
+
+    @app.before_request
+    def before_request():
+        if "/api/events/" in request.path or request.path == "/":
+            return
+        db.connect()
+
+    @app.after_request
+    def after_request(response):
+        if "/api/events/" in request.path or request.path == "/":
+            return response
+        db.close()
+        return response
 
     @app.route('/')
     def index():
