@@ -72,10 +72,6 @@ def create_app():
         }
         cache.init_app(app, config=cache_config)
 
-    from app.models.team import Team
-    all_teams = {f"{team.sport_type}-{team.espn_id}": team for team in Team.select()}
-    cache.set(TEAM_CACHE_KEY, all_teams)
-
     @app.before_request
     def before_request():
         db.connect()
@@ -88,6 +84,10 @@ def create_app():
     @app.route('/')
     def index():
         return render_template('index.html')
+
+    from app.models.team import Team
+    all_teams = {f"{team.sport_type}-{team.espn_id}": team for team in Team.select()}
+    cache.set(TEAM_CACHE_KEY, all_teams)
 
     return app
 
