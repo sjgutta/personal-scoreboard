@@ -136,6 +136,8 @@
         return result_html;
     }
 
+    const events_in_progress = [];
+
     function renderAllEvents() {
         {% for sport in scores %}
             {{sport.value}}_html = "";
@@ -143,6 +145,9 @@
                 $.get("{{ event.relative_events_endpoint }}", function(data, status){
                     event_tile = getEventTile(data);
                     {{sport.value}}_html += event_tile;
+                    if (data.status == "IN PROGRESS"){
+                        events_in_progress.push("{{ event.relative_events_endpoint }}");
+                    }
                     {% if scores[sport][-1] == event %}
                         var events_container = document.getElementById("{{ sport.value }}" + "-events-container");
                         events_container.innerHTML += {{sport.value}}_html;
@@ -186,13 +191,11 @@
     }
 
     function updateAllEvents() {
-        {% for sport in scores %}
-            {% for event in scores[sport] %}
-                $.get("{{ event.relative_events_endpoint }}", function(data, status){
+        events_in_progress.forEach(function (event_endpoint, index) {
+            $.get(event_endpoint, function(data, status){
                     updateEvent(data);
-                });
-            {% endfor %}
-        {% endfor %}
+            });
+        });
     }
 
     // This is the main execution section, where the functions above are called
