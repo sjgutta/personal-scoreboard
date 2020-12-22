@@ -1,15 +1,14 @@
 from peewee import Model, IntegerField, CharField
 from app.models.fields import EnumField
 import requests
-from app import db, cache
+from app import db, cache, TEAM_CACHE_KEY
 from app.models.events import BareEvent
 from services.espn.sports import Sport
 from services import ESPN_API_PREFIX
 
 
-@cache.cached(timeout=60 * 60 * 12, key_prefix='team-cache')
 def get_team_cache():
-    return {f"{team.sport_type}-{team.espn_id}": team for team in Team.select()}
+    return cache.get(TEAM_CACHE_KEY)
 
 
 def get_team(league, team_id):
