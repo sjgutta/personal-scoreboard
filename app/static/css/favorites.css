@@ -12,6 +12,9 @@
   background-position: center;
   background-size: cover;
 }
+.team-item:hover {
+  cursor: pointer;
+}
 #favoriteList {
   height: 60vh;
 }
