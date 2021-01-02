@@ -14,6 +14,8 @@
 		64BAB627258FA7A300236E4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 64BAB625258FA7A300236E4E /* Main.storyboard */; };
 		64BAB633258FA7A300236E4E /* personal_scoreboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB632258FA7A300236E4E /* personal_scoreboardTests.swift */; };
 		64BAB63E258FA7A300236E4E /* personal_scoreboardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB63D258FA7A300236E4E /* personal_scoreboardUITests.swift */; };
+		64BAB655259EBAE000236E4E /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB654259EBAE000236E4E /* EventView.swift */; };
+		64BAB65D25A00E6400236E4E /* SportType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB65C25A00E6400236E4E /* SportType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,8 @@
 		64BAB639258FA7A300236E4E /* personal-scoreboardUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "personal-scoreboardUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		64BAB63D258FA7A300236E4E /* personal_scoreboardUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = personal_scoreboardUITests.swift; sourceTree = "<group>"; };
 		64BAB63F258FA7A300236E4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		64BAB654259EBAE000236E4E /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
+		64BAB65C25A00E6400236E4E /* SportType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +109,8 @@
 				64BAB628258FA7A300236E4E /* Info.plist */,
 				64BAB629258FA7A300236E4E /* personal_scoreboard.entitlements */,
 				64BAB622258FA7A300236E4E /* Preview Content */,
+				64BAB654259EBAE000236E4E /* EventView.swift */,
+				64BAB65C25A00E6400236E4E /* SportType.swift */,
 			);
 			path = "personal-scoreboard";
 			sourceTree = "<group>";
@@ -265,8 +271,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64BAB65D25A00E6400236E4E /* SportType.swift in Sources */,
 				64BAB61F258FA79F00236E4E /* ContentView.swift in Sources */,
 				64BAB61D258FA79F00236E4E /* AppDelegate.swift in Sources */,
+				64BAB655259EBAE000236E4E /* EventView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

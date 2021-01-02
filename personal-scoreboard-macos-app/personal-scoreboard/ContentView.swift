@@ -8,9 +8,31 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var sport_type: SportType = SportType.nfl
+    
     var body: some View {
-        Text("Hello, Scoreboard!")
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        Text("Personal Scoreboard")
+            .font(.title)
+            .multilineTextAlignment(.center)
+            .padding(.top)
+        
+        Picker("Sport Type", selection: $sport_type) {
+            ForEach(SportType.allCases, id: \.self) { this_type in
+                Text(this_type.rawValue).tag(this_type)
+            }
+        }
+        .pickerStyle(SegmentedPickerStyle())
+        .labelsHidden()
+        .padding(.leading).padding(.trailing)
+        
+        if self.sport_type == SportType.nfl {
+            Text("Hello, NFL!")
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        } else {
+            Text("Hello, Not NFL!")
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        
         HStack{
             EventView().padding(.leading)
             Spacer()
