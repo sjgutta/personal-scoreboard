@@ -34,7 +34,11 @@ class Event {
         self.sport_type = sport_type
         self.status = status
         self.status_string = status_string
-        self.yardage_string = yardage_string
+        if sport_type == SportType.nfl {
+            self.yardage_string = yardage_string
+        } else {
+            self.yardage_string = ""
+        }
         self.possession = possession
     }
 }

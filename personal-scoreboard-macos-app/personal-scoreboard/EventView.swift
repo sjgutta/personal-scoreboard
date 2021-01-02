@@ -25,7 +25,7 @@ struct EventView: View {
                 }
                 Spacer()
                 Text(self.event.away_score).bold().padding(.trailing)
-            }.padding(.top, 15)
+            }.padding(.top, 5)
             HStack {
                 self.event.home_team.logo_image.aspectRatio(contentMode: .fit).frame(width: 35).padding(.leading, 5)
                 Text(self.event.home_team.full_name).padding(.leading, 5)
@@ -34,7 +34,7 @@ struct EventView: View {
                 }
                 Spacer()
                 Text(self.event.home_score).bold().padding(.trailing)
-            }.padding(.top, 5).padding(.bottom, 10)
+            }.padding(.bottom, 10)
         }.frame(width: 275).overlay(
             RoundedRectangle(cornerRadius: 16)
                 .stroke(Color.blue, lineWidth: 1)
