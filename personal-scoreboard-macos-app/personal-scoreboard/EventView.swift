@@ -19,11 +19,17 @@ struct EventView: View {
             }.padding(.top, 10)
             HStack {
                 Text(self.event.away_team.full_name).padding(.leading)
+                if self.event.away_possession {
+                    Text("🏈")
+                }
                 Spacer()
                 Text(self.event.away_score).bold().padding(.trailing)
             }.padding(.top, 15)
             HStack {
                 Text(self.event.home_team.full_name).padding(.leading)
+                if self.event.home_possession {
+                    Text("🏈")
+                }
                 Spacer()
                 Text(self.event.home_score).bold().padding(.trailing)
             }.padding(.top, 5).padding(.bottom, 10)
@@ -39,7 +45,7 @@ struct EventView_Previews: PreviewProvider {
         let lions = Team(full_name: "Detroit Lions")
         let rams = Team(full_name: "LA Rams")
         
-        let nfl_event = Event(away_team: lions, home_team: rams, sport_type: SportType.nfl, away_score: "7", home_score: "10", status_string: "Q4 | 10:45", yardage_string: "4th and 5 at DET 35")
+        let nfl_event = Event(away_team: lions, home_team: rams, sport_type: SportType.nfl, away_score: "7", home_score: "10", status: "IN PROGRESS", status_string: "Q4 | 10:45", yardage_string: "4th and 5 at DET 35", possession: "AWAY")
         
         EventView(event: nfl_event)
     }
