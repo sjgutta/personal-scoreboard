@@ -8,22 +8,24 @@
 import SwiftUI
 
 struct EventView: View {
+    @State var event: Event
+    
     var body: some View {
         VStack {
             HStack {
-                Text("4th Quarter").padding(.leading)
+                Text(self.event.status_string).padding(.leading)
                 Spacer()
-                Text("4TH and 10 at DET 45").padding(.trailing)
+                Text(self.event.yardage_string).padding(.trailing)
             }.padding(.top, 10)
             HStack {
-                Text("Detroit Lions").padding(.leading)
+                Text(self.event.away_team.full_name).padding(.leading)
                 Spacer()
-                Text("5").bold().padding(.trailing)
+                Text(self.event.away_score).bold().padding(.trailing)
             }.padding(.top, 15)
             HStack {
-                Text("LA Rams").padding(.leading)
+                Text(self.event.home_team.full_name).padding(.leading)
                 Spacer()
-                Text("10").bold().padding(.trailing)
+                Text(self.event.home_score).bold().padding(.trailing)
             }.padding(.top, 5).padding(.bottom, 10)
         }.frame(width: 275).overlay(
             RoundedRectangle(cornerRadius: 16)
@@ -34,6 +36,11 @@ struct EventView: View {
 
 struct EventView_Previews: PreviewProvider {
     static var previews: some View {
-        EventView()
+        let lions = Team(full_name: "Detroit Lions")
+        let rams = Team(full_name: "LA Rams")
+        
+        let nfl_event = Event(away_team: lions, home_team: rams, sport_type: SportType.nfl, away_score: "7", home_score: "10", status_string: "Q4 | 10:45", yardage_string: "4th and 5 at DET 35")
+        
+        EventView(event: nfl_event)
     }
 }
