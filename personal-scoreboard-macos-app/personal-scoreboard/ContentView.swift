@@ -26,9 +26,9 @@ struct ContentView: View {
         .padding(.leading).padding(.trailing)
         
         let lions = Team(full_name: "Detroit Lions", logo_url: "https://a.espncdn.com/i/teamlogos/nfl/500/det.png")
-        let rams = Team(full_name: "LA Rams", logo_url: "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png")
+        let rams = Team(full_name: "Los Angeles Rams", logo_url: "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png")
         let clippers = Team(full_name: "LA Clippers", logo_url: "https://a.espncdn.com/i/teamlogos/nba/500/lac.png")
-        let lakers = Team(full_name: "LA Lakers", logo_url: "https://a.espncdn.com/i/teamlogos/nba/500/lal.png")
+        let lakers = Team(full_name: "Los Angeles Lakers", logo_url: "https://a.espncdn.com/i/teamlogos/nba/500/lal.png")
         
         let nfl_event = Event(away_team: lions, home_team: rams, sport_type: SportType.nfl, away_score: "7", home_score: "10", status: "IN PROGRESS", status_string: "Q4 | 10:45", yardage_string: "4th and 5 at DET 35", possession: "AWAY")
         
