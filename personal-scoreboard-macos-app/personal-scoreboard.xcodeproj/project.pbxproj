@@ -16,6 +16,8 @@
 		64BAB63E258FA7A300236E4E /* personal_scoreboardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB63D258FA7A300236E4E /* personal_scoreboardUITests.swift */; };
 		64BAB655259EBAE000236E4E /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB654259EBAE000236E4E /* EventView.swift */; };
 		64BAB65D25A00E6400236E4E /* SportType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB65C25A00E6400236E4E /* SportType.swift */; };
+		64BAB66225A013E200236E4E /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB66125A013E200236E4E /* Event.swift */; };
+		64BAB66725A0146100236E4E /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB66625A0146100236E4E /* Team.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +54,8 @@
 		64BAB63F258FA7A300236E4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64BAB654259EBAE000236E4E /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		64BAB65C25A00E6400236E4E /* SportType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportType.swift; sourceTree = "<group>"; };
+		64BAB66125A013E200236E4E /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		64BAB66625A0146100236E4E /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +115,8 @@
 				64BAB622258FA7A300236E4E /* Preview Content */,
 				64BAB654259EBAE000236E4E /* EventView.swift */,
 				64BAB65C25A00E6400236E4E /* SportType.swift */,
+				64BAB66125A013E200236E4E /* Event.swift */,
+				64BAB66625A0146100236E4E /* Team.swift */,
 			);
 			path = "personal-scoreboard";
 			sourceTree = "<group>";
@@ -271,10 +277,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64BAB66725A0146100236E4E /* Team.swift in Sources */,
 				64BAB65D25A00E6400236E4E /* SportType.swift in Sources */,
 				64BAB61F258FA79F00236E4E /* ContentView.swift in Sources */,
 				64BAB61D258FA79F00236E4E /* AppDelegate.swift in Sources */,
 				64BAB655259EBAE000236E4E /* EventView.swift in Sources */,
+				64BAB66225A013E200236E4E /* Event.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
