@@ -11,6 +11,11 @@ struct ContentView: View {
     var body: some View {
         Text("Hello, Scoreboard!")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+        HStack{
+            EventView().padding(.leading)
+            Spacer()
+            EventView().padding(.trailing)
+        }.padding(.bottom)
     }
 }
 
