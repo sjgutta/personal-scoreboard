@@ -9,6 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     @State var sport_type: SportType = SportType.nfl
+    @State var loading_event_info: Bool = true
+    @State var nfl_events: [String] = []
+    @State var nba_events: [String] = []
+    @State var nhl_events: [String] = []
+    @State var mlb_events: [String] = []
     
     var body: some View {
         Text("Personal Scoreboard")
@@ -24,6 +29,14 @@ struct ContentView: View {
         .pickerStyle(SegmentedPickerStyle())
         .labelsHidden()
         .padding(.leading).padding(.trailing)
+        
+        if loading_event_info {
+            Text("Loading").foregroundColor(.red)
+        }
+        
+        let current_event_ids = getCurrentEventList()
+        
+        Text(current_event_ids.joined(separator: ", ")).onAppear(perform: updateEventIds)
         
         let lions = Team(full_name: "Detroit Lions", logo_url: "https://a.espncdn.com/i/teamlogos/nfl/500/det.png")
         let rams = Team(full_name: "Los Angeles Rams", logo_url: "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png")
@@ -50,6 +63,31 @@ struct ContentView: View {
                 Spacer()
                 EventView(event: nba_event).padding(.trailing)
             }.padding(.bottom)
+        }
+    }
+    
+    func getCurrentEventList() -> [String] {
+        if self.sport_type == SportType.nfl {
+            return self.nfl_events
+        } else if self.sport_type == SportType.nba {
+            return self.nba_events
+        } else if self.sport_type == SportType.nhl {
+            return self.nhl_events
+        } else if self.sport_type == SportType.mlb {
+            return self.mlb_events
+        } else {
+            return []
+        }
+    }
+    
+    func updateEventIds() {
+        let url = "PLACEHOLDER URL"
+        getUserEvents(url: url) { result in
+            self.nfl_events = result["NFL"] ?? []
+            self.nba_events = result["NBA"] ?? []
+            self.nhl_events = result["NHL"] ?? []
+            self.mlb_events = result["MLB"] ?? []
+            self.loading_event_info = false
         }
     }
 }
