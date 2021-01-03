@@ -8,6 +8,7 @@
 import Foundation
 
 class Event {
+    var id: String
     var away_team: Team
     var home_team: Team
     var sport_type: SportType
@@ -26,7 +27,12 @@ class Event {
         return sport_type == SportType.nfl && possession == "AWAY"
     }
     
-    init(away_team: Team, home_team: Team, sport_type: SportType, away_score: String, home_score: String, status: String, status_string: String, yardage_string: String, possession: String){
+    var event_info: String {
+        return "\(home_team.full_name) vs \(away_team.full_name)"
+    }
+    
+    init(id: String, away_team: Team, home_team: Team, sport_type: SportType, away_score: String, home_score: String, status: String, status_string: String, yardage_string: String, possession: String){
+        self.id = id
         self.away_team = away_team
         self.home_team = home_team
         self.away_score = away_score

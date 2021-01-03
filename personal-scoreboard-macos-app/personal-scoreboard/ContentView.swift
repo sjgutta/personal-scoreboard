@@ -14,6 +14,7 @@ struct ContentView: View {
     @State var nba_events: [String] = []
     @State var nhl_events: [String] = []
     @State var mlb_events: [String] = []
+    @State var nfl_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
     
     var body: some View {
         Text("Personal Scoreboard")
@@ -38,14 +39,16 @@ struct ContentView: View {
         
         Text(current_event_ids.joined(separator: ", ")).onAppear(perform: updateEventIds)
         
+        Text(nfl_event_objs["401220284"]?.event_info ?? "Loading 401220284")
+        
         let lions = Team(full_name: "Detroit Lions", logo_url: "https://a.espncdn.com/i/teamlogos/nfl/500/det.png")
         let rams = Team(full_name: "Los Angeles Rams", logo_url: "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png")
         let clippers = Team(full_name: "LA Clippers", logo_url: "https://a.espncdn.com/i/teamlogos/nba/500/lac.png")
         let lakers = Team(full_name: "Los Angeles Lakers", logo_url: "https://a.espncdn.com/i/teamlogos/nba/500/lal.png")
         
-        let nfl_event = Event(away_team: lions, home_team: rams, sport_type: SportType.nfl, away_score: "7", home_score: "10", status: "IN PROGRESS", status_string: "Q4 | 10:45", yardage_string: "4th and 5 at DET 35", possession: "AWAY")
+        let nfl_event = Event(id: "1", away_team: lions, home_team: rams, sport_type: SportType.nfl, away_score: "7", home_score: "10", status: "IN PROGRESS", status_string: "Q4 | 10:45", yardage_string: "4th and 5 at DET 35", possession: "AWAY")
         
-        let nba_event = Event(away_team: clippers, home_team: lakers, sport_type: SportType.nba, away_score: "94", home_score: "100", status: "FINAL", status_string: "Q4 | 24.5", yardage_string: "Not relevant", possession: "NONE")
+        let nba_event = Event(id: "2", away_team: clippers, home_team: lakers, sport_type: SportType.nba, away_score: "94", home_score: "100", status: "FINAL", status_string: "Q4 | 24.5", yardage_string: "Not relevant", possession: "NONE")
         
         if self.sport_type == SportType.nfl {
             Text("Hello, NFL!")
@@ -88,6 +91,17 @@ struct ContentView: View {
             self.nhl_events = result["NHL"] ?? []
             self.mlb_events = result["MLB"] ?? []
             self.loading_event_info = false
+            renderEvents()
+        }
+    }
+    
+    func renderEvents() {
+        for event_id in nfl_events {
+            let url = "http://127.0.0.1:5000/api/events/NFL/" + event_id
+            getEventInfo(url: url) { output in
+                let retrieved_id = output.id
+                self.nfl_event_objs[retrieved_id] = output
+            }
         }
     }
 }

@@ -11,12 +11,16 @@ import SwiftyJSON
 
 func getEventInfo(url: String, completionHandler : @escaping (Event) -> Void) {
     doGetRequest(url: url) { output in
+        print(output)
+        //parsing id
+        let event_id = output["id"].stringValue
+        
         // parsing teams
-        let away_team_name = output["away_team"]["full_name"].stringValue
+        let away_team_name = output["away_team"]["name"].stringValue
         let away_team_logo = output["away_team"]["logo_url"].stringValue
         let away_team = Team(full_name: away_team_name, logo_url: away_team_logo)
         
-        let home_team_name = output["home_team"]["full_name"].stringValue
+        let home_team_name = output["home_team"]["name"].stringValue
         let home_team_logo = output["home_team"]["logo_url"].stringValue
         let home_team = Team(full_name: home_team_name, logo_url: home_team_logo)
         
@@ -50,7 +54,7 @@ func getEventInfo(url: String, completionHandler : @escaping (Event) -> Void) {
             possession = output["possession"].stringValue
         }
         
-        let result = Event(away_team: away_team, home_team: home_team, sport_type: sport_type, away_score: away_score, home_score: home_score, status: status, status_string: status_string, yardage_string: yardage_string, possession: possession)
+        let result = Event(id: event_id, away_team: away_team, home_team: home_team, sport_type: sport_type, away_score: away_score, home_score: home_score, status: status, status_string: status_string, yardage_string: yardage_string, possession: possession)
         
         completionHandler(result)
     }
