@@ -49,6 +49,13 @@ class BareEvent:
     def relative_events_endpoint(self):
         return f"/api/events/{self.sport.value}/{self.id}"
 
+    def to_dict(self):
+        data = {
+            "id": self.id,
+            "sport": self.sport.value
+        }
+        return data
+
 
 class BaseEvent:
 

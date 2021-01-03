@@ -147,6 +147,23 @@ class User(Model, UserMixin):
                 event_ids.add(team_current_score.id)
         return dict(current_scores)
 
+    def api_get_current_scores(self):
+        """
+        This function is used for creating a list of sporting event objects that relate to the user's favorite teams.
+        :return: A dict of Sport names to lists. Each list is a list of sporting event objects.
+        """
+        favorites = self.get_favorites()
+        current_scores = defaultdict(list)
+        event_ids = set()
+        for team in favorites:
+            team_sport = team.sport_type.value
+            team_current_score = team.get_current_score()
+            if team_current_score and team_current_score.id not in event_ids:
+                json_team_current_score = team_current_score.to_dict()
+                current_scores[team_sport].append(json_team_current_score)
+                event_ids.add(team_current_score.id)
+        return dict(current_scores)
+
 
 if __name__ == "__main__":
     user = User.select().where(User.username == "test").get()

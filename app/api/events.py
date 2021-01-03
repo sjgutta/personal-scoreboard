@@ -2,6 +2,7 @@ from app.api import bp
 from services.espn.sports import Sport
 from app.models.events import get_espn_event_data, NHLEvent, MLBEvent, NFLEvent, NBAEvent
 from app.models.team import get_team
+from app.models.user import User
 
 
 def parse_event_data(sport_type, event_id, event_data):
@@ -68,3 +69,13 @@ def get_espn_event_info(sport, event_id):
         return {}
     else:
         return event.to_dict()
+
+
+@bp.route('/users/events/<username>/<password_hash>', methods=['GET'])
+def get_user_bare_events(username, password_hash):
+    user = User.get_or_none(username=username, password_hash=password_hash)
+    if user:
+        user_events = user.api_get_current_scores()
+        return {"events": user_events}
+    else:
+        return {"error": "invalid credentials"}
