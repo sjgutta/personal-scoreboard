@@ -31,6 +31,21 @@ class Event {
         return "\(home_team.full_name) vs \(away_team.full_name)"
     }
     
+    var espn_url: String {
+        let BASE = "https://www.espn.com/"
+        if sport_type == SportType.nfl {
+            return BASE + "/nfl/game/_/gameId/\(id)"
+        } else if sport_type == SportType.nba {
+            return BASE + "/nba/game?gameId=\(id)"
+        } else if sport_type == SportType.nhl {
+            return BASE + "/nhl/boxscore/_/gameId/\(id)"
+        } else if sport_type == SportType.mlb {
+            return BASE + "/mlb/game?gameId=\(id)"
+        } else {
+            return BASE
+        }
+    }
+    
     init(id: String, away_team: Team, home_team: Team, sport_type: SportType, away_score: String, home_score: String, status: String, status_string: String, yardage_string: String, possession: String){
         self.id = id
         self.away_team = away_team
