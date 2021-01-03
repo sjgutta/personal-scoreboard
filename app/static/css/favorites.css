@@ -16,7 +16,7 @@
   cursor: pointer;
 }
 #favoriteList {
-  height: 60vh;
+  min-height: 60vh;
 }
 #favorites-form td {
   width: 50%;
