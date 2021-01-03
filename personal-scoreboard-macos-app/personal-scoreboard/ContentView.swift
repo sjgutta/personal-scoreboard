@@ -41,6 +41,11 @@ struct ContentView: View {
         
         Text(nfl_event_objs["401220284"]?.event_info ?? "Loading 401220284")
         
+        ForEach(Array(nfl_event_objs.keys), id: \.self) { event_id in
+            let this_event = nfl_event_objs[event_id]
+            EventView(event: this_event!)
+        }
+        
         let lions = Team(full_name: "Detroit Lions", logo_url: "https://a.espncdn.com/i/teamlogos/nfl/500/det.png")
         let rams = Team(full_name: "Los Angeles Rams", logo_url: "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png")
         let clippers = Team(full_name: "LA Clippers", logo_url: "https://a.espncdn.com/i/teamlogos/nba/500/lac.png")
