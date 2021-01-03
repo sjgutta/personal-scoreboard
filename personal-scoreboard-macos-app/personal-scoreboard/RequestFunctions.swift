@@ -9,7 +9,52 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 
-
+func getEventInfo(url: String, completionHandler : @escaping (Event) -> Void) {
+    doGetRequest(url: url) { output in
+        // parsing teams
+        let away_team_name = output["away_team"]["full_name"].stringValue
+        let away_team_logo = output["away_team"]["logo_url"].stringValue
+        let away_team = Team(full_name: away_team_name, logo_url: away_team_logo)
+        
+        let home_team_name = output["home_team"]["full_name"].stringValue
+        let home_team_logo = output["home_team"]["logo_url"].stringValue
+        let home_team = Team(full_name: home_team_name, logo_url: home_team_logo)
+        
+        // parsing sport type
+        let sport_string = output["sport"].stringValue
+        var sport_type = SportType.nfl
+        if sport_string == "NBA" {
+            sport_type = SportType.nba
+        } else if sport_string == "NHL" {
+            sport_type = SportType.nhl
+        } else if sport_string == "MLB" {
+            sport_type = SportType.mlb
+        }
+        
+        //parsing scores
+        let away_score = output["away_score"].stringValue
+        let home_score = output["home_score"].stringValue
+        
+        //parsing status info
+        let status = output["status"].stringValue
+        let status_string = output["status_string"].stringValue
+        
+        //parsing yardage string and possession
+        var yardage_string = ""
+        if output["yardage_string"].exists() {
+            yardage_string = output["yardage_string"].stringValue
+        }
+        
+        var possession = ""
+        if output["possession"].exists() {
+            possession = output["possession"].stringValue
+        }
+        
+        let result = Event(away_team: away_team, home_team: home_team, sport_type: sport_type, away_score: away_score, home_score: home_score, status: status, status_string: status_string, yardage_string: yardage_string, possession: possession)
+        
+        completionHandler(result)
+    }
+}
 
 func getUserEvents(url: String, completionHandler : @escaping (Dictionary<String, [String]>) -> Void) {
     doGetRequest(url: url) { output in
