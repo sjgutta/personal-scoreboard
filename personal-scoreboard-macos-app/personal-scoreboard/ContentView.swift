@@ -15,12 +15,15 @@ struct ContentView: View {
     @State var nhl_events: [String] = []
     @State var mlb_events: [String] = []
     @State var nfl_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
+    @State var nba_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
+    @State var nhl_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
+    @State var mlb_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
     
     var body: some View {
         Text("Personal Scoreboard")
             .font(.title)
             .multilineTextAlignment(.center)
-            .padding(.top)
+            .padding(.top).onAppear(perform: updateEventIds)
         
         Picker("Sport Type", selection: $sport_type) {
             ForEach(SportType.allCases, id: \.self) { this_type in
@@ -35,56 +38,32 @@ struct ContentView: View {
             Text("Loading").foregroundColor(.red)
         }
         
-        let current_event_ids = getCurrentEventList()
+        let gridItems = [GridItem(.fixed(275), spacing: 10, alignment: .center),
+                                 GridItem(.fixed(275), spacing: 0, alignment: .center)]
         
-        Text(current_event_ids.joined(separator: ", ")).onAppear(perform: updateEventIds)
+        let current_event_objs = getCurrentEventObjsList(sport_type: self.sport_type)
         
-        Text(nfl_event_objs["401220284"]?.event_info ?? "Loading 401220284")
-        
-        ForEach(Array(nfl_event_objs.keys), id: \.self) { event_id in
-            let this_event = nfl_event_objs[event_id]
-            EventView(event: this_event!)
-        }
-        
-        let lions = Team(full_name: "Detroit Lions", logo_url: "https://a.espncdn.com/i/teamlogos/nfl/500/det.png")
-        let rams = Team(full_name: "Los Angeles Rams", logo_url: "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png")
-        let clippers = Team(full_name: "LA Clippers", logo_url: "https://a.espncdn.com/i/teamlogos/nba/500/lac.png")
-        let lakers = Team(full_name: "Los Angeles Lakers", logo_url: "https://a.espncdn.com/i/teamlogos/nba/500/lal.png")
-        
-        let nfl_event = Event(id: "1", away_team: lions, home_team: rams, sport_type: SportType.nfl, away_score: "7", home_score: "10", status: "IN PROGRESS", status_string: "Q4 | 10:45", yardage_string: "4th and 5 at DET 35", possession: "AWAY")
-        
-        let nba_event = Event(id: "2", away_team: clippers, home_team: lakers, sport_type: SportType.nba, away_score: "94", home_score: "100", status: "FINAL", status_string: "Q4 | 24.5", yardage_string: "Not relevant", possession: "NONE")
-        
-        if self.sport_type == SportType.nfl {
-            Text("Hello, NFL!")
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            HStack{
-                EventView(event: nfl_event).padding(.leading)
-                Spacer()
-                EventView(event: nfl_event).padding(.trailing)
-            }.padding(.bottom)
-        } else {
-            Text("Hello, Not NFL!")
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            HStack{
-                EventView(event: nba_event).padding(.leading)
-                Spacer()
-                EventView(event: nba_event).padding(.trailing)
-            }.padding(.bottom)
+        ScrollView(.vertical) {
+            LazyVGrid(columns: gridItems, spacing: 10) {
+                ForEach(Array(current_event_objs.keys), id: \.self) { event_id in
+                    let this_event = current_event_objs[event_id]
+                    EventView(event: this_event!)
+                }
+            }.padding(5)
         }
     }
     
-    func getCurrentEventList() -> [String] {
-        if self.sport_type == SportType.nfl {
-            return self.nfl_events
-        } else if self.sport_type == SportType.nba {
-            return self.nba_events
-        } else if self.sport_type == SportType.nhl {
-            return self.nhl_events
-        } else if self.sport_type == SportType.mlb {
-            return self.mlb_events
+    func getCurrentEventObjsList(sport_type: SportType) -> Dictionary<String, Event> {
+        if sport_type == SportType.nfl {
+            return self.nfl_event_objs
+        } else if sport_type == SportType.nba {
+            return self.nba_event_objs
+        } else if sport_type == SportType.nhl {
+            return self.nhl_event_objs
+        } else if sport_type == SportType.mlb {
+            return self.mlb_event_objs
         } else {
-            return []
+            return Dictionary<String, Event>()
         }
     }
     
@@ -101,13 +80,36 @@ struct ContentView: View {
     }
     
     func renderEvents() {
-        for event_id in nfl_events {
-            let url = "http://127.0.0.1:5000/api/events/NFL/" + event_id
+        let BASE_URL = "http://127.0.0.1:5000/api/events"
+        for event_id in self.nfl_events {
+            let url = BASE_URL + "/NFL/" + event_id
             getEventInfo(url: url) { output in
                 let retrieved_id = output.id
                 self.nfl_event_objs[retrieved_id] = output
             }
         }
+        for event_id in self.nba_events {
+            let url = BASE_URL + "/NBA/" + event_id
+            getEventInfo(url: url) { output in
+                let retrieved_id = output.id
+                self.nba_event_objs[retrieved_id] = output
+            }
+        }
+        for event_id in self.nhl_events {
+            let url = BASE_URL + "/NHL/" + event_id
+            getEventInfo(url: url) { output in
+                let retrieved_id = output.id
+                self.nhl_event_objs[retrieved_id] = output
+            }
+        }
+        for event_id in self.mlb_events {
+            let url = BASE_URL + "/MLB/" + event_id
+            getEventInfo(url: url) { output in
+                let retrieved_id = output.id
+                self.mlb_event_objs[retrieved_id] = output
+            }
+        }
+
     }
 }
 

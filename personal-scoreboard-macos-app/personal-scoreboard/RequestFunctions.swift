@@ -11,7 +11,6 @@ import SwiftyJSON
 
 func getEventInfo(url: String, completionHandler : @escaping (Event) -> Void) {
     doGetRequest(url: url) { output in
-        print(output)
         //parsing id
         let event_id = output["id"].stringValue
         
