@@ -110,6 +110,7 @@ struct ContentView: View {
         self.nba_event_objs = Dictionary<String, Event>()
         self.nhl_event_objs = Dictionary<String, Event>()
         self.mlb_event_objs = Dictionary<String, Event>()
+        self.events_in_progress = []
     }
     
     func updateEventIds() {
