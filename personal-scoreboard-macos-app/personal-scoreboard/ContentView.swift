@@ -19,6 +19,7 @@ struct ContentView: View {
     @State var nhl_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
     @State var mlb_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
     @State var events_in_progress: [BareEvent] = []
+    @State var last_event_update: Date = Date()
     @State var timer: Timer?
     
     var body: some View {
@@ -49,7 +50,7 @@ struct ContentView: View {
                     Text("Refresh Events")
                 }.padding(.leading, 20).padding(.top, 10)
                 Spacer()
-                Text("Last Update Time Here").padding(.trailing, 20).padding(.top, 10)
+                Text("Last Updated Events: \(getFormattedUpdateTime())").padding(.trailing, 20).padding(.top, 10)
             }
             
             Picker("Sport Type", selection: $sport_type) {
@@ -89,6 +90,13 @@ struct ContentView: View {
                 }
             }
         }
+    }
+    
+    func getFormattedUpdateTime() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm E, d MMM y"
+        let last_update_string = formatter.string(from: self.last_event_update)
+        return last_update_string
     }
     
     func getCurrentEventObjsList(sport_type: SportType) -> Dictionary<String, Event> {
@@ -169,6 +177,7 @@ struct ContentView: View {
                 }
             }
             self.loading_event_info = false
+            self.last_event_update = Date()
             if !(self.timer != nil) {
                 self.timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) {_ in
                     updateEvents()
