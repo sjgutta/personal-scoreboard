@@ -22,50 +22,62 @@ struct ContentView: View {
     @State var timer: Timer?
     
     var body: some View {
-        HStack {
-            Button(action: {
-                print("Log Out")
-            }) {
-                Text("Log Out")
-            }.padding(.leading, 20).padding(.top, 10)
-            Spacer()
-            Text("Personal Scoreboard")
-                .font(.title)
-                .multilineTextAlignment(.center)
-                .padding(.top).onAppear(perform: updateEventIds)
-            Spacer()
-            Button(action: {
-                exit(-1)
-            }) {
-                Text("Quit App")
-            }.padding(.trailing, 20).padding(.top, 10)
-        }
-        
-        Picker("Sport Type", selection: $sport_type) {
-            ForEach(SportType.allCases, id: \.self) { this_type in
-                Text(this_type.rawValue).tag(this_type)
+        VStack {
+            HStack {
+                Button(action: {
+                    print("Log Out")
+                }) {
+                    Text("Log Out")
+                }.padding(.leading, 20).padding(.top, 10)
+                Spacer()
+                Text("Personal Scoreboard")
+                    .font(.title)
+                    .multilineTextAlignment(.center)
+                    .padding(.top).onAppear(perform: updateEventIds)
+                Spacer()
+                Button(action: {
+                    exit(-1)
+                }) {
+                    Text("Quit App")
+                }.padding(.trailing, 20).padding(.top, 10)
             }
-        }
-        .pickerStyle(SegmentedPickerStyle())
-        .labelsHidden()
-        .padding(.leading).padding(.trailing)
-        
-        if loading_event_info {
-            Text("Loading").foregroundColor(.red)
-        }
-        
-        let gridItems = [GridItem(.fixed(275), spacing: 10, alignment: .center),
-                                 GridItem(.fixed(275), spacing: 0, alignment: .center)]
-        
-        let current_event_objs = getCurrentEventObjsList(sport_type: self.sport_type)
-        
-        ScrollView(.vertical) {
-            LazyVGrid(columns: gridItems, spacing: 10) {
-                ForEach(Array(current_event_objs.keys), id: \.self) { event_id in
-                    let this_event = current_event_objs[event_id]
-                    EventView(event: this_event!)
+            
+            Picker("Sport Type", selection: $sport_type) {
+                ForEach(SportType.allCases, id: \.self) { this_type in
+                    Text(this_type.rawValue).tag(this_type)
                 }
-            }.padding(5)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .labelsHidden()
+            .padding(.leading).padding(.trailing)
+            
+            if loading_event_info {
+                Text("Loading").foregroundColor(.red)
+            }
+            
+            let gridItems = [GridItem(.fixed(275), spacing: 10, alignment: .center),
+                                     GridItem(.fixed(275), spacing: 0, alignment: .center)]
+            
+            let current_event_objs = getCurrentEventObjsList(sport_type: self.sport_type)
+            
+            ScrollView(.vertical) {
+                LazyVGrid(columns: gridItems, spacing: 10) {
+                    ForEach(Array(current_event_objs.keys), id: \.self) { event_id in
+                        let this_event = current_event_objs[event_id]
+                        EventView(event: this_event!)
+                    }
+                }.padding(5)
+            }
+        }.onReceive(NotificationCenter.default.publisher(for: NSPopover.willCloseNotification)) { _ in
+            self.timer?.invalidate()
+            self.timer = nil
+        }.onReceive(NotificationCenter.default.publisher(for: NSPopover.willShowNotification)) { _ in
+            if !(self.timer != nil) && !self.loading_event_info {
+                renderEvents()
+                self.timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) {_ in
+                    renderEvents()
+                }
+            }
         }
     }
     
@@ -101,7 +113,7 @@ struct ContentView: View {
     }
     
     func renderEvents() {
-        print("rendering events")
+        //print("rendering events")
         let BASE_URL = "http://127.0.0.1:5000/api/events"
         for event_id in self.nfl_events {
             let url = BASE_URL + "/NFL/" + event_id
