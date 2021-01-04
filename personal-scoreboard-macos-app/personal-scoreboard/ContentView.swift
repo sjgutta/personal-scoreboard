@@ -83,6 +83,11 @@ struct ContentView: View {
             self.timer?.invalidate()
             self.timer = nil
         }.onReceive(NotificationCenter.default.publisher(for: NSPopover.willShowNotification)) { _ in
+            let current_date = Date()
+            let diffComponents = Calendar.current.dateComponents([.hour], from: self.last_event_update, to: current_date)
+            if diffComponents.hour ?? 0 >= 12 {
+                updateEventIds()
+            }
             if !(self.timer != nil) && !self.loading_event_info {
                 updateEvents()
                 self.timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) {_ in
