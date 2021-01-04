@@ -63,3 +63,13 @@ class Event {
         self.possession = possession
     }
 }
+
+class BareEvent {
+    var id: String
+    var sport_type: SportType
+    
+    init(id: String, sport_type: SportType) {
+        self.id = id
+        self.sport_type = sport_type
+    }
+}

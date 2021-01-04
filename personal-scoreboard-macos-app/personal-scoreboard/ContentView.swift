@@ -10,7 +10,6 @@ import SwiftUI
 struct ContentView: View {
     @State var sport_type: SportType = SportType.nfl
     @State var loading_event_info: Bool = true
-    @State var trigger_refresh: Bool = true
     @State var nfl_events: [String] = []
     @State var nba_events: [String] = []
     @State var nhl_events: [String] = []
@@ -19,6 +18,7 @@ struct ContentView: View {
     @State var nba_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
     @State var nhl_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
     @State var mlb_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
+    @State var events_in_progress: [BareEvent] = []
     @State var timer: Timer?
     
     var body: some View {
@@ -40,6 +40,16 @@ struct ContentView: View {
                 }) {
                     Text("Quit App")
                 }.padding(.trailing, 20).padding(.top, 10)
+            }
+            
+            HStack {
+                Button(action: {
+                    updateEventIds()
+                }) {
+                    Text("Refresh Events")
+                }.padding(.leading, 20).padding(.top, 10)
+                Spacer()
+                Text("Last Update Time Here").padding(.trailing, 20).padding(.top, 10)
             }
             
             Picker("Sport Type", selection: $sport_type) {
@@ -73,9 +83,9 @@ struct ContentView: View {
             self.timer = nil
         }.onReceive(NotificationCenter.default.publisher(for: NSPopover.willShowNotification)) { _ in
             if !(self.timer != nil) && !self.loading_event_info {
-                renderEvents()
+                updateEvents()
                 self.timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) {_ in
-                    renderEvents()
+                    updateEvents()
                 }
             }
         }
@@ -95,52 +105,93 @@ struct ContentView: View {
         }
     }
     
+    func resetObjLists() {
+        self.nfl_event_objs = Dictionary<String, Event>()
+        self.nba_event_objs = Dictionary<String, Event>()
+        self.nhl_event_objs = Dictionary<String, Event>()
+        self.mlb_event_objs = Dictionary<String, Event>()
+    }
+    
     func updateEventIds() {
+        print("updating event ids")
+        self.loading_event_info = true
+        resetObjLists()
         let url = "PLACEHOLDER URL"
         getUserEvents(url: url) { result in
             self.nfl_events = result["NFL"] ?? []
             self.nba_events = result["NBA"] ?? []
             self.nhl_events = result["NHL"] ?? []
             self.mlb_events = result["MLB"] ?? []
+            let BASE_URL = "http://127.0.0.1:5000/api/events"
+            for event_id in self.nfl_events {
+                let url = BASE_URL + "/NFL/" + event_id
+                getEventInfo(url: url) { output in
+                    let retrieved_id = output.id
+                    if output.status == "IN PROGRESS" {
+                        let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.nfl)
+                        self.events_in_progress.append(bare_event)
+                    }
+                    self.nfl_event_objs[retrieved_id] = output
+                }
+            }
+            for event_id in self.nba_events {
+                let url = BASE_URL + "/NBA/" + event_id
+                getEventInfo(url: url) { output in
+                    let retrieved_id = output.id
+                    if output.status == "IN PROGRESS" {
+                        let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.nba)
+                        self.events_in_progress.append(bare_event)
+                    }
+                    self.nba_event_objs[retrieved_id] = output
+                }
+            }
+            for event_id in self.nhl_events {
+                let url = BASE_URL + "/NHL/" + event_id
+                getEventInfo(url: url) { output in
+                    let retrieved_id = output.id
+                    if output.status == "IN PROGRESS" {
+                        let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.nhl)
+                        self.events_in_progress.append(bare_event)
+                    }
+                    self.nhl_event_objs[retrieved_id] = output
+                }
+            }
+            for event_id in self.mlb_events {
+                let url = BASE_URL + "/MLB/" + event_id
+                getEventInfo(url: url) { output in
+                    let retrieved_id = output.id
+                    if output.status == "IN PROGRESS" {
+                        let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.mlb)
+                        self.events_in_progress.append(bare_event)
+                    }
+                    self.mlb_event_objs[retrieved_id] = output
+                }
+            }
             self.loading_event_info = false
             if !(self.timer != nil) {
-                renderEvents()
                 self.timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) {_ in
-                    renderEvents()
+                    updateEvents()
                 }
             }
         }
     }
     
-    func renderEvents() {
-        //print("rendering events")
+    func updateEvents() {
+        print("updating events")
         let BASE_URL = "http://127.0.0.1:5000/api/events"
-        for event_id in self.nfl_events {
-            let url = BASE_URL + "/NFL/" + event_id
+        for event in self.events_in_progress {
+            let url = BASE_URL + "/\(event.sport_type.rawValue)/" + event.id
             getEventInfo(url: url) { output in
                 let retrieved_id = output.id
-                self.nfl_event_objs[retrieved_id] = output
-            }
-        }
-        for event_id in self.nba_events {
-            let url = BASE_URL + "/NBA/" + event_id
-            getEventInfo(url: url) { output in
-                let retrieved_id = output.id
-                self.nba_event_objs[retrieved_id] = output
-            }
-        }
-        for event_id in self.nhl_events {
-            let url = BASE_URL + "/NHL/" + event_id
-            getEventInfo(url: url) { output in
-                let retrieved_id = output.id
-                self.nhl_event_objs[retrieved_id] = output
-            }
-        }
-        for event_id in self.mlb_events {
-            let url = BASE_URL + "/MLB/" + event_id
-            getEventInfo(url: url) { output in
-                let retrieved_id = output.id
-                self.mlb_event_objs[retrieved_id] = output
+                if event.sport_type == SportType.nfl {
+                    self.nfl_event_objs[retrieved_id] = output
+                } else if event.sport_type == SportType.nba {
+                    self.nba_event_objs[retrieved_id] = output
+                } else if event.sport_type == SportType.nhl {
+                    self.nhl_event_objs[retrieved_id] = output
+                } else if event.sport_type == SportType.mlb {
+                    self.mlb_event_objs[retrieved_id] = output
+                }
             }
         }
     }
