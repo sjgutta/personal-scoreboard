@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct EventView: View {
-    @State var event: Event
+    var event: Event
     
     var body: some View {
         VStack {
+            let espn_url = self.event.espn_url
             HStack {
-                Text(self.event.status_string).padding(.leading)
+                Link(destination: URL(string: espn_url)!) {
+                    Image(systemName: "link.circle.fill").foregroundColor(.blue)
+                }.padding(.leading, 5)
+                Text(self.event.status_string)
                 Spacer()
                 Text(self.event.yardage_string).padding(.trailing)
             }.padding(.top, 10)

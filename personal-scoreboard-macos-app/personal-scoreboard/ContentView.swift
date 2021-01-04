@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State var sport_type: SportType = SportType.nfl
     @State var loading_event_info: Bool = true
+    @State var trigger_refresh: Bool = true
     @State var nfl_events: [String] = []
     @State var nba_events: [String] = []
     @State var nhl_events: [String] = []
@@ -18,6 +19,7 @@ struct ContentView: View {
     @State var nba_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
     @State var nhl_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
     @State var mlb_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
+    @State var timer: Timer?
     
     var body: some View {
         Text("Personal Scoreboard")
@@ -75,11 +77,17 @@ struct ContentView: View {
             self.nhl_events = result["NHL"] ?? []
             self.mlb_events = result["MLB"] ?? []
             self.loading_event_info = false
-            renderEvents()
+            if !(self.timer != nil) {
+                renderEvents()
+                self.timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) {_ in
+                    renderEvents()
+                }
+            }
         }
     }
     
     func renderEvents() {
+        print("rendering events")
         let BASE_URL = "http://127.0.0.1:5000/api/events"
         for event_id in self.nfl_events {
             let url = BASE_URL + "/NFL/" + event_id
@@ -109,7 +117,6 @@ struct ContentView: View {
                 self.mlb_event_objs[retrieved_id] = output
             }
         }
-
     }
 }
 

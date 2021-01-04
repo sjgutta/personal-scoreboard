@@ -32,7 +32,7 @@ class Event {
     }
     
     var espn_url: String {
-        let BASE = "https://www.espn.com/"
+        let BASE = "https://www.espn.com"
         if sport_type == SportType.nfl {
             return BASE + "/nfl/game/_/gameId/\(id)"
         } else if sport_type == SportType.nba {
