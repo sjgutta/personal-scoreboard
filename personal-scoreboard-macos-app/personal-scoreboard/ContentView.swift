@@ -22,10 +22,24 @@ struct ContentView: View {
     @State var timer: Timer?
     
     var body: some View {
-        Text("Personal Scoreboard")
-            .font(.title)
-            .multilineTextAlignment(.center)
-            .padding(.top).onAppear(perform: updateEventIds)
+        HStack {
+            Button(action: {
+                print("Log Out")
+            }) {
+                Text("Log Out")
+            }.padding(.leading, 20).padding(.top, 10)
+            Spacer()
+            Text("Personal Scoreboard")
+                .font(.title)
+                .multilineTextAlignment(.center)
+                .padding(.top).onAppear(perform: updateEventIds)
+            Spacer()
+            Button(action: {
+                exit(-1)
+            }) {
+                Text("Quit App")
+            }.padding(.trailing, 20).padding(.top, 10)
+        }
         
         Picker("Sport Type", selection: $sport_type) {
             ForEach(SportType.allCases, id: \.self) { this_type in
