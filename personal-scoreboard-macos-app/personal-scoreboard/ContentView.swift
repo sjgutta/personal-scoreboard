@@ -33,7 +33,7 @@ struct ContentView: View {
                 VStack {
                     HStack {
                         Button(action: {
-                            print("Log Out")
+                            logout()
                         }) {
                             Text("Log Out")
                         }.padding(.leading, 20).padding(.top, 10)
@@ -143,6 +143,13 @@ struct ContentView: View {
                                 .stroke(Color.black, lineWidth: 1)
                         )
                 }.padding(.leading, 75).padding(.trailing, 75)
+                VStack {
+                    Button(action: {
+                        exit(-1)
+                    }) {
+                        Text("Quit App")
+                    }
+                }.padding(.top, 50)
                 Text("")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
@@ -150,7 +157,13 @@ struct ContentView: View {
     }
     
     func authenticate() {
-        return
+        self.logged_in = true
+    }
+    
+    func logout() {
+        self.logged_in = false
+        self.password = ""
+        self.username = ""
     }
     
     func getFormattedUpdateTime() -> String {
