@@ -141,7 +141,7 @@ struct ContentView: View {
                 let url = BASE_URL + "/NFL/" + event_id
                 getEventInfo(url: url) { output in
                     let retrieved_id = output.id
-                    if output.status == "IN PROGRESS" {
+                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
                         let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.nfl)
                         self.events_in_progress.append(bare_event)
                     }
@@ -152,7 +152,7 @@ struct ContentView: View {
                 let url = BASE_URL + "/NBA/" + event_id
                 getEventInfo(url: url) { output in
                     let retrieved_id = output.id
-                    if output.status == "IN PROGRESS" {
+                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
                         let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.nba)
                         self.events_in_progress.append(bare_event)
                     }
@@ -163,7 +163,7 @@ struct ContentView: View {
                 let url = BASE_URL + "/NHL/" + event_id
                 getEventInfo(url: url) { output in
                     let retrieved_id = output.id
-                    if output.status == "IN PROGRESS" {
+                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
                         let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.nhl)
                         self.events_in_progress.append(bare_event)
                     }
@@ -174,7 +174,7 @@ struct ContentView: View {
                 let url = BASE_URL + "/MLB/" + event_id
                 getEventInfo(url: url) { output in
                     let retrieved_id = output.id
-                    if output.status == "IN PROGRESS" {
+                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
                         let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.mlb)
                         self.events_in_progress.append(bare_event)
                     }
