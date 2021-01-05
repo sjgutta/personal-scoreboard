@@ -25,7 +25,8 @@ struct ContentView: View {
     //auth related state info
     @State var logged_in: Bool = false
     @State var username: String = ""
-    @State var password: String = ""
+    @State private var password: String = ""
+    @State var auth_error: String = ""
     
     var body: some View {
         VStack {
@@ -121,7 +122,7 @@ struct ContentView: View {
                             Text("Password")
                             Spacer()
                         }.padding(.top, 15)
-                        TextField("Enter Password...", text: $password)
+                        SecureField("Enter Password...", text: $password)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                         VStack {
                             Button(action: {
@@ -136,6 +137,7 @@ struct ContentView: View {
                                 )
                             }.buttonStyle(PlainButtonStyle())
                         }.padding(.top)
+                        Text(self.auth_error).padding(.top).padding(.bottom).foregroundColor(.red)
                     }
                     .padding()
                     .overlay(
@@ -157,7 +159,17 @@ struct ContentView: View {
     }
     
     func authenticate() {
-        self.logged_in = true
+        // in future, real authentication will take place here using backend endpoint
+        if self.username == "test" && self.password == "test" {
+            self.auth_error = ""
+            self.logged_in = true
+        } else if self.username == "" {
+            self.auth_error = "Must enter a username."
+        } else if self.password == "" {
+            self.auth_error = "Must enter a password"
+        } else {
+            self.auth_error = "The credentials you entered were invalid."
+        }
     }
     
     func logout() {
