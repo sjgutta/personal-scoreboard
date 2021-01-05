@@ -22,79 +22,135 @@ struct ContentView: View {
     @State var last_event_update: Date = Date()
     @State var timer: Timer?
     
+    //auth related state info
+    @State var logged_in: Bool = false
+    @State var username: String = ""
+    @State var password: String = ""
+    
     var body: some View {
         VStack {
-            HStack {
-                Button(action: {
-                    print("Log Out")
-                }) {
-                    Text("Log Out")
-                }.padding(.leading, 20).padding(.top, 10)
-                Spacer()
-                Text("Personal Scoreboard")
-                    .font(.title)
-                    .multilineTextAlignment(.center)
-                    .padding(.top).onAppear(perform: updateEventIds)
-                Spacer()
-                Button(action: {
-                    exit(-1)
-                }) {
-                    Text("Quit App")
-                }.padding(.trailing, 20).padding(.top, 10)
-            }
-            
-            HStack {
-                Button(action: {
-                    updateEventIds()
-                }) {
-                    Text("Refresh Events")
-                }.padding(.leading, 20).padding(.top, 10)
-                Spacer()
-                Text("Last Updated Events: \(getFormattedUpdateTime())").padding(.trailing, 20).padding(.top, 10)
-            }
-            
-            Picker("Sport Type", selection: $sport_type) {
-                ForEach(SportType.allCases, id: \.self) { this_type in
-                    Text(this_type.rawValue).tag(this_type)
-                }
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            .labelsHidden()
-            .padding(.leading).padding(.trailing)
-            
-            if loading_event_info {
-                Text("Loading").foregroundColor(.red)
-            }
-            
-            let gridItems = [GridItem(.fixed(275), spacing: 10, alignment: .center),
-                                     GridItem(.fixed(275), spacing: 0, alignment: .center)]
-            
-            let current_event_objs = getCurrentEventObjsList(sport_type: self.sport_type)
-            
-            ScrollView(.vertical) {
-                LazyVGrid(columns: gridItems, spacing: 10) {
-                    ForEach(Array(current_event_objs.keys), id: \.self) { event_id in
-                        let this_event = current_event_objs[event_id]
-                        EventView(event: this_event!)
+            if self.logged_in {
+                VStack {
+                    HStack {
+                        Button(action: {
+                            print("Log Out")
+                        }) {
+                            Text("Log Out")
+                        }.padding(.leading, 20).padding(.top, 10)
+                        Spacer()
+                        Text("Personal Scoreboard")
+                            .font(.title)
+                            .multilineTextAlignment(.center)
+                            .padding(.top).onAppear(perform: updateEventIds)
+                        Spacer()
+                        Button(action: {
+                            exit(-1)
+                        }) {
+                            Text("Quit App")
+                        }.padding(.trailing, 20).padding(.top, 10)
                     }
-                }.padding(5)
-            }
-        }.onReceive(NotificationCenter.default.publisher(for: NSPopover.willCloseNotification)) { _ in
-            self.timer?.invalidate()
-            self.timer = nil
-        }.onReceive(NotificationCenter.default.publisher(for: NSPopover.willShowNotification)) { _ in
-            let current_date = Date()
-            let diffComponents = Calendar.current.dateComponents([.hour], from: self.last_event_update, to: current_date)
-            if diffComponents.hour ?? 0 >= 12 {
-                updateEventIds()
-            }
-            if !(self.timer != nil) && !self.loading_event_info {
-                updateEvents()
-                self.timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) {_ in
-                    updateEvents()
+                    
+                    HStack {
+                        Button(action: {
+                            updateEventIds()
+                        }) {
+                            Text("Refresh Events")
+                        }.padding(.leading, 20).padding(.top, 10)
+                        Spacer()
+                        Text("Last Updated Events: \(getFormattedUpdateTime())").padding(.trailing, 20).padding(.top, 10)
+                    }
+                    
+                    Picker("Sport Type", selection: $sport_type) {
+                        ForEach(SportType.allCases, id: \.self) { this_type in
+                            Text(this_type.rawValue).tag(this_type)
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .labelsHidden()
+                    .padding(.leading).padding(.trailing)
+                    
+                    if loading_event_info {
+                        Text("Loading").foregroundColor(.red)
+                    }
+                    
+                    let gridItems = [GridItem(.fixed(275), spacing: 10, alignment: .center),
+                                             GridItem(.fixed(275), spacing: 0, alignment: .center)]
+                    
+                    let current_event_objs = getCurrentEventObjsList(sport_type: self.sport_type)
+                    
+                    ScrollView(.vertical) {
+                        LazyVGrid(columns: gridItems, spacing: 10) {
+                            ForEach(Array(current_event_objs.keys), id: \.self) { event_id in
+                                let this_event = current_event_objs[event_id]
+                                EventView(event: this_event!)
+                            }
+                        }.padding(5)
+                    }
+                }.onReceive(NotificationCenter.default.publisher(for: NSPopover.willCloseNotification)) { _ in
+                    self.timer?.invalidate()
+                    self.timer = nil
+                }.onReceive(NotificationCenter.default.publisher(for: NSPopover.willShowNotification)) { _ in
+                    let current_date = Date()
+                    let diffComponents = Calendar.current.dateComponents([.hour], from: self.last_event_update, to: current_date)
+                    if diffComponents.hour ?? 0 >= 12 {
+                        updateEventIds()
+                    }
+                    if !(self.timer != nil) && !self.loading_event_info {
+                        updateEvents()
+                        self.timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) {_ in
+                            updateEvents()
+                        }
+                    }
                 }
+            } else {
+                Text("Personal Scoreboard")
+                    .font(.largeTitle)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 50).padding(.bottom, 50)
+                VStack {
+                    VStack {
+                        Text("Login")
+                            .font(.title)
+                        HStack {
+                            Text("Username")
+                            Spacer()
+                        }.padding(.top, 25)
+                        TextField("Enter Username...", text: $username)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                        HStack {
+                            Text("Password")
+                            Spacer()
+                        }.padding(.top, 15)
+                        TextField("Enter Password...", text: $password)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                        VStack {
+                            Button(action: {
+                                authenticate()
+                            }) {
+                                HStack {
+                                    Text("Login")
+                                }.padding(.top, 10).padding(.bottom, 10).padding(.trailing, 20).padding(.leading, 20).foregroundColor(.blue)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10.0)
+                                        .stroke(Color.blue, lineWidth: 2.0)
+                                )
+                            }.buttonStyle(PlainButtonStyle())
+                        }.padding(.top)
+                    }
+                    .padding()
+                    .overlay(
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(Color.black, lineWidth: 1)
+                        )
+                }.padding(.leading, 75).padding(.trailing, 75)
+                Text("")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
+    }
+    
+    func authenticate() {
+        return
     }
     
     func getFormattedUpdateTime() -> String {
