@@ -75,8 +75,8 @@ def get_espn_event_info(sport, event_id):
 @bp.route('/users/events', methods=['POST'])
 def get_user_bare_events():
     data = request.get_json()
-    username = data["username"]
-    password = data["password"]
+    username = data.get("username")
+    password = data.get("password")
     user = User.get_or_none(username=username)
     if user and user.check_password(password):
         user_events = user.api_get_current_scores()
