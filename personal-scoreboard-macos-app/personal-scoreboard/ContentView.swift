@@ -98,7 +98,7 @@ struct ContentView: View {
                     if diffComponents.hour ?? 0 >= 12 {
                         updateEventIds()
                     }
-                    if !(self.timer != nil) && !self.loading_event_info {
+                    if !(self.timer != nil) && !self.loading_event_info && !events_in_progress.isEmpty {
                         updateEvents()
                         self.timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) {_ in
                             updateEvents()
