@@ -219,9 +219,8 @@ struct ContentView: View {
         print("updating event ids")
         self.loading_event_info = true
         resetObjLists()
-        //TODO: make password hashed like in backend
-        let url = self.BASE_URL + "/api/users/events/\(self.username)/\(self.password)"
-        getUserEvents(url: url) { result in
+        let url = self.BASE_URL + "/api/users/events"
+        getUserEvents(url: url, username: self.username, password: self.password) { result in
             self.nfl_events = result["NFL"] ?? []
             self.nba_events = result["NBA"] ?? []
             self.nhl_events = result["NHL"] ?? []

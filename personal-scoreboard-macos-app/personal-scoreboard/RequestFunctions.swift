@@ -59,8 +59,9 @@ func getEventInfo(url: String, completionHandler : @escaping (Event) -> Void) {
     }
 }
 
-func getUserEvents(url: String, completionHandler : @escaping (Dictionary<String, [String]>) -> Void) {
-    doGetRequest(url: url) { output in
+func getUserEvents(url: String, username: String, password: String, completionHandler : @escaping (Dictionary<String, [String]>) -> Void) {
+    let auth_parameters = ["username": username, "password": password]
+    doPostRequest(url: url, parameters: auth_parameters) { output in
         var result = Dictionary<String, [String]>()
         for sport in SportType.allCases {
             result[sport.rawValue] = [String]()
@@ -82,6 +83,18 @@ func getUserEvents(url: String, completionHandler : @escaping (Dictionary<String
 
 func doGetRequest(url: String, completionHandler : @escaping (JSON) -> Void){
     AF.request(url, method: .get).validate().responseJSON { response in
+        switch response.result {
+        case .success(let value):
+            let json = JSON(value)
+            completionHandler(json)
+        case .failure(let error):
+            print(error)
+        }
+    }
+}
+
+func doPostRequest(url: String, parameters: Dictionary<String, String>, completionHandler : @escaping (JSON) -> Void){
+    AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseJSON { response in
         switch response.result {
         case .success(let value):
             let json = JSON(value)
