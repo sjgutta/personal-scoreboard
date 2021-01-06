@@ -1,3 +1,5 @@
+from flask_login import current_user
+import os
 from app.api import bp
 from services.espn.sports import Sport
 from app.models.events import get_espn_event_data, NHLEvent, MLBEvent, NFLEvent, NBAEvent
@@ -61,15 +63,29 @@ def parse_event_data(sport_type, event_id, event_data):
         return NHLEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status)
 
 
-@bp.route('/events/<sport>/<int:event_id>', methods=['GET'])
+@bp.route('/events/<sport>/<int:event_id>', methods=['GET', 'POST'])
 def get_espn_event_info(sport, event_id):
-    sport_enum = Sport.get_sport_type_by_value(sport)
-    event_data = get_espn_event_data(event_id, sport_enum)
-    event = parse_event_data(sport_enum, event_id, event_data)
-    if event is None:
-        return {}
+    if request.method == "GET" and current_user.is_authenticated:
+        sport_enum = Sport.get_sport_type_by_value(sport)
+        event_data = get_espn_event_data(event_id, sport_enum)
+        event = parse_event_data(sport_enum, event_id, event_data)
+        if event is None:
+            return {}
+        else:
+            return event.to_dict()
+    elif request.method == "POST":
+        data = request.get_json()
+        if data.get("secret_key") != os.environ.get('SECRET_KEY'):
+            return "Not Authorized", 401
+        sport_enum = Sport.get_sport_type_by_value(sport)
+        event_data = get_espn_event_data(event_id, sport_enum)
+        event = parse_event_data(sport_enum, event_id, event_data)
+        if event is None:
+            return {}
+        else:
+            return event.to_dict()
     else:
-        return event.to_dict()
+        return "Bad request", 400
 
 
 @bp.route('/users/events', methods=['POST'])
@@ -77,6 +93,8 @@ def get_user_bare_events():
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
+    if data.get("secret_key") != os.environ.get('SECRET_KEY'):
+        return "Not Authorized", 401
     user = User.get_or_none(username=username)
     if user and user.check_password(password):
         user_events = user.api_get_current_scores()

@@ -24,9 +24,10 @@ struct ContentView: View {
     
     //auth related state info
     @State var logged_in: Bool = false
-    @State var username: String = ""
+    @State private var username: String = ""
     @State private var password: String = ""
     @State var auth_error: String = ""
+    @State private var request_key: String = ""
     
     let BASE_URL: String = "http://127.0.0.1:5000"
     
@@ -220,7 +221,7 @@ struct ContentView: View {
         self.loading_event_info = true
         resetObjLists()
         let url = self.BASE_URL + "/api/users/events"
-        getUserEvents(url: url, username: self.username, password: self.password) { result in
+        getUserEvents(url: url, username: self.username, password: self.password, request_key: self.request_key) { result in
             self.nfl_events = result["NFL"] ?? []
             self.nba_events = result["NBA"] ?? []
             self.nhl_events = result["NHL"] ?? []
@@ -228,7 +229,7 @@ struct ContentView: View {
             let BASE_EVENT_URL = self.BASE_URL + "/api/events"
             for event_id in self.nfl_events {
                 let url = BASE_EVENT_URL + "/NFL/" + event_id
-                getEventInfo(url: url) { output in
+                getEventInfo(url: url, request_key: self.request_key) { output in
                     let retrieved_id = output.id
                     if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
                         let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.nfl)
@@ -239,7 +240,7 @@ struct ContentView: View {
             }
             for event_id in self.nba_events {
                 let url = BASE_EVENT_URL + "/NBA/" + event_id
-                getEventInfo(url: url) { output in
+                getEventInfo(url: url, request_key: self.request_key) { output in
                     let retrieved_id = output.id
                     if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
                         let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.nba)
@@ -250,7 +251,7 @@ struct ContentView: View {
             }
             for event_id in self.nhl_events {
                 let url = BASE_EVENT_URL + "/NHL/" + event_id
-                getEventInfo(url: url) { output in
+                getEventInfo(url: url, request_key: self.request_key) { output in
                     let retrieved_id = output.id
                     if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
                         let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.nhl)
@@ -261,7 +262,7 @@ struct ContentView: View {
             }
             for event_id in self.mlb_events {
                 let url = BASE_EVENT_URL + "/MLB/" + event_id
-                getEventInfo(url: url) { output in
+                getEventInfo(url: url, request_key: self.request_key) { output in
                     let retrieved_id = output.id
                     if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
                         let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.mlb)
@@ -285,7 +286,7 @@ struct ContentView: View {
         let BASE_EVENT_URL = self.BASE_URL + "/api/events"
         for event in self.events_in_progress {
             let url = BASE_EVENT_URL + "/\(event.sport_type.rawValue)/" + event.id
-            getEventInfo(url: url) { output in
+            getEventInfo(url: url, request_key: self.request_key) { output in
                 let retrieved_id = output.id
                 if event.sport_type == SportType.nfl {
                     self.nfl_event_objs[retrieved_id] = output

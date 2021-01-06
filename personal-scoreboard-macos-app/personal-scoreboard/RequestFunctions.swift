@@ -9,8 +9,9 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 
-func getEventInfo(url: String, completionHandler : @escaping (Event) -> Void) {
-    doGetRequest(url: url) { output in
+func getEventInfo(url: String, request_key: String, completionHandler : @escaping (Event) -> Void) {
+    let request_parameters = ["secret_key": request_key]
+    doPostRequest(url: url, parameters: request_parameters) { output in
         //parsing id
         let event_id = output["id"].stringValue
         
@@ -59,8 +60,8 @@ func getEventInfo(url: String, completionHandler : @escaping (Event) -> Void) {
     }
 }
 
-func getUserEvents(url: String, username: String, password: String, completionHandler : @escaping (Dictionary<String, [String]>) -> Void) {
-    let auth_parameters = ["username": username, "password": password]
+func getUserEvents(url: String, username: String, password: String, request_key: String, completionHandler : @escaping (Dictionary<String, [String]>) -> Void) {
+    let auth_parameters = ["username": username, "password": password, "secret_key": request_key]
     doPostRequest(url: url, parameters: auth_parameters) { output in
         var result = Dictionary<String, [String]>()
         for sport in SportType.allCases {
@@ -100,6 +101,7 @@ func doPostRequest(url: String, parameters: Dictionary<String, String>, completi
             let json = JSON(value)
             completionHandler(json)
         case .failure(let error):
+            completionHandler(["error": error])
             print(error)
         }
     }
