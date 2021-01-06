@@ -28,6 +28,8 @@ struct ContentView: View {
     @State private var password: String = ""
     @State var auth_error: String = ""
     
+    let BASE_URL: String = "http://127.0.0.1:5000"
+    
     var body: some View {
         VStack {
             if self.logged_in {
@@ -176,6 +178,12 @@ struct ContentView: View {
         self.logged_in = false
         self.password = ""
         self.username = ""
+        
+        //must stop timer as well
+        if self.timer != nil {
+            self.timer?.invalidate()
+            self.timer = nil
+        }
     }
     
     func getFormattedUpdateTime() -> String {
@@ -211,15 +219,16 @@ struct ContentView: View {
         print("updating event ids")
         self.loading_event_info = true
         resetObjLists()
-        let url = "PLACEHOLDER URL"
+        //TODO: make password hashed like in backend
+        let url = self.BASE_URL + "/api/users/events/\(self.username)/\(self.password)"
         getUserEvents(url: url) { result in
             self.nfl_events = result["NFL"] ?? []
             self.nba_events = result["NBA"] ?? []
             self.nhl_events = result["NHL"] ?? []
             self.mlb_events = result["MLB"] ?? []
-            let BASE_URL = "http://127.0.0.1:5000/api/events"
+            let BASE_EVENT_URL = self.BASE_URL + "/api/events"
             for event_id in self.nfl_events {
-                let url = BASE_URL + "/NFL/" + event_id
+                let url = BASE_EVENT_URL + "/NFL/" + event_id
                 getEventInfo(url: url) { output in
                     let retrieved_id = output.id
                     if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
@@ -230,7 +239,7 @@ struct ContentView: View {
                 }
             }
             for event_id in self.nba_events {
-                let url = BASE_URL + "/NBA/" + event_id
+                let url = BASE_EVENT_URL + "/NBA/" + event_id
                 getEventInfo(url: url) { output in
                     let retrieved_id = output.id
                     if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
@@ -241,7 +250,7 @@ struct ContentView: View {
                 }
             }
             for event_id in self.nhl_events {
-                let url = BASE_URL + "/NHL/" + event_id
+                let url = BASE_EVENT_URL + "/NHL/" + event_id
                 getEventInfo(url: url) { output in
                     let retrieved_id = output.id
                     if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
@@ -252,7 +261,7 @@ struct ContentView: View {
                 }
             }
             for event_id in self.mlb_events {
-                let url = BASE_URL + "/MLB/" + event_id
+                let url = BASE_EVENT_URL + "/MLB/" + event_id
                 getEventInfo(url: url) { output in
                     let retrieved_id = output.id
                     if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
@@ -274,9 +283,9 @@ struct ContentView: View {
     
     func updateEvents() {
         print("updating events")
-        let BASE_URL = "http://127.0.0.1:5000/api/events"
+        let BASE_EVENT_URL = self.BASE_URL + "/api/events"
         for event in self.events_in_progress {
-            let url = BASE_URL + "/\(event.sport_type.rawValue)/" + event.id
+            let url = BASE_EVENT_URL + "/\(event.sport_type.rawValue)/" + event.id
             getEventInfo(url: url) { output in
                 let retrieved_id = output.id
                 if event.sport_type == SportType.nfl {
