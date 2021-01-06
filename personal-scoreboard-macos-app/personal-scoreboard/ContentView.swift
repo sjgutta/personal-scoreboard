@@ -162,16 +162,22 @@ struct ContentView: View {
     }
     
     func authenticate() {
-        // in future, real authentication will take place here using backend endpoint
-        if self.username == "test" && self.password == "test" {
-            self.auth_error = ""
-            self.logged_in = true
-        } else if self.username == "" {
+        if self.username == "" {
             self.auth_error = "Must enter a username."
         } else if self.password == "" {
             self.auth_error = "Must enter a password"
         } else {
-            self.auth_error = "The credentials you entered were invalid."
+            self.auth_error = "Authenticating..."
+            let url = self.BASE_URL + "/api/auth/login"
+            loginUser(url: url, username: self.username, password: self.password) { result in
+                if result["success"].exists() {
+                    self.request_key = result["success"].stringValue
+                    self.auth_error = ""
+                    self.logged_in = true
+                } else {
+                    self.auth_error = "The credentials you entered were invalid."
+                }
+            }
         }
     }
     

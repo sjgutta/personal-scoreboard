@@ -9,6 +9,13 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 
+func loginUser(url: String, username: String, password: String, completionHandler : @escaping (JSON) -> Void) {
+    let auth_parameters = ["username": username, "password": password]
+    doPostRequest(url: url, parameters: auth_parameters) { output in
+        completionHandler(output)
+    }
+}
+
 func getEventInfo(url: String, request_key: String, completionHandler : @escaping (Event) -> Void) {
     let request_parameters = ["secret_key": request_key]
     doPostRequest(url: url, parameters: request_parameters) { output in
