@@ -78,7 +78,7 @@ def create_app():
 
     @app.after_request
     def after_request(response):
-        if "/api/events/" in request.path:
+        if "/api/events/" in request.path and db.is_closed():
             return response
         db.close()
         return response
