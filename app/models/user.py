@@ -22,7 +22,6 @@ class User(Model, UserMixin):
         database = db
 
     def set_password(self, password):
-        print(f"generating hash using {password}")
         self.password_hash = generate_password_hash(password)
         self.save()
 
