@@ -29,6 +29,8 @@ struct ContentView: View {
     @State var auth_error: String = ""
     @State private var request_key: String = ""
     
+    @State var showing_help: Bool = false
+    
     let BASE_URL: String = "http://127.0.0.1:5000"
     
     var body: some View {
@@ -56,10 +58,19 @@ struct ContentView: View {
                     
                     HStack {
                         Button(action: {
+                            self.showing_help = !self.showing_help
+                        }) {
+                            if self.showing_help{
+                                Text("Hide Help")
+                            } else {
+                                Text("Show Help")
+                            }
+                        }.padding(.leading, 20).padding(.top, 10)
+                        Button(action: {
                             updateEventIds()
                         }) {
                             Text("Refresh Events")
-                        }.padding(.leading, 20).padding(.top, 10)
+                        }.padding(.leading, 10).padding(.top, 10)
                         Spacer()
                         Text("Last Updated Events: \(getFormattedUpdateTime())").padding(.trailing, 20).padding(.top, 10)
                     }
@@ -76,19 +87,29 @@ struct ContentView: View {
                     if loading_event_info {
                         Text("Loading").foregroundColor(.red)
                     }
-                    
-                    let gridItems = [GridItem(.fixed(275), spacing: 10, alignment: .center),
-                                             GridItem(.fixed(275), spacing: 0, alignment: .center)]
-                    
-                    let current_event_objs = getCurrentEventObjsList(sport_type: self.sport_type)
-                    
-                    ScrollView(.vertical) {
-                        LazyVGrid(columns: gridItems, spacing: 10) {
-                            ForEach(Array(current_event_objs.keys), id: \.self) { event_id in
-                                let this_event = current_event_objs[event_id]
-                                EventView(event: this_event!)
-                            }
-                        }.padding(5)
+                    VStack {
+                        if self.showing_help {
+                            Text("FAQs").font(.title).padding(.top, 50)
+                            HelpView().frame(width: 500, height: 200, alignment: .leading).padding(.top, 20).padding(.bottom, 20)
+                            Text("Press 'Hide Help' above to view scores again.").font(.headline).bold().padding(.top, 25)
+                            Text("").frame(maxWidth: .infinity, maxHeight: .infinity)
+                        } else {
+                            let gridItems = [GridItem(.fixed(275), spacing: 10, alignment: .center),
+                                                     GridItem(.fixed(275), spacing: 0, alignment: .center)]
+                            
+                            let current_event_objs = getCurrentEventObjsList(sport_type: self.sport_type)
+                            
+                            ScrollView(.vertical) {
+                                VStack {
+                                    LazyVGrid(columns: gridItems, spacing: 10) {
+                                        ForEach(Array(current_event_objs.keys), id: \.self) { event_id in
+                                            let this_event = current_event_objs[event_id]
+                                            EventView(event: this_event!)
+                                        }
+                                    }
+                                }.padding(5).frame(minWidth: 0, maxWidth: .greatestFiniteMagnitude, minHeight: 0, maxHeight: .greatestFiniteMagnitude)
+                            }.frame(width: 600)
+                        }
                     }
                 }.onReceive(NotificationCenter.default.publisher(for: NSPopover.willCloseNotification)) { _ in
                     self.timer?.invalidate()
@@ -151,7 +172,7 @@ struct ContentView: View {
                 Text("FAQs").font(.title).padding(.top, 10)
                 VStack {
                     HelpView()
-                }.frame(width: .infinity, height: 200, alignment: .leading).padding(.top, 20).padding(.leading, 50).padding(.trailing, 50)
+                }.frame(width: 500, height: 200, alignment: .leading).padding(.top, 20).padding(.leading, 50).padding(.trailing, 50)
                 VStack {
                     Button(action: {
                         exit(-1)
