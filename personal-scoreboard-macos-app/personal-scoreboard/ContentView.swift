@@ -99,22 +99,26 @@ struct ContentView: View {
                             
                             let current_event_objs = getCurrentEventObjsList(sport_type: self.sport_type)
                             
-                            ScrollView(.vertical) {
-                                VStack {
-                                    LazyVGrid(columns: gridItems, spacing: 10) {
-                                        ForEach(Array(current_event_objs.keys), id: \.self) { event_id in
-                                            let this_event = current_event_objs[event_id]
-                                            EventView(event: this_event!)
+                            VStack {
+                                ScrollView(.vertical) {
+                                    VStack {
+                                        LazyVGrid(columns: gridItems, spacing: 10) {
+                                            ForEach(Array(current_event_objs.keys), id: \.self) { event_id in
+                                                let this_event = current_event_objs[event_id]
+                                                EventView(event: this_event!)
+                                            }
                                         }
-                                    }
-                                }.padding(5).frame(minWidth: 0, maxWidth: .greatestFiniteMagnitude, minHeight: 0, maxHeight: .greatestFiniteMagnitude)
-                            }.frame(width: 600)
+                                    }.padding(5).frame(minWidth: 0, maxWidth: .greatestFiniteMagnitude, minHeight: 0, maxHeight: .greatestFiniteMagnitude)
+                                }
+                            }.frame(width: 600, height: 700)
                         }
                     }
                 }.onReceive(NotificationCenter.default.publisher(for: NSPopover.willCloseNotification)) { _ in
-                    self.timer?.invalidate()
-                    self.timer = nil
-                }.onReceive(NotificationCenter.default.publisher(for: NSPopover.willShowNotification)) { _ in
+                    if self.timer != nil {
+                        self.timer?.invalidate()
+                        self.timer = nil
+                    }
+                }.onReceive(NotificationCenter.default.publisher(for: NSPopover.didShowNotification)) { _ in
                     let current_date = Date()
                     let diffComponents = Calendar.current.dateComponents([.hour], from: self.last_event_update, to: current_date)
                     if diffComponents.hour ?? 0 >= 12 {
