@@ -21,6 +21,7 @@
 		64BAB66225A013E200236E4E /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB66125A013E200236E4E /* Event.swift */; };
 		64BAB66725A0146100236E4E /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB66625A0146100236E4E /* Team.swift */; };
 		64BAB67425A128B300236E4E /* RequestFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB67325A128B200236E4E /* RequestFunctions.swift */; };
+		64E5250925A68628007D4DA9 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64E5250825A68628007D4DA9 /* HelpView.swift */; };
 		E26479276373DE914D68A4B4 /* Pods_personal_scoreboardTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCBECD9B84367827ED442440 /* Pods_personal_scoreboardTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,7 @@
 		64BAB66125A013E200236E4E /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		64BAB66625A0146100236E4E /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		64BAB67325A128B200236E4E /* RequestFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestFunctions.swift; sourceTree = "<group>"; };
+		64E5250825A68628007D4DA9 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		B0440DF78CA27A7740AA2E6E /* Pods-personal-scoreboardTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-personal-scoreboardTests.debug.xcconfig"; path = "Target Support Files/Pods-personal-scoreboardTests/Pods-personal-scoreboardTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B741BF415710A76C204B898B /* Pods-personal-scoreboard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-personal-scoreboard.debug.xcconfig"; path = "Target Support Files/Pods-personal-scoreboard/Pods-personal-scoreboard.debug.xcconfig"; sourceTree = "<group>"; };
 		BACE9E46131DCE659A328D97 /* Pods_personal_scoreboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_personal_scoreboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -147,6 +149,7 @@
 				64BAB66125A013E200236E4E /* Event.swift */,
 				64BAB66625A0146100236E4E /* Team.swift */,
 				64BAB67325A128B200236E4E /* RequestFunctions.swift */,
+				64E5250825A68628007D4DA9 /* HelpView.swift */,
 			);
 			path = "personal-scoreboard";
 			sourceTree = "<group>";
@@ -433,6 +436,7 @@
 				64BAB65D25A00E6400236E4E /* SportType.swift in Sources */,
 				64BAB61F258FA79F00236E4E /* ContentView.swift in Sources */,
 				64BAB61D258FA79F00236E4E /* AppDelegate.swift in Sources */,
+				64E5250925A68628007D4DA9 /* HelpView.swift in Sources */,
 				64BAB655259EBAE000236E4E /* EventView.swift in Sources */,
 				64BAB66225A013E200236E4E /* Event.swift in Sources */,
 			);

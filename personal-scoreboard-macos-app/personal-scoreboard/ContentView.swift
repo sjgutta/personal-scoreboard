@@ -110,7 +110,7 @@ struct ContentView: View {
                 Text("Personal Scoreboard")
                     .font(.largeTitle)
                     .multilineTextAlignment(.center)
-                    .padding(.top, 50).padding(.bottom, 50)
+                    .padding(.top, 35).padding(.bottom, 25)
                 VStack {
                     VStack {
                         Text("Login")
@@ -148,13 +148,17 @@ struct ContentView: View {
                                 .stroke(Color.black, lineWidth: 1)
                         )
                 }.padding(.leading, 75).padding(.trailing, 75)
+                Text("FAQs").font(.title).padding(.top, 10)
+                VStack {
+                    HelpView()
+                }.frame(width: .infinity, height: 200, alignment: .leading).padding(.top, 20).padding(.leading, 50).padding(.trailing, 50)
                 VStack {
                     Button(action: {
                         exit(-1)
                     }) {
                         Text("Quit App")
                     }
-                }.padding(.top, 50)
+                }.padding(.top, 30)
                 Text("")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
