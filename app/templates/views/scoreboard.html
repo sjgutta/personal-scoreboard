@@ -141,20 +141,24 @@
     function renderAllEvents() {
         {% for sport in scores %}
             {{sport.value}}_html = "";
+            var {{ sport.value }}_expected_length = {{ scores[sport] | length }};
+            var {{ sport.value }}_fetched = 0;
             {% for event in scores[sport] %}
-                $.get("{{ event.relative_events_endpoint }}", function(data, status){
+                    $.get("{{ event.relative_events_endpoint }}", function(data, status){
                     event_tile = getEventTile(data);
                     {{sport.value}}_html += event_tile;
                     if (data.status == "IN PROGRESS"){
                         events_in_progress.push("{{ event.relative_events_endpoint }}");
                     }
-                    {% if scores[sport][-1] == event %}
+                        {{ sport.value }}_fetched += 1;
+                    console.log({{ sport.value }}_fetched);
+                    if ({{ sport.value }}_fetched == {{ sport.value }}_expected_length) {
                         var events_container = document.getElementById("{{ sport.value }}" + "-events-container");
                         events_container.innerHTML += {{sport.value}}_html;
                         {% if sport == last_sport %}
                             document.getElementById("loading-span").hidden = true;
                         {% endif %}
-                    {% endif %}
+                    }
                 });
             {% endfor %}
         {% endfor %}
