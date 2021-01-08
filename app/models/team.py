@@ -34,7 +34,11 @@ class Team(Model):
     logo_url = CharField(max_length=255)
 
     def get_current_score(self):
-        return BareEvent(self.current_event_id(), self.sport_type)
+        current_event_id = self.current_event_id()
+        if current_event_id is None:
+            return None
+        else:
+            return BareEvent(current_event_id, self.sport_type)
 
     @cache.memoize(timeout=60 * 60 * 12)
     def current_event_id(self):
@@ -45,7 +49,11 @@ class Team(Model):
                   "limit": "99"}
         r = requests.get(url=url, params=params)
         data = r.json()
-        event = data["team"]["nextEvent"][0]
+        next_events = data["team"]["nextEvent"]
+        if len(next_events) == 0:
+            return None
+        else:
+            event = next_events[0]
         event_id = event["id"]
         return event_id
 
