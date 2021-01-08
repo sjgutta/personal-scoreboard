@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, abort
 from flask_caching import Cache
 from peewee import MySQLDatabase
 from flask_login import LoginManager
@@ -72,6 +72,13 @@ def create_app():
 
     @app.before_request
     def before_request():
+        if 'DYNO' in os.environ:
+            if request.url.startswith('http://'):
+                if "/api/" in request.path:
+                    abort(401, description="API requests must be made via https")
+                url = request.url.replace('http://', 'https://', 1)
+                code = 301
+                return redirect(url, code=code)
         if "/api/events/" in request.path:
             return
         db.connect()
