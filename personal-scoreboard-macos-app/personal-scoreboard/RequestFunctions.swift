@@ -40,6 +40,8 @@ func getEventInfo(url: String, request_key: String, completionHandler : @escapin
             sport_type = SportType.nhl
         } else if sport_string == "MLB" {
             sport_type = SportType.mlb
+        } else if sport_string == "NCAAM" {
+            sport_type = SportType.ncaam
         }
         
         //parsing scores

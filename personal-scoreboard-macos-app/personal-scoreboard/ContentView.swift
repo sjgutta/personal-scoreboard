@@ -14,10 +14,12 @@ struct ContentView: View {
     @State var nba_events: [String] = []
     @State var nhl_events: [String] = []
     @State var mlb_events: [String] = []
+    @State var ncaam_events: [String] = []
     @State var nfl_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
     @State var nba_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
     @State var nhl_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
     @State var mlb_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
+    @State var ncaam_event_objs:Dictionary<String, Event> = Dictionary<String, Event>()
     @State var events_in_progress: [BareEvent] = []
     @State var last_event_update: Date = Date()
     @State var timer: Timer?
@@ -248,11 +250,12 @@ struct ContentView: View {
         self.nba_event_objs = Dictionary<String, Event>()
         self.nhl_event_objs = Dictionary<String, Event>()
         self.mlb_event_objs = Dictionary<String, Event>()
+        self.ncaam_event_objs = Dictionary<String, Event>()
         self.events_in_progress = []
     }
     
     func updateEventIds() {
-        print("updating event ids")
+        //print("updating event ids")
         self.loading_event_info = true
         resetObjLists()
         let url = self.BASE_URL + "/api/users/events"
@@ -261,6 +264,7 @@ struct ContentView: View {
             self.nba_events = result["NBA"] ?? []
             self.nhl_events = result["NHL"] ?? []
             self.mlb_events = result["MLB"] ?? []
+            self.ncaam_events = result["NCAAM"] ?? []
             let BASE_EVENT_URL = self.BASE_URL + "/api/events"
             for event_id in self.nfl_events {
                 let url = BASE_EVENT_URL + "/NFL/" + event_id
@@ -306,6 +310,17 @@ struct ContentView: View {
                     self.mlb_event_objs[retrieved_id] = output
                 }
             }
+            for event_id in self.ncaam_events {
+                let url = BASE_EVENT_URL + "/NCAAM/" + event_id
+                getEventInfo(url: url, request_key: self.request_key) { output in
+                    let retrieved_id = output.id
+                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
+                        let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.ncaam)
+                        self.events_in_progress.append(bare_event)
+                    }
+                    self.ncaam_event_objs[retrieved_id] = output
+                }
+            }
             self.loading_event_info = false
             self.last_event_update = Date()
             if !(self.timer != nil) {
@@ -317,7 +332,7 @@ struct ContentView: View {
     }
     
     func updateEvents() {
-        print("updating events")
+        //print("updating events")
         let BASE_EVENT_URL = self.BASE_URL + "/api/events"
         for event in self.events_in_progress {
             let url = BASE_EVENT_URL + "/\(event.sport_type.rawValue)/" + event.id
@@ -331,6 +346,8 @@ struct ContentView: View {
                     self.nhl_event_objs[retrieved_id] = output
                 } else if event.sport_type == SportType.mlb {
                     self.mlb_event_objs[retrieved_id] = output
+                } else if event.sport_type == SportType.ncaam {
+                    self.ncaam_event_objs[retrieved_id] = output
                 }
             }
         }
