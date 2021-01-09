@@ -213,7 +213,7 @@ class NCAAMEvent(BaseEvent):
             "id": self.id,
             "status": self.status.value,
             "status_string": self.status_string,
-            "sport": "NBA",
+            "sport": "NCAAM",
             "espn_url": self.espn_url,
             "away_team": self.away_team.to_dict(),
             "home_team": self.home_team.to_dict(),
