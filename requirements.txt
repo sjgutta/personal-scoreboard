@@ -12,3 +12,4 @@ Flask-Caching
 flask-mail
 pyjwt
 pylibmc==1.5.2
+flask_admin

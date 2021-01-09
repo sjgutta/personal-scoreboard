@@ -39,6 +39,10 @@ def create_app():
     from app.api import bp as api_bp
     app.register_blueprint(api_bp)
 
+    from app.admin.app import create_admin
+    admin_app = create_admin()
+    admin_app.init_app(app, url="/admin")
+
     cache_servers = os.environ.get('MEMCACHIER_SERVERS')
 
     if cache_servers is None:
