@@ -19,6 +19,8 @@ class Sport:
             return "/football/nfl"
         elif sport_type == Sport.SportType.NHL:
             return "/hockey/nhl"
+        elif sport_type == Sport.SportType.NCAAM:
+            return "/basketball/mens-college-basketball"
         else:
             return ""
 
