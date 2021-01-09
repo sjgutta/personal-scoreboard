@@ -1,0 +1,8 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+<h1>Utilities</h1>
+    <ul>
+        <li><a href="{{ url_for('.clear_teams_cache') }}">Clear Teams Cache</a></li>
+    </ul>
+{% endblock %}
