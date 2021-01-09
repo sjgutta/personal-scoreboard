@@ -7,6 +7,7 @@ class Sport:
         MLB = "MLB"
         NFL = "NFL"
         NHL = "NHL"
+        NCAAM = "NCAAM"
 
     @classmethod
     def get_resource_url(cls, sport_type):
