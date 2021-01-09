@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3D4C8EFAEA272979675B8141 /* Pods_personal_scoreboard_personal_scoreboardUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C265E8C2994388C5410572C0 /* Pods_personal_scoreboard_personal_scoreboardUITests.framework */; };
 		640B35B825A13345004D303C /* Pods_personal_scoreboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BACE9E46131DCE659A328D97 /* Pods_personal_scoreboard.framework */; };
+		648A893F25AA24E800F26CF3 /* EventGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 648A893E25AA24E800F26CF3 /* EventGridView.swift */; };
 		64BAB61D258FA79F00236E4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB61C258FA79F00236E4E /* AppDelegate.swift */; };
 		64BAB61F258FA79F00236E4E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BAB61E258FA79F00236E4E /* ContentView.swift */; };
 		64BAB621258FA7A300236E4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64BAB620258FA7A300236E4E /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 		16143F6DE9CAFB9FCE9CC25C /* Pods-personal-scoreboard-personal-scoreboardUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-personal-scoreboard-personal-scoreboardUITests.release.xcconfig"; path = "Target Support Files/Pods-personal-scoreboard-personal-scoreboardUITests/Pods-personal-scoreboard-personal-scoreboardUITests.release.xcconfig"; sourceTree = "<group>"; };
 		1ADFDBD763EBDF3FE0B25048 /* Pods-personal-scoreboard-personal-scoreboardUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-personal-scoreboard-personal-scoreboardUITests.debug.xcconfig"; path = "Target Support Files/Pods-personal-scoreboard-personal-scoreboardUITests/Pods-personal-scoreboard-personal-scoreboardUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4C9EE8805F6E3B9FD8E520A0 /* Pods-personal-scoreboard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-personal-scoreboard.release.xcconfig"; path = "Target Support Files/Pods-personal-scoreboard/Pods-personal-scoreboard.release.xcconfig"; sourceTree = "<group>"; };
+		648A893E25AA24E800F26CF3 /* EventGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventGridView.swift; sourceTree = "<group>"; };
 		64BAB619258FA79F00236E4E /* personal-scoreboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "personal-scoreboard.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		64BAB61C258FA79F00236E4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		64BAB61E258FA79F00236E4E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				64BAB66625A0146100236E4E /* Team.swift */,
 				64BAB67325A128B200236E4E /* RequestFunctions.swift */,
 				64E5250825A68628007D4DA9 /* HelpView.swift */,
+				648A893E25AA24E800F26CF3 /* EventGridView.swift */,
 			);
 			path = "personal-scoreboard";
 			sourceTree = "<group>";
@@ -438,6 +441,7 @@
 				64BAB61D258FA79F00236E4E /* AppDelegate.swift in Sources */,
 				64E5250925A68628007D4DA9 /* HelpView.swift in Sources */,
 				64BAB655259EBAE000236E4E /* EventView.swift in Sources */,
+				648A893F25AA24E800F26CF3 /* EventGridView.swift in Sources */,
 				64BAB66225A013E200236E4E /* Event.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -618,7 +622,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = "sjgutta.personal-scoreboard";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -643,7 +647,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = "sjgutta.personal-scoreboard";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

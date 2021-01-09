@@ -96,21 +96,13 @@ struct ContentView: View {
                             Text("Press 'Hide Help' above to view scores again.").font(.headline).bold().padding(.top, 25)
                             Text("").frame(maxWidth: .infinity, maxHeight: .infinity)
                         } else {
-                            let gridItems = [GridItem(.fixed(275), spacing: 10, alignment: .center),
-                                                     GridItem(.fixed(275), spacing: 0, alignment: .center)]
-                            
                             let current_event_objs = getCurrentEventObjsList(sport_type: self.sport_type)
-                            
+                                                        
                             VStack {
                                 ScrollView(.vertical) {
                                     VStack {
-                                        LazyVGrid(columns: gridItems, spacing: 10) {
-                                            ForEach(Array(current_event_objs.keys), id: \.self) { event_id in
-                                                let this_event = current_event_objs[event_id]
-                                                EventView(event: this_event!)
-                                            }
-                                        }
-                                    }.padding(5).frame(minWidth: 0, maxWidth: .greatestFiniteMagnitude, minHeight: 0, maxHeight: .greatestFiniteMagnitude)
+                                        EventGridView(event_list: current_event_objs)
+                                    }.padding(.top, 5).padding(.bottom, 5).padding(.leading).padding(.trailing).frame(minWidth: 0, maxWidth: .greatestFiniteMagnitude, minHeight: 0, maxHeight: .greatestFiniteMagnitude)
                                 }
                             }.frame(width: 600, height: 700)
                         }

@@ -14,9 +14,13 @@ struct EventView: View {
         VStack {
             let espn_url = self.event.espn_url
             HStack {
-                Link(destination: URL(string: espn_url)!) {
-                    Image(systemName: "link.circle.fill").foregroundColor(.blue)
-                }.padding(.leading, 5)
+                if #available(OSX 11.0, *) {
+                    Link(destination: URL(string: espn_url)!) {
+                        Image(systemName: "link.circle.fill").foregroundColor(.blue)
+                    }.padding(.leading, 5)
+                } else {
+                    // Fallback on earlier versions
+                }
                 Text(self.event.status_string)
                 Spacer()
                 Text(self.event.yardage_string).padding(.trailing)
