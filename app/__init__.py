@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, abort
 from flask_caching import Cache
 from peewee import MySQLDatabase
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_mail import Mail
 import os
 
@@ -79,6 +79,12 @@ def create_app():
                 url = request.url.replace('http://', 'https://', 1)
                 code = 301
                 return redirect(url, code=code)
+        if "/admin" in request.path:
+            if not current_user.is_authenticated or not current_user.is_admin:
+                db.close()
+                return redirect("/")
+            else:
+                return
         if "/api/events/" in request.path:
             return
         db.connect()

@@ -2,7 +2,7 @@ from collections import defaultdict
 import jwt
 from time import time
 from flask_login import UserMixin
-from peewee import CharField, Model, IntegrityError
+from peewee import CharField, Model, IntegrityError, BooleanField
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login_manager, Config
 from app.models.team import Team
@@ -17,6 +17,7 @@ class User(Model, UserMixin):
     username = CharField()
     email = CharField()
     password_hash = CharField()
+    is_admin = BooleanField(default=False)
 
     class Meta:
         database = db

@@ -55,7 +55,7 @@ def register():
         if User.get_or_none(User.username == form.username.data) is not None:
             flash('A user with that username already exists')
             return redirect(url_for('register'))
-        user = User.create(username=form.username.data, email=form.email.data)
+        user = User.create(username=form.username.data, email=form.email.data, is_admin=False)
         user.set_password(form.password.data)
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)
