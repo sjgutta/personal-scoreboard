@@ -15,7 +15,29 @@ def get_team_cache():
 def get_team(league, team_id):
     teams = get_team_cache()
     team_key = f"{league}-{team_id}"
-    return teams[team_key]
+    return teams.get(team_key)
+
+
+class BareTeam:
+    def __init__(self, team_data, sport):
+        self.espn_id = team_data["id"]
+        self.sport_type = sport
+        self.full_name = team_data["team"]["displayName"]
+        self.abbreviation = team_data["team"]["abbreviation"]
+        self.logo_url = team_data["team"]["logos"][0]["href"]
+
+    def to_dict(self):
+        data = {
+            "id": self.espn_id,
+            "sport": self.sport_type.value,
+            "name": self.full_name,
+            "abbreviation": self.abbreviation,
+            "logo_url": self.logo_url
+        }
+        return data
+
+    def __str__(self):
+        return f"{self.full_name} [{self.espn_id}]"
 
 
 class Team(Model):

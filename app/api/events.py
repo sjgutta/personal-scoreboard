@@ -3,7 +3,7 @@ import os
 from app.api import bp
 from services.espn.sports import Sport
 from app.models.events import get_espn_event_data, NHLEvent, MLBEvent, NFLEvent, NBAEvent
-from app.models.team import get_team
+from app.models.team import get_team, BareTeam
 from app.models.user import User
 from flask import request
 
@@ -20,7 +20,11 @@ def parse_event_data(sport_type, event_id, event_data):
     status_data = event_data["header"]["competitions"][0]["status"]
     status = status_data["type"]["name"]
     away_team = get_team(sport_type, away_data["id"])
+    if away_team is None:
+        away_team = BareTeam(away_data, sport_type)
     home_team = get_team(sport_type, home_data["id"])
+    if home_team is None:
+        home_team = BareTeam(home_data, sport_type)
     away_score = away_data.get("score")
     home_score = home_data.get("score")
     if sport_type == Sport.SportType.MLB:

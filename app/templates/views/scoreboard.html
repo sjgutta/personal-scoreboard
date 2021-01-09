@@ -151,7 +151,6 @@
                         events_in_progress.push("{{ event.relative_events_endpoint }}");
                     }
                         {{ sport.value }}_fetched += 1;
-                    console.log({{ sport.value }}_fetched);
                     if ({{ sport.value }}_fetched == {{ sport.value }}_expected_length) {
                         var events_container = document.getElementById("{{ sport.value }}" + "-events-container");
                         events_container.innerHTML += {{sport.value}}_html;

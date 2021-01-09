@@ -16,6 +16,8 @@ def get_espn_event_data(espn_event_id, sport_type):
     event_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/summary"
     event_r = requests.get(url=event_url, params=params)
     event_data = event_r.json()
+    # if sport_type == Sport.SportType.NCAAM and event_id == 401263431:
+    #     print(event_data)
     return event_data
 
 
@@ -193,6 +195,29 @@ class NBAEvent(BaseEvent):
     @property
     def espn_url(self):
         return f"https://www.espn.com/nba/game?gameId={self.id}"
+
+
+class NCAAMEvent(BaseEvent):
+    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status):
+        super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status)
+
+    def to_dict(self):
+        data = {
+            "id": self.id,
+            "status": self.status.value,
+            "status_string": self.status_string,
+            "sport": "NBA",
+            "espn_url": self.espn_url,
+            "away_team": self.away_team.to_dict(),
+            "home_team": self.home_team.to_dict(),
+            "away_score": self.away_score,
+            "home_score": self.home_score
+        }
+        return data
+
+    @property
+    def espn_url(self):
+        return f"https://www.espn.com/mens-college-basketball/boxscore?gameId={self.id}"
 
 
 class NHLEvent(BaseEvent):
