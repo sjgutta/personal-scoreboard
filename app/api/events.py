@@ -2,7 +2,7 @@ from flask_login import current_user
 import os
 from app.api import bp
 from services.espn.sports import Sport
-from app.models.events import get_espn_event_data, NHLEvent, MLBEvent, NFLEvent, NBAEvent
+from app.models.events import get_espn_event_data, NHLEvent, MLBEvent, NFLEvent, NBAEvent, NCAAMEvent
 from app.models.team import get_team, BareTeam
 from app.models.user import User
 from flask import request
@@ -65,6 +65,14 @@ def parse_event_data(sport_type, event_id, event_data):
             period = None
             clock = None
         return NHLEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status)
+    elif sport_type == Sport.SportType.NCAAM:
+        if status == "STATUS_IN_PROGRESS":
+            period = status_data["period"]
+            clock = status_data["displayClock"]
+        else:
+            period = None
+            clock = None
+        return NCAAMEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status)
 
 
 @bp.route('/events/<sport>/<int:event_id>', methods=['GET', 'POST'])

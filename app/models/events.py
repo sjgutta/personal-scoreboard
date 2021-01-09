@@ -16,8 +16,6 @@ def get_espn_event_data(espn_event_id, sport_type):
     event_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/summary"
     event_r = requests.get(url=event_url, params=params)
     event_data = event_r.json()
-    # if sport_type == Sport.SportType.NCAAM and event_id == 401263431:
-    #     print(event_data)
     return event_data
 
 
@@ -27,6 +25,7 @@ class Status(Enum):
     STATUS_SCHEDULED = "SCHEDULED"
     STATUS_IN_PROGRESS = "IN PROGRESS"
     STATUS_HALFTIME = "HALFTIME"
+    STATUS_POSTPONED = "POSTPONED"
 
     @classmethod
     def status_from_espn_string(cls, espn_string):
@@ -38,6 +37,8 @@ class Status(Enum):
             return cls.STATUS_SCHEDULED
         elif espn_string == "STATUS_HALFTIME":
             return cls.STATUS_HALFTIME
+        elif espn_string == "STATUS_POSTPONED":
+            return cls.STATUS_POSTPONED
         else:
             return cls.STATUS_IN_PROGRESS
 
@@ -65,8 +66,12 @@ class BaseEvent:
         self.id = event_id
         self.status = Status.status_from_espn_string(status)
         self.away_team = away_team
-        self.away_score = away_score
-        self.home_score = home_score
+        if self.status in [Status.STATUS_POSTPONED, Status.STATUS_SCHEDULED, Status.STATUS_CANCELED]:
+            self.away_score = None
+            self.home_score = None
+        else:
+            self.away_score = away_score
+            self.home_score = home_score
         self.home_team = home_team
         self.quarter = quarter
         self.time = time
@@ -89,6 +94,8 @@ class BaseEvent:
             return "UPCOMING"
         elif self.status == Status.STATUS_HALFTIME:
             return "HALFTIME"
+        elif self.status == Status.STATUS_POSTPONED:
+            return "POSTPONED"
         else:
             if self.quarter == 5:
                 return f"{self.time} | OT"
