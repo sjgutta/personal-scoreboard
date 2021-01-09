@@ -19,7 +19,14 @@ struct EventView: View {
                         Image(systemName: "link.circle.fill").foregroundColor(.blue)
                     }.padding(.leading, 5)
                 } else {
-                    // Fallback on earlier versions
+                    Button(action: {
+                        NSWorkspace.shared.open(URL(string: espn_url)!)
+                    }) {
+                        Text("⇱").font(.custom("link", size: 20))
+                            .foregroundColor(.blue).padding(2)
+                            
+                    }.buttonStyle(PlainButtonStyle())
+                    .padding(.leading, 5)
                 }
                 Text(self.event.status_string)
                 Spacer()
