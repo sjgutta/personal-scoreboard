@@ -223,6 +223,24 @@ class NCAAMEvent(BaseEvent):
         return data
 
     @property
+    def status_string(self):
+        if self.status == Status.STATUS_FINAL:
+            return "FINAL"
+        elif self.status == Status.STATUS_CANCELED:
+            return "CANCELED"
+        elif self.status == Status.STATUS_SCHEDULED:
+            return "UPCOMING"
+        elif self.status == Status.STATUS_HALFTIME:
+            return "HALFTIME"
+        elif self.status == Status.STATUS_POSTPONED:
+            return "POSTPONED"
+        else:
+            if self.quarter == 5:
+                return f"{self.time} | OT"
+            else:
+                return f"{self.time} | H{self.quarter}"
+
+    @property
     def espn_url(self):
         return f"https://www.espn.com/mens-college-basketball/boxscore?gameId={self.id}"
 
@@ -244,6 +262,24 @@ class NHLEvent(BaseEvent):
             "home_score": self.home_score
         }
         return data
+
+    @property
+    def status_string(self):
+        if self.status == Status.STATUS_FINAL:
+            return "FINAL"
+        elif self.status == Status.STATUS_CANCELED:
+            return "CANCELED"
+        elif self.status == Status.STATUS_SCHEDULED:
+            return "UPCOMING"
+        elif self.status == Status.STATUS_HALFTIME:
+            return "HALFTIME"
+        elif self.status == Status.STATUS_POSTPONED:
+            return "POSTPONED"
+        else:
+            if self.quarter == 4:
+                return f"{self.time} | OT"
+            else:
+                return f"{self.time} | P{self.quarter}"
 
     @property
     def espn_url(self):
