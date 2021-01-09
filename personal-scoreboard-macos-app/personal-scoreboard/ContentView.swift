@@ -240,6 +240,8 @@ struct ContentView: View {
             return self.nhl_event_objs
         } else if sport_type == SportType.mlb {
             return self.mlb_event_objs
+        } else if sport_type == SportType.ncaam {
+            return self.ncaam_event_objs
         } else {
             return Dictionary<String, Event>()
         }
