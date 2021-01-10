@@ -125,11 +125,18 @@
         // first add top line
         result_html += getEventTileTopLine(data);
 
-        //now add away team data
-        result_html += getAwayTeamSection(data);
+        if (data.sport == "SOCCER") {
+            //order of teams is reversed for soccer
+            result_html += getHomeTeamSection(data);
 
-        //now add home team data
-        result_html += getHomeTeamSection(data);
+            result_html += getAwayTeamSection(data);
+        } else {
+            //now add away team data
+            result_html += getAwayTeamSection(data);
+
+            //now add home team data
+            result_html += getHomeTeamSection(data);
+        }
 
         //close open divs
         result_html += "</div></div>";
