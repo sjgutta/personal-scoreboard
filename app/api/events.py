@@ -19,6 +19,9 @@ def parse_event_data(sport_type, event_id, event_data):
         away_data = team1_data
     status_data = event_data["header"]["competitions"][0]["status"]
     status = status_data["type"]["name"]
+    scheduled_day = None
+    if status == "STATUS_SCHEDULED":
+        scheduled_day = status_data["type"]["shortDetail"]
     away_team = get_team(sport_type, away_data["id"])
     if away_team is None:
         away_team = BareTeam(away_data, sport_type)
@@ -32,7 +35,7 @@ def parse_event_data(sport_type, event_id, event_data):
             inning_string = status_data["type"]["detail"]
         else:
             inning_string = "FINAL"
-        return MLBEvent(event_id, away_team, away_score, home_team, home_score, inning_string, status)
+        return MLBEvent(event_id, away_team, away_score, home_team, home_score, inning_string, status, scheduled_day)
     elif sport_type == Sport.SportType.NFL:
         if status == "STATUS_IN_PROGRESS":
             period = status_data["period"]
@@ -47,8 +50,8 @@ def parse_event_data(sport_type, event_id, event_data):
             down = None
             yardline = None
             possession = None
-        return NFLEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status, down, yardline,
-                        possession)
+        return NFLEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status, scheduled_day,
+                        down, yardline, possession)
     elif sport_type == Sport.SportType.NBA:
         if status == "STATUS_IN_PROGRESS":
             period = status_data["period"]
@@ -56,7 +59,7 @@ def parse_event_data(sport_type, event_id, event_data):
         else:
             period = None
             clock = None
-        return NBAEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status)
+        return NBAEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status, scheduled_day)
     elif sport_type == Sport.SportType.NHL:
         if status == "STATUS_IN_PROGRESS":
             period = status_data["period"]
@@ -64,7 +67,7 @@ def parse_event_data(sport_type, event_id, event_data):
         else:
             period = None
             clock = None
-        return NHLEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status)
+        return NHLEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status, scheduled_day)
     elif sport_type == Sport.SportType.NCAAM:
         if status == "STATUS_IN_PROGRESS":
             period = status_data["period"]
@@ -72,7 +75,7 @@ def parse_event_data(sport_type, event_id, event_data):
         else:
             period = None
             clock = None
-        return NCAAMEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status)
+        return NCAAMEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status, scheduled_day)
     elif sport_type == Sport.SportType.SOCCER:
         if status == "STATUS_IN_PROGRESS":
             period = status_data["period"]
@@ -80,7 +83,7 @@ def parse_event_data(sport_type, event_id, event_data):
         else:
             period = None
             clock = None
-        return SoccerEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status)
+        return SoccerEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status, scheduled_day)
 
 
 @bp.route('/events/<sport>/<int:event_id>', methods=['GET', 'POST'])

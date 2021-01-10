@@ -15,6 +15,8 @@ def get_espn_event_data(espn_event_id, sport_type, league=None):
     # scoreboard_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/scoreboard"
     if sport_type == Sport.SportType.SOCCER:
         event_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/{league}/summary"
+        print(event_url)
+        print(event_id)
     else:
         event_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/summary"
     event_r = requests.get(url=event_url, params=params)
@@ -74,10 +76,11 @@ class BareEvent:
 
 class BaseEvent:
 
-    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status):
+    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status, scheduled_day):
         self.id = event_id
         self.status = Status.status_from_espn_string(status)
         self.away_team = away_team
+        self.scheduled_day = scheduled_day
         if self.status in [Status.STATUS_POSTPONED, Status.STATUS_SCHEDULED, Status.STATUS_CANCELED]:
             self.away_score = None
             self.home_score = None
@@ -103,7 +106,7 @@ class BaseEvent:
         elif self.status == Status.STATUS_CANCELED:
             return "CANCELED"
         elif self.status == Status.STATUS_SCHEDULED:
-            return "UPCOMING"
+            return self.scheduled_day
         elif self.status == Status.STATUS_HALFTIME:
             return "HALFTIME"
         elif self.status == Status.STATUS_POSTPONED:
@@ -131,7 +134,8 @@ class BaseEvent:
 
 
 class NFLEvent(BaseEvent):
-    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status, down, yardline, possession):
+    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status, scheduled_day,
+                 down, yardline, possession):
         self.down = down
         self.yardline = yardline
         if possession and int(possession) == away_team.espn_id:
@@ -141,7 +145,7 @@ class NFLEvent(BaseEvent):
         else:
             self.possession_team = None
         self.possession = possession
-        super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status)
+        super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status, scheduled_day)
 
     @property
     def team_with_ball(self):
@@ -194,8 +198,8 @@ class NFLEvent(BaseEvent):
 
 
 class NBAEvent(BaseEvent):
-    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status):
-        super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status)
+    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status, scheduled_day):
+        super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status, scheduled_day)
 
     def to_dict(self):
         data = {
@@ -217,8 +221,8 @@ class NBAEvent(BaseEvent):
 
 
 class NCAAMEvent(BaseEvent):
-    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status):
-        super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status)
+    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status, scheduled_day):
+        super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status, scheduled_day)
 
     def to_dict(self):
         data = {
@@ -241,7 +245,7 @@ class NCAAMEvent(BaseEvent):
         elif self.status == Status.STATUS_CANCELED:
             return "CANCELED"
         elif self.status == Status.STATUS_SCHEDULED:
-            return "UPCOMING"
+            return self.scheduled_day
         elif self.status == Status.STATUS_HALFTIME:
             return "HALFTIME"
         elif self.status == Status.STATUS_POSTPONED:
@@ -258,8 +262,8 @@ class NCAAMEvent(BaseEvent):
 
 
 class NHLEvent(BaseEvent):
-    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status):
-        super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status)
+    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status, scheduled_day):
+        super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status, scheduled_day)
 
     def to_dict(self):
         data = {
@@ -282,7 +286,7 @@ class NHLEvent(BaseEvent):
         elif self.status == Status.STATUS_CANCELED:
             return "CANCELED"
         elif self.status == Status.STATUS_SCHEDULED:
-            return "UPCOMING"
+            return self.scheduled_day
         elif self.status == Status.STATUS_HALFTIME:
             return "HALFTIME"
         elif self.status == Status.STATUS_POSTPONED:
@@ -300,7 +304,7 @@ class NHLEvent(BaseEvent):
 
 class MLBEvent:
 
-    def __init__(self, event_id, away_team, away_score, home_team, home_score, inning_string, status):
+    def __init__(self, event_id, away_team, away_score, home_team, home_score, inning_string, status, scheduled_day):
         self.id = event_id
         self.status = Status.status_from_espn_string(status)
         self.away_team = away_team
@@ -308,6 +312,7 @@ class MLBEvent:
         self.home_team = home_team
         self.home_score = home_score
         self.inning_string = inning_string
+        self.scheduled_day = scheduled_day
 
     @property
     def status_string(self):
@@ -316,7 +321,7 @@ class MLBEvent:
         elif self.status == Status.STATUS_CANCELED:
             return "CANCELED"
         elif self.status == Status.STATUS_SCHEDULED:
-            return "UPCOMING"
+            return self.scheduled_day
         elif self.status == Status.STATUS_HALFTIME:
             return "HALFTIME"
         else:
@@ -353,8 +358,8 @@ class MLBEvent:
 
 
 class SoccerEvent(BaseEvent):
-    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status):
-        super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status)
+    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status, scheduled_day):
+        super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status, scheduled_day)
 
     def to_dict(self):
         data = {
@@ -377,7 +382,7 @@ class SoccerEvent(BaseEvent):
         elif self.status == Status.STATUS_CANCELED:
             return "CANCELED"
         elif self.status == Status.STATUS_SCHEDULED:
-            return "UPCOMING"
+            return self.scheduled_day
         elif self.status == Status.STATUS_HALFTIME:
             return "HALFTIME"
         elif self.status == Status.STATUS_POSTPONED:
