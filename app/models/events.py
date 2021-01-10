@@ -67,6 +67,8 @@ class BareEvent:
             "id": self.id,
             "sport": self.sport.value
         }
+        if self.league:
+            data["league"] = self.league
         return data
 
 
