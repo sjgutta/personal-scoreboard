@@ -42,6 +42,8 @@ func getEventInfo(url: String, request_key: String, completionHandler : @escapin
             sport_type = SportType.mlb
         } else if sport_string == "NCAAM" {
             sport_type = SportType.ncaam
+        } else if sport_string == "SOCCER" {
+            sport_type = SportType.soccer
         }
         
         //parsing scores
@@ -83,7 +85,10 @@ func getUserEvents(url: String, username: String, password: String, request_key:
         let id_list:JSON = output["events"]
         for (_, subJson):(String, JSON) in id_list {
             let this_event_sport: String = subJson["sport"].stringValue
-            let this_event_id: String = subJson["id"].stringValue
+            var this_event_id: String = subJson["id"].stringValue
+            if this_event_sport == "SOCCER" && subJson["league"].exists() {
+                this_event_id = subJson["league"].stringValue + "/" + this_event_id
+            }
             result[this_event_sport]?.append(this_event_id)
         }
         

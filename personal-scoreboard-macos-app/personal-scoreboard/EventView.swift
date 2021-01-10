@@ -32,24 +32,45 @@ struct EventView: View {
                 Spacer()
                 Text(self.event.yardage_string).padding(.trailing)
             }.padding(.top, 10)
-            HStack {
-                self.event.away_team.logo_image.aspectRatio(contentMode: .fit).frame(width: 35).padding(.leading, 5)
-                Text(self.event.away_team.full_name).padding(.leading, 5)
-                if self.event.away_possession {
-                    Text("🏈")
-                }
-                Spacer()
-                Text(self.event.away_score).bold().padding(.trailing)
-            }.padding(.top, 5)
-            HStack {
-                self.event.home_team.logo_image.aspectRatio(contentMode: .fit).frame(width: 35).padding(.leading, 5)
-                Text(self.event.home_team.full_name).padding(.leading, 5)
-                if self.event.home_possession {
-                    Text("🏈")
-                }
-                Spacer()
-                Text(self.event.home_score).bold().padding(.trailing)
-            }.padding(.bottom, 10)
+            if event.sport_type == SportType.soccer {
+                HStack {
+                    self.event.home_team.logo_image.aspectRatio(contentMode: .fit).frame(width: 35).padding(.leading, 5)
+                    Text(self.event.home_team.full_name).padding(.leading, 5)
+                    if self.event.home_possession {
+                        Text("🏈")
+                    }
+                    Spacer()
+                    Text(self.event.home_score).bold().padding(.trailing)
+                }.padding(.top, 5)
+                HStack {
+                    self.event.away_team.logo_image.aspectRatio(contentMode: .fit).frame(width: 35).padding(.leading, 5)
+                    Text(self.event.away_team.full_name).padding(.leading, 5)
+                    if self.event.away_possession {
+                        Text("🏈")
+                    }
+                    Spacer()
+                    Text(self.event.away_score).bold().padding(.trailing)
+                }.padding(.bottom, 10)
+            } else {
+                HStack {
+                    self.event.away_team.logo_image.aspectRatio(contentMode: .fit).frame(width: 35).padding(.leading, 5)
+                    Text(self.event.away_team.full_name).padding(.leading, 5)
+                    if self.event.away_possession {
+                        Text("🏈")
+                    }
+                    Spacer()
+                    Text(self.event.away_score).bold().padding(.trailing)
+                }.padding(.top, 5)
+                HStack {
+                    self.event.home_team.logo_image.aspectRatio(contentMode: .fit).frame(width: 35).padding(.leading, 5)
+                    Text(self.event.home_team.full_name).padding(.leading, 5)
+                    if self.event.home_possession {
+                        Text("🏈")
+                    }
+                    Spacer()
+                    Text(self.event.home_score).bold().padding(.trailing)
+                }.padding(.bottom, 10)
+            }
         }.frame(width: 275).overlay(
             RoundedRectangle(cornerRadius: 16)
                 .stroke(Color.blue, lineWidth: 1)

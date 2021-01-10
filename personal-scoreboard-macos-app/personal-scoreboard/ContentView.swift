@@ -15,11 +15,13 @@ struct ContentView: View {
     @State var nhl_events: [String] = []
     @State var mlb_events: [String] = []
     @State var ncaam_events: [String] = []
+    @State var soccer_events: [String] = []
     @State var nfl_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
     @State var nba_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
     @State var nhl_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
     @State var mlb_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
-    @State var ncaam_event_objs:Dictionary<String, Event> = Dictionary<String, Event>()
+    @State var ncaam_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
+    @State var soccer_event_objs: Dictionary<String, Event> = Dictionary<String, Event>()
     @State var events_in_progress: [BareEvent] = []
     @State var last_event_update: Date = Date()
     @State var timer: Timer?
@@ -33,7 +35,7 @@ struct ContentView: View {
     
     @State var showing_help: Bool = false
     
-    let BASE_URL: String = "http://127.0.0.1:5000"
+    let BASE_URL: String = "PLACEHOLDER URL"
     
     var body: some View {
         VStack {
@@ -234,6 +236,8 @@ struct ContentView: View {
             return self.mlb_event_objs
         } else if sport_type == SportType.ncaam {
             return self.ncaam_event_objs
+        } else if sport_type == SportType.soccer {
+            return self.soccer_event_objs
         } else {
             return Dictionary<String, Event>()
         }
@@ -259,6 +263,7 @@ struct ContentView: View {
             self.nhl_events = result["NHL"] ?? []
             self.mlb_events = result["MLB"] ?? []
             self.ncaam_events = result["NCAAM"] ?? []
+            self.soccer_events = result["SOCCER"] ?? []
             let BASE_EVENT_URL = self.BASE_URL + "/api/events"
             for event_id in self.nfl_events {
                 let url = BASE_EVENT_URL + "/NFL/" + event_id
@@ -315,6 +320,18 @@ struct ContentView: View {
                     self.ncaam_event_objs[retrieved_id] = output
                 }
             }
+            for event_id in self.soccer_events {
+                //event_id has /league/id built in from getUserEvents
+                let url = BASE_EVENT_URL + "/SOCCER/" + event_id
+                getEventInfo(url: url, request_key: self.request_key) { output in
+                    let retrieved_id = output.id
+                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
+                        let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.ncaam)
+                        self.events_in_progress.append(bare_event)
+                    }
+                    self.soccer_event_objs[retrieved_id] = output
+                }
+            }
             self.loading_event_info = false
             self.last_event_update = Date()
             if !(self.timer != nil) {
@@ -342,6 +359,8 @@ struct ContentView: View {
                     self.mlb_event_objs[retrieved_id] = output
                 } else if event.sport_type == SportType.ncaam {
                     self.ncaam_event_objs[retrieved_id] = output
+                } else if event.sport_type == SportType.soccer {
+                    self.soccer_event_objs[retrieved_id] = output
                 }
             }
         }

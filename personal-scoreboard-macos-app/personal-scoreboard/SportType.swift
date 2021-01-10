@@ -13,4 +13,5 @@ enum SportType: String, CaseIterable {
     case mlb = "MLB"
     case nhl = "NHL"
     case ncaam = "NCAAM"
+    case soccer = "SOCCER"
 }

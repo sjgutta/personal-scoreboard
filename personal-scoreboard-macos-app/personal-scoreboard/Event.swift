@@ -43,6 +43,8 @@ class Event {
             return BASE + "/mlb/game?gameId=\(id)"
         } else if sport_type == SportType.ncaam {
             return BASE + "/mens-college-basketball/boxscore?gameId=\(id)"
+        } else if sport_type == SportType.soccer {
+            return BASE + "/soccer/match?gameId=\(id)"
         } else {
             return BASE
         }
