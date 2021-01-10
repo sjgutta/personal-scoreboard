@@ -8,6 +8,7 @@ class Sport:
         NFL = "NFL"
         NHL = "NHL"
         NCAAM = "NCAAM"
+        SOCCER = "SOCCER"
 
     @classmethod
     def get_resource_url(cls, sport_type):
@@ -21,6 +22,8 @@ class Sport:
             return "/hockey/nhl"
         elif sport_type == Sport.SportType.NCAAM:
             return "/basketball/mens-college-basketball"
+        elif sport_type == Sport.SportType.SOCCER:
+            return "/soccer"
         else:
             return ""
 
