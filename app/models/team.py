@@ -56,11 +56,11 @@ class Team(Model):
     logo_url = CharField(max_length=255)
 
     def get_current_score(self):
-        current_event_id = self.current_event_id()
+        current_event_id, league_abbreviation = self.current_event_id()
         if current_event_id is None:
             return None
         else:
-            return BareEvent(current_event_id, self.sport_type)
+            return BareEvent(current_event_id, self.sport_type, league=league_abbreviation)
 
     @cache.memoize(timeout=60 * 60 * 12)
     def current_event_id(self):
@@ -71,13 +71,19 @@ class Team(Model):
                   "limit": "99"}
         r = requests.get(url=url, params=params)
         data = r.json()
+        league_abbreviation = None
+        if self.sport_type == Sport.SportType.SOCCER:
+            league_abbreviation = data["team"]["defaultLeague"]["midsizeName"]
+            new_url = ESPN_API_PREFIX + f"/soccer/{league_abbreviation}/teams/{self.espn_id}"
+            new_request = requests.get(url=new_url, params=params)
+            data = new_request.json()
         next_events = data["team"]["nextEvent"]
         if len(next_events) == 0:
-            return None
+            return None, None
         else:
             event = next_events[0]
         event_id = event["id"]
-        return event_id
+        return event_id, league_abbreviation
 
     def to_dict(self):
         data = {

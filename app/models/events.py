@@ -4,7 +4,7 @@ from services.espn.sports import Sport
 import requests
 
 
-def get_espn_event_data(espn_event_id, sport_type):
+def get_espn_event_data(espn_event_id, sport_type, league=None):
     params = {"region": "us",
               "lang": "en",
               "contentorigin": "espn",
@@ -13,7 +13,10 @@ def get_espn_event_data(espn_event_id, sport_type):
     params["event"] = event_id
     # now using the event_id to find the current score related info
     # scoreboard_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/scoreboard"
-    event_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/summary"
+    if sport_type == Sport.SportType.SOCCER:
+        event_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/{league}/summary"
+    else:
+        event_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/summary"
     event_r = requests.get(url=event_url, params=params)
     event_data = event_r.json()
     return event_data
@@ -26,6 +29,7 @@ class Status(Enum):
     STATUS_IN_PROGRESS = "IN PROGRESS"
     STATUS_HALFTIME = "HALFTIME"
     STATUS_POSTPONED = "POSTPONED"
+    STATUS_FULL_TIME = "FULL TIME"
 
     @classmethod
     def status_from_espn_string(cls, espn_string):
@@ -39,18 +43,24 @@ class Status(Enum):
             return cls.STATUS_HALFTIME
         elif espn_string == "STATUS_POSTPONED":
             return cls.STATUS_POSTPONED
+        elif espn_string == "STATUS_FULL_TIME":
+            return cls.STATUS_FULL_TIME
         else:
             return cls.STATUS_IN_PROGRESS
 
 
 class BareEvent:
-    def __init__(self, event_id, sport):
+    def __init__(self, event_id, sport, league=None):
         self.id = event_id
         self.sport = sport
+        self.league = league
 
     @property
     def relative_events_endpoint(self):
-        return f"/api/events/{self.sport.value}/{self.id}"
+        if self.sport == Sport.SportType.SOCCER:
+            return f"/api/events/SOCCER/{self.league}/{self.id}"
+        else:
+            return f"/api/events/{self.sport.value}/{self.id}"
 
     def to_dict(self):
         data = {
@@ -338,3 +348,47 @@ class MLBEvent:
         else:
             return f"Inning: {self.inning_string}\n{self.away_team.full_name}: " \
                    f"{self.away_score}\n{self.home_team.full_name}: {self.home_score}"
+
+
+class SoccerEvent(BaseEvent):
+    def __init__(self, event_id, away_team, away_score, home_team, home_score, quarter, time, status):
+        super().__init__(event_id, away_team, away_score, home_team, home_score, quarter, time, status)
+
+    def to_dict(self):
+        data = {
+            "id": self.id,
+            "status": self.status.value,
+            "status_string": self.status_string,
+            "sport": "SOCCER",
+            "espn_url": self.espn_url,
+            "away_team": self.away_team.to_dict(),
+            "home_team": self.home_team.to_dict(),
+            "away_score": self.away_score,
+            "home_score": self.home_score
+        }
+        return data
+
+    @property
+    def status_string(self):
+        if self.status == Status.STATUS_FINAL:
+            return "FINAL"
+        elif self.status == Status.STATUS_CANCELED:
+            return "CANCELED"
+        elif self.status == Status.STATUS_SCHEDULED:
+            return "UPCOMING"
+        elif self.status == Status.STATUS_HALFTIME:
+            return "HALFTIME"
+        elif self.status == Status.STATUS_POSTPONED:
+            return "POSTPONED"
+        elif self.status == Status.STATUS_FULL_TIME:
+            return "FULL TIME"
+        else:
+            if self.quarter >= 3:
+                return f"{self.time} | Extra Time"
+            else:
+                return f"{self.time} | H{self.quarter}"
+
+    @property
+    def espn_url(self):
+        return f"https://www.espn.com/soccer/match?gameId={self.id}"
+

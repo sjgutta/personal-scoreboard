@@ -2,7 +2,7 @@ from flask_login import current_user
 import os
 from app.api import bp
 from services.espn.sports import Sport
-from app.models.events import get_espn_event_data, NHLEvent, MLBEvent, NFLEvent, NBAEvent, NCAAMEvent
+from app.models.events import get_espn_event_data, NHLEvent, MLBEvent, NFLEvent, NBAEvent, NCAAMEvent, SoccerEvent
 from app.models.team import get_team, BareTeam
 from app.models.user import User
 from flask import request
@@ -73,6 +73,14 @@ def parse_event_data(sport_type, event_id, event_data):
             period = None
             clock = None
         return NCAAMEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status)
+    elif sport_type == Sport.SportType.SOCCER:
+        if status == "STATUS_IN_PROGRESS":
+            period = status_data["period"]
+            clock = status_data["displayClock"]
+        else:
+            period = None
+            clock = None
+        return SoccerEvent(event_id, away_team, away_score, home_team, home_score, period, clock, status)
 
 
 @bp.route('/events/<sport>/<int:event_id>', methods=['GET', 'POST'])
@@ -92,6 +100,29 @@ def get_espn_event_info(sport, event_id):
         sport_enum = Sport.get_sport_type_by_value(sport)
         event_data = get_espn_event_data(event_id, sport_enum)
         event = parse_event_data(sport_enum, event_id, event_data)
+        if event is None:
+            return {}
+        else:
+            return event.to_dict()
+    else:
+        return "Bad request", 400
+
+
+@bp.route('/events/SOCCER/<league>/<int:event_id>', methods=['GET', 'POST'])
+def get_soccer_event_info(league, event_id):
+    if request.method == "GET" and current_user.is_authenticated:
+        event_data = get_espn_event_data(event_id, Sport.SportType.SOCCER, league=league)
+        event = parse_event_data(Sport.SportType.SOCCER, event_id, event_data)
+        if event is None:
+            return {}
+        else:
+            return event.to_dict()
+    elif request.method == "POST":
+        data = request.get_json()
+        if data.get("secret_key") != os.environ.get('SECRET_KEY'):
+            return "Not Authorized", 401
+        event_data = get_espn_event_data(event_id, Sport.SportType.SOCCER, league=league)
+        event = parse_event_data(Sport.SportType.SOCCER, event_id, event_data)
         if event is None:
             return {}
         else:
