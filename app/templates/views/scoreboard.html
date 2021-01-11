@@ -78,7 +78,7 @@
         if (data.away_team.logo_url){
             result_html += `<img src='${data.away_team.logo_url}'>`;
         }else{
-            result_html += "<span class='label label-danger'>X</span>";
+            result_html += `<img src='https://cdn.pixabay.com/photo/2012/04/12/20/12/x-30465_960_720.png'>`;
         }
         result_html += ` ${data.away_team.name}`;
         if (data.sport == "NFL") {
@@ -100,7 +100,7 @@
         if (data.home_team.logo_url){
             result_html += `<img src='${data.home_team.logo_url}'>`;
         }else{
-            result_html += "<span class='label label-danger danger-img'>X</span>";
+            result_html += `<img src='https://cdn.pixabay.com/photo/2012/04/12/20/12/x-30465_960_720.png'>`;
         }
         result_html += ` ${data.home_team.name}`;
         if (data.sport == "NFL") {
