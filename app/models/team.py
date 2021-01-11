@@ -24,7 +24,11 @@ class BareTeam:
         self.sport_type = sport
         self.full_name = team_data["team"]["displayName"]
         self.abbreviation = team_data["team"]["abbreviation"]
-        self.logo_url = team_data["team"]["logos"][0]["href"]
+        logos = team_data["team"].get("logos")
+        if logos:
+            self.logo_url = logos[0]["href"]
+        else:
+            self.logo_url = None
 
     def to_dict(self):
         data = {

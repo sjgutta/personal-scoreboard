@@ -15,8 +15,6 @@ def get_espn_event_data(espn_event_id, sport_type, league=None):
     # scoreboard_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/scoreboard"
     if sport_type == Sport.SportType.SOCCER:
         event_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/{league}/summary"
-        print(event_url)
-        print(event_id)
     else:
         event_url = ESPN_API_PREFIX + Sport.get_resource_url(sport_type) + f"/summary"
     event_r = requests.get(url=event_url, params=params)

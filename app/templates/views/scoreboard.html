@@ -100,7 +100,7 @@
         if (data.home_team.logo_url){
             result_html += `<img src='${data.home_team.logo_url}'>`;
         }else{
-            result_html += "<span class='label label-danger'>X</span>";
+            result_html += "<span class='label label-danger danger-img'>X</span>";
         }
         result_html += ` ${data.home_team.name}`;
         if (data.sport == "NFL") {
