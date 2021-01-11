@@ -1,0 +1,2 @@
+ALTER TABLE user ADD COLUMN has_free_access BOOLEAN NOT NULL DEFAULT 0;
+ALTER TABLE user ADD COLUMN expiration_date DATE NULL;

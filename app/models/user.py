@@ -1,8 +1,9 @@
 from collections import defaultdict
 import jwt
+import datetime
 from time import time
 from flask_login import UserMixin
-from peewee import CharField, Model, IntegrityError, BooleanField
+from peewee import CharField, Model, IntegrityError, BooleanField, DateField
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login_manager, Config
 from app.models.team import Team
@@ -18,6 +19,8 @@ class User(Model, UserMixin):
     email = CharField()
     password_hash = CharField()
     is_admin = BooleanField(default=False)
+    has_free_access = BooleanField(default=False)
+    expiration_date = DateField(null=True)
 
     class Meta:
         database = db
@@ -42,6 +45,12 @@ class User(Model, UserMixin):
         except:
             return
         return User.get(id=id)
+
+    @property
+    def is_active(self):
+        if self.has_free_access:
+            return True
+        return bool(self.expiration_date and self.expiration_date >= datetime.date.today())
 
     def __str__(self):
         return f"[User {self.id}] {self.email}"
