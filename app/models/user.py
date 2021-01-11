@@ -47,7 +47,7 @@ class User(Model, UserMixin):
         return User.get(id=id)
 
     @property
-    def is_active(self):
+    def has_access(self):
         if self.has_free_access:
             return True
         return bool(self.expiration_date and self.expiration_date >= datetime.date.today())

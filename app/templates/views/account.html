@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Info</title>
+    <link href="{{ url_for('static', filename='css/account.css') }}" rel="stylesheet">
+</head>
+<body>
+{% from "macros.html" import render_field %}
+{% include "navbar.html" %}
+<style>
+    .navbar {
+        margin-bottom: 0px;
+    }
+</style>
+<section class="account-section" style="background-image: url('{{ url_for('static', filename='images/football-background.jpg') }}')">
+    <div class="form-container">
+        <h1>Your Account</h1>
+        <span style="font-size: 20px;"><strong>Username:</strong> {{ current_user.username }}</span><br />
+        <span style="font-size: 20px;"><strong>Email:</strong> {{ current_user.email }}</span>
+        <h3>Status: </h3>
+        {% if current_user.has_free_access %}
+            <h2><span class="label label-pill label-success">Pro Member or Friend</span></h2><br />
+            <h2>Congratulations, as a friend of the creator you have permanent access!</h2>
+        {% elif current_user.has_access %}
+            <h2><span class="label label-pill label-info">Active</span></h2><br />
+            <h2>Access Expires on <span style="color: red;">{{ current_user.expiration_date }}</span>. Pay below to extend by 1 year!</h2>
+        {% else %}
+            <h2><span class="label label-pill label-danger">Inactive</span></h2><br />
+            <h2>You haven't paid for access in over 1 year.</h2>
+        {% endif %}
+    </div>
+</section>
+</body>
+</html>

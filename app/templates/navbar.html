@@ -21,6 +21,7 @@
         {% else %}
         <li><a href="{{ url_for('views.scoreboard') }}">Scoreboard</a></li>
         <li><a href="{{ url_for('views.favorites') }}">Favorites</a></li>
+            <li><a href="{{ url_for('views.account') }}">Account</a></li>
       <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
         {% endif %}
     </ul>
