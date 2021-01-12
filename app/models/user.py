@@ -57,7 +57,7 @@ class User(Model, UserMixin):
     @property
     def payment_intent_link(self):
         if self.payment_intent:
-            return f"https://dashboard.stripe.com/test/payments/{self.payment_intent}"
+            return f"https://dashboard.stripe.com/payments/{self.payment_intent}"
         return "https://dashboard.stripe.com/payments"
 
     def update_expiration_date(self):

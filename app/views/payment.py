@@ -71,7 +71,7 @@ def create_checkout_session():
                 {
                     'price_data': {
                         'currency': 'usd',
-                        'unit_amount': 50,
+                        'unit_amount': 300,
                         'product_data': {
                             'name': 'Personal Scoreboard - 1 Year Access',
                             'images': ["https://i.ibb.co/HPxfYmJ/Screen-Shot-2021-01-06-at-11-23-41-PM.png"]
