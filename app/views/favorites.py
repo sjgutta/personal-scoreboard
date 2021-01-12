@@ -22,6 +22,8 @@ def get_all_sports_teams(exclude=set()):
 def favorites():
     if not current_user.is_authenticated:
         return redirect(url_for('auth.login'))
+    if not current_user.has_access:
+        return redirect(url_for('views.account'))
     if request.method == "POST":
         new_favorites = request.form['current_favorites']
         new_favorites = new_favorites.split(",")

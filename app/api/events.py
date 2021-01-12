@@ -142,7 +142,7 @@ def get_user_bare_events():
     if data.get("secret_key") != os.environ.get('SECRET_KEY'):
         return "Not Authorized", 401
     user = User.get_or_none(username=username)
-    if user and user.check_password(password):
+    if user and user.check_password(password) and user.has_access:
         user_events = user.api_get_current_scores()
         return {"events": user_events}
     else:
