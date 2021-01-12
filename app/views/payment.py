@@ -17,7 +17,7 @@ def webhook():
     try:
         event = json.loads(payload)
     except Exception as e:
-        print('⚠️  Webhook error while parsing basic request.' + str(e))
+        print('Webhook error while parsing basic request.' + str(e))
         return jsonify(success=True)
     if endpoint_secret:
         # Only verify the event if there is an endpoint secret defined
@@ -33,15 +33,19 @@ def webhook():
 
     # Handle the event
     if event and event['type'] == 'checkout.session.completed':
+        print("checkout session completed")
         checkout_session_object = event['data']['object']  # contains a stripe.CheckoutSession
-        print(json.dumps(checkout_session_object, indent=2))
+        # print(json.dumps(checkout_session_object, indent=2))
         user_id = checkout_session_object["metadata"]["user_id"]
-        user_email = checkout_session_object["metadata"]["email"]
+        user_email = checkout_session_object["metadata"]["user_email"]
         payment_intent = checkout_session_object["payment_intent"]
         # Then define and call a method to handle the successful payment intent.
         # handle_payment_intent_succeeded(payment_intent)
-        user = User.get(id=user_id, email=user_email)
-        print(user)
+        user = User.get_or_none(id=user_id, email=user_email)
+        if user:
+            user.payment_intent = payment_intent
+            user.update_expiration_date()
+            user.save()
     else:
         # Unexpected event type
         print('Unhandled event type {}'.format(event['type']))

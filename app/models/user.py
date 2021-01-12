@@ -1,6 +1,7 @@
 from collections import defaultdict
 import jwt
 import datetime
+from dateutil.relativedelta import relativedelta
 from time import time
 from flask_login import UserMixin
 from peewee import CharField, Model, IntegrityError, BooleanField, DateField
@@ -58,6 +59,13 @@ class User(Model, UserMixin):
         if self.payment_intent:
             return f"https://dashboard.stripe.com/test/payments/{self.payment_intent}"
         return "https://dashboard.stripe.com/payments"
+
+    def update_expiration_date(self):
+        today = datetime.date.today()
+        if self.expiration_date and self.expiration_date > today:
+            self.expiration_date = self.expiration_date + relativedelta(years=1)
+        else:
+            self.expiration_date = today + relativedelta(years=1)
 
     def __str__(self):
         return f"[User {self.id}] {self.email}"
