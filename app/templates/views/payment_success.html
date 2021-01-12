@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Info</title>
+    <link href="{{ url_for('static', filename='css/account.css') }}" rel="stylesheet">
+</head>
+<body>
+{% from "macros.html" import render_field %}
+{% include "navbar.html" %}
+<style>
+    .navbar {
+        margin-bottom: 0px;
+    }
+</style>
+<section class="account-section" style="background-image: url('{{ url_for('static', filename='images/football-background.jpg') }}')">
+    <div class="form-container">
+        <h2><span class="label label-pill label-success">Success</span></h2><br />
+        <h2>Congratulations {{ current_user.username }}, your payment was successful!</h2>
+        <h4>Return to the Account page to view your updated status. Notify us if something went wrong.</h4>
+    </div>
+</section>
+</body>
+</html>

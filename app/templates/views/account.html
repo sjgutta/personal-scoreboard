@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Account Info</title>
     <link href="{{ url_for('static', filename='css/account.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/stripe.css') }}" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 {% from "macros.html" import render_field %}
@@ -29,8 +31,50 @@
             <h2><span class="label label-pill label-danger">Inactive</span></h2><br />
             <h2>You haven't paid for access in over 1 year.</h2>
         {% endif %}
-        <br/><h4>Payments help cover the hosting and storage fees that keep this service running!</h4>
+        {% if not current_user.has_free_access %}
+        <section id="product-section" style="margin-top: 3vh;">
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/checkout-image.png') }}"
+                     alt="Personal Scoreboard - 1 Year Access"
+                />
+                <div class="description">
+                    <h3>Personal Scoreboard - 1 Year Access</h3>
+                    <h5>$3.00</h5>
+                </div>
+            </div>
+            <button id="checkout-button">Checkout</button>
+        </section>
+            <br/><h4>Payments help cover the hosting and storage fees that keep this service running!</h4>
+        {% endif %}
     </div>
 </section>
 </body>
+<script type="text/javascript">
+    // Create an instance of the Stripe object with your publishable API key
+    var stripe = Stripe("{{ stripe_key }}");
+    var checkoutButton = document.getElementById("checkout-button");
+
+    checkoutButton.addEventListener("click", function () {
+        fetch("/create-checkout-session", {
+            method: "POST",
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (session) {
+                return stripe.redirectToCheckout({ sessionId: session.id });
+            })
+            .then(function (result) {
+                // If redirectToCheckout fails due to a browser or network
+                // error, you should display the localized error message to your
+                // customer using error.message.
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            })
+            .catch(function (error) {
+                console.error("Error:", error);
+            });
+    });
+</script>
 </html>
