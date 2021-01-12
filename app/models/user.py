@@ -21,6 +21,7 @@ class User(Model, UserMixin):
     is_admin = BooleanField(default=False)
     has_free_access = BooleanField(default=False)
     expiration_date = DateField(null=True)
+    payment_intent = CharField(null=True)
 
     class Meta:
         database = db
@@ -51,6 +52,12 @@ class User(Model, UserMixin):
         if self.has_free_access:
             return True
         return bool(self.expiration_date and self.expiration_date >= datetime.date.today())
+
+    @property
+    def payment_intent_link(self):
+        if self.payment_intent:
+            return f"https://dashboard.stripe.com/test/payments/{self.payment_intent}"
+        return "https://dashboard.stripe.com/payments"
 
     def __str__(self):
         return f"[User {self.id}] {self.email}"

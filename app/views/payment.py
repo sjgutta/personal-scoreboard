@@ -1,10 +1,52 @@
 import stripe
-from flask import jsonify, url_for, redirect, render_template
+import json
+from app.models.user import User
+from flask import jsonify, url_for, redirect, render_template, request
 from flask_login import current_user
 from app.views import bp
 import os
 
 stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
+endpoint_secret = os.environ.get("STRIPE_ENDPOINT_SECRET")
+
+
+@bp.route('/webhook', methods=['POST'])
+def webhook():
+    event = None
+    payload = request.data
+    try:
+        event = json.loads(payload)
+    except Exception as e:
+        print('⚠️  Webhook error while parsing basic request.' + str(e))
+        return jsonify(success=True)
+    if endpoint_secret:
+        # Only verify the event if there is an endpoint secret defined
+        # Otherwise use the basic event deserialized with json
+        sig_header = request.headers.get('stripe-signature')
+        try:
+            event = stripe.Webhook.construct_event(
+                payload, sig_header, endpoint_secret
+            )
+        except stripe.error.SignatureVerificationError as e:
+            print('⚠️  Webhook signature verification failed.' + str(e))
+            return jsonify(success=True)
+
+    # Handle the event
+    if event and event['type'] == 'checkout.session.completed':
+        checkout_session_object = event['data']['object']  # contains a stripe.CheckoutSession
+        print(json.dumps(checkout_session_object, indent=2))
+        user_id = checkout_session_object["metadata"]["user_id"]
+        user_email = checkout_session_object["metadata"]["email"]
+        payment_intent = checkout_session_object["payment_intent"]
+        # Then define and call a method to handle the successful payment intent.
+        # handle_payment_intent_succeeded(payment_intent)
+        user = User.get(id=user_id, email=user_email)
+        print(user)
+    else:
+        # Unexpected event type
+        print('Unhandled event type {}'.format(event['type']))
+
+    return jsonify(success=True)
 
 
 @bp.route('/payment-success', methods=['GET', 'POST'])
