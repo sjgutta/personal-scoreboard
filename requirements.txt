@@ -14,3 +14,4 @@ pyjwt
 pylibmc==1.5.2
 flask_admin
 wtf-peewee
+stripe
