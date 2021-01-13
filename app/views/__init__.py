@@ -6,3 +6,4 @@ from app.views import favorites
 from app.views import scoreboard
 from app.views import account
 from app.views import payment
+from app.views import macos_app

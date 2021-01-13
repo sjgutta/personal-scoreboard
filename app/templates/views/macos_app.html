@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="{{ url_for('static', filename='css/macos_app.css') }}" rel="stylesheet">
+</head>
+<body>
+{% include "navbar.html" %}
+<style>
+    .navbar {
+        margin-bottom: 0px;
+    }
+</style>
+<section class="macos-section" style="background-image: url('{{ url_for('static', filename='images/football-background.jpg') }}')">
+    <div class="macos-container">
+        <h1>macOS App</h1>
+        {% if has_access %}
+            <a href="{{ download_link }}"><h4>Download Latest Release</h4></a>
+        {% else %}
+        <h4>Must have an active account to view download link here.</h4>
+        {% endif %}
+        <div class="row">
+            <div class="col-5">
+
+            </div>
+            <div class="col-5">
+                <img class="app-image" src="{{ url_for('static', filename='images/checkout-image.png') }}">
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
