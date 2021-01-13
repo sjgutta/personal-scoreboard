@@ -31,6 +31,14 @@
     width: auto;
     margin-left: 2vw;
 }
+@media (max-width: 768px) {
+    .image-div {
+        padding-top: 1vh;
+        float: none;
+        text-align: center;
+    }
+}
+
 .app-image {
     height: 100%;
     width: auto;
