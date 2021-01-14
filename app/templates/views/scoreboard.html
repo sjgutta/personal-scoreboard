@@ -154,7 +154,7 @@
                     $.get("{{ event.relative_events_endpoint }}", function(data, status){
                     event_tile = getEventTile(data);
                     {{sport.value}}_html += event_tile;
-                    if (data.status == "IN PROGRESS"){
+                    if (data.status == "IN PROGRESS" || data.status == "HALFTIME" || data.status == "END OF PERIOD"){
                         events_in_progress.push("{{ event.relative_events_endpoint }}");
                     }
                         {{ sport.value }}_fetched += 1;
@@ -203,6 +203,12 @@
     function updateAllEvents() {
         events_in_progress.forEach(function (event_endpoint, index) {
             $.get(event_endpoint, function(data, status){
+                    if (data.status == "FINAL") {
+                        const index = events_in_progress.indexOf(event_endpoint);
+                        if (index > -1) {
+                            events_in_progress.splice(index, 1);
+                        }
+                    }
                     updateEvent(data);
             });
         });

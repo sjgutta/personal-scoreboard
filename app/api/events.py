@@ -20,7 +20,7 @@ def parse_event_data(sport_type, event_id, event_data):
     status_data = event_data["header"]["competitions"][0]["status"]
     status = status_data["type"]["name"]
     scheduled_day = None
-    if status == "STATUS_SCHEDULED":
+    if status == "STATUS_SCHEDULED" or status == "STATUS_END_PERIOD":
         scheduled_day = status_data["type"]["shortDetail"]
     away_team = get_team(sport_type, away_data["id"])
     if away_team is None:

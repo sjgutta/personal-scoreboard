@@ -30,6 +30,7 @@ class Status(Enum):
     STATUS_HALFTIME = "HALFTIME"
     STATUS_POSTPONED = "POSTPONED"
     STATUS_FULL_TIME = "FULL TIME"
+    STATUS_END_PERIOD = "END OF PERIOD"
 
     @classmethod
     def status_from_espn_string(cls, espn_string):
@@ -45,6 +46,8 @@ class Status(Enum):
             return cls.STATUS_POSTPONED
         elif espn_string == "STATUS_FULL_TIME":
             return cls.STATUS_FULL_TIME
+        elif espn_string == "STATUS_END_PERIOD":
+            return cls.STATUS_END_PERIOD
         else:
             return cls.STATUS_IN_PROGRESS
 
@@ -109,8 +112,10 @@ class BaseEvent:
             return "HALFTIME"
         elif self.status == Status.STATUS_POSTPONED:
             return "POSTPONED"
+        elif self.status == Status.STATUS_END_PERIOD:
+            return self.scheduled_day
         else:
-            if self.quarter == 5:
+            if self.quarter >= 5:
                 return f"{self.time} | OT"
             else:
                 return f"{self.time} | Q{self.quarter}"
@@ -248,8 +253,10 @@ class NCAAMEvent(BaseEvent):
             return "HALFTIME"
         elif self.status == Status.STATUS_POSTPONED:
             return "POSTPONED"
+        elif self.status == Status.STATUS_END_PERIOD:
+            return self.scheduled_day
         else:
-            if self.quarter == 5:
+            if self.quarter >= 3:
                 return f"{self.time} | OT"
             else:
                 return f"{self.time} | H{self.quarter}"
@@ -289,8 +296,10 @@ class NHLEvent(BaseEvent):
             return "HALFTIME"
         elif self.status == Status.STATUS_POSTPONED:
             return "POSTPONED"
+        elif self.status == Status.STATUS_END_PERIOD:
+            return self.scheduled_day
         else:
-            if self.quarter == 4:
+            if self.quarter >= 4:
                 return f"{self.time} | OT"
             else:
                 return f"{self.time} | P{self.quarter}"
@@ -322,6 +331,10 @@ class MLBEvent:
             return self.scheduled_day
         elif self.status == Status.STATUS_HALFTIME:
             return "HALFTIME"
+        elif self.status == Status.STATUS_POSTPONED:
+            return "POSTPONED"
+        elif self.status == Status.STATUS_END_PERIOD:
+            return self.scheduled_day
         else:
             return f"Inning: {self.inning_string}"
 
@@ -387,6 +400,8 @@ class SoccerEvent(BaseEvent):
             return "POSTPONED"
         elif self.status == Status.STATUS_FULL_TIME:
             return "FULL TIME"
+        elif self.status == Status.STATUS_END_PERIOD:
+            return self.scheduled_day
         else:
             if self.quarter >= 3:
                 return f"{self.time} | Extra Time"
