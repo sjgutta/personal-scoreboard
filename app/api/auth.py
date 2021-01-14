@@ -11,6 +11,6 @@ def restful_login_user():
     password = data.get("password")
     user = User.get_or_none(username=username)
     if user and user.check_password(password) and user.has_access:
-        return {"success": os.environ.get('SECRET_KEY')}
+        return {"success": os.environ.get('SECRET_KEY'), "version": "1.3"}
     else:
         return {"error": "invalid credentials"}
