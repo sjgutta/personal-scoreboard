@@ -37,6 +37,9 @@ struct ContentView: View {
     
     let BASE_URL: String = "PLACEHOLDER URL"
     
+    let this_version = "1.3"
+    @State var needs_update: Bool = false
+    
     var body: some View {
         VStack {
             if self.logged_in {
@@ -58,6 +61,11 @@ struct ContentView: View {
                         }) {
                             Text("Quit App")
                         }.padding(.trailing, 20).padding(.top, 10)
+                    }
+                    if self.needs_update {
+                        HStack {
+                            Text("APP NEEDS UPDATE").padding(.leading, 5).foregroundColor(.red)
+                        }
                     }
                     
                     HStack {
@@ -197,6 +205,9 @@ struct ContentView: View {
             loginUser(url: url, username: self.username, password: self.password) { result in
                 if result["success"].exists() {
                     self.request_key = result["success"].stringValue
+                    if result["version"].stringValue != self.this_version {
+                        self.needs_update = true
+                    }
                     self.auth_error = ""
                     self.logged_in = true
                 } else {
@@ -269,7 +280,7 @@ struct ContentView: View {
                 let url = BASE_EVENT_URL + "/NFL/" + event_id
                 getEventInfo(url: url, request_key: self.request_key) { output in
                     let retrieved_id = output.id
-                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
+                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" || output.status == "END OF PERIOD" {
                         let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.nfl)
                         self.events_in_progress.append(bare_event)
                     }
@@ -280,7 +291,7 @@ struct ContentView: View {
                 let url = BASE_EVENT_URL + "/NBA/" + event_id
                 getEventInfo(url: url, request_key: self.request_key) { output in
                     let retrieved_id = output.id
-                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
+                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" || output.status == "END OF PERIOD" {
                         let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.nba)
                         self.events_in_progress.append(bare_event)
                     }
@@ -291,7 +302,7 @@ struct ContentView: View {
                 let url = BASE_EVENT_URL + "/NHL/" + event_id
                 getEventInfo(url: url, request_key: self.request_key) { output in
                     let retrieved_id = output.id
-                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
+                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" || output.status == "END OF PERIOD" {
                         let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.nhl)
                         self.events_in_progress.append(bare_event)
                     }
@@ -302,7 +313,7 @@ struct ContentView: View {
                 let url = BASE_EVENT_URL + "/MLB/" + event_id
                 getEventInfo(url: url, request_key: self.request_key) { output in
                     let retrieved_id = output.id
-                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
+                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" || output.status == "END OF PERIOD" {
                         let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.mlb)
                         self.events_in_progress.append(bare_event)
                     }
@@ -313,7 +324,7 @@ struct ContentView: View {
                 let url = BASE_EVENT_URL + "/NCAAM/" + event_id
                 getEventInfo(url: url, request_key: self.request_key) { output in
                     let retrieved_id = output.id
-                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
+                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" || output.status == "END OF PERIOD" {
                         let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.ncaam)
                         self.events_in_progress.append(bare_event)
                     }
@@ -325,7 +336,7 @@ struct ContentView: View {
                 let url = BASE_EVENT_URL + "/SOCCER/" + event_id
                 getEventInfo(url: url, request_key: self.request_key) { output in
                     let retrieved_id = output.id
-                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" {
+                    if output.status == "IN PROGRESS" || output.status == "HALFTIME" || output.status == "END OF PERIOD" {
                         let bare_event = BareEvent(id: retrieved_id, sport_type: SportType.ncaam)
                         self.events_in_progress.append(bare_event)
                     }
