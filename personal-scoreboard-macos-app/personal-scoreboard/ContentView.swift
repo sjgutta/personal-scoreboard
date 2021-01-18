@@ -37,7 +37,7 @@ struct ContentView: View {
     
     let BASE_URL: String = "PLACEHOLDER URL"
     
-    let this_version = "1.3"
+    let this_version = "1.4"
     @State var needs_update: Bool = false
     
     var body: some View {
@@ -260,6 +260,7 @@ struct ContentView: View {
         self.nhl_event_objs = Dictionary<String, Event>()
         self.mlb_event_objs = Dictionary<String, Event>()
         self.ncaam_event_objs = Dictionary<String, Event>()
+        self.soccer_event_objs = Dictionary<String, Event>()
         self.events_in_progress = []
     }
     
