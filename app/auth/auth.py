@@ -81,8 +81,10 @@ def reset_password_request():
         user = User.select().where(User.email == form.email.data)
         if user.exists():
             send_password_reset_email(user[0])
-        flash('Check your email for the instructions to reset your password')
-        return redirect(url_for('auth.login'))
+            flash('Check your email for the instructions to reset your password')
+            return redirect(url_for('auth.login'))
+        else:
+            flash("No users exist with that email.")
     return render_template('auth/reset_password_request.html',
                            title='Reset Password', form=form)
 
